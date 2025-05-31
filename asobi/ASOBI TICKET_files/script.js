@@ -387,11 +387,15 @@ function updateTimeText() {
 }
 
 let dividerHighlight = true;
+
 function toggleDividerColor() {
   const dividers = document.querySelectorAll('.time .divider');
+
+  // 明示的に白とグレーを切り替え（getComputedStyle は使わない）
   dividers.forEach(div => {
-    div.style.color = dividerHighlight ? '#ffffff' : '#999999'; // 白→グレー
+    div.style.color = dividerHighlight ? '#ffffff' : '#999999';
   });
+
   dividerHighlight = !dividerHighlight;
 }
 
