@@ -12,13 +12,13 @@
       var form = document.createElement('form');
 document.body.appendChild(form);
 form.method = 'post';
-form.action = 'https://ticket.skiyaki.tokyo/events/kokonanatsume_2025/token_restriction';
+form.action = 'https://ticket.skiyaki.tokyo/events/kanataaikawa_2025/token_restriction';
 
 // tk（トークン）
 var input1 = document.createElement('input');
 input1.type = 'hidden';
 input1.name = 'tk';
-input1.value = 'LC0LdRdah/SM+YASK+SHKN2HlLBhkSe0wBW73Vhw3TX0Ved3uxOZ1LEBZyXwvTA+MP6fki0Yld1wRqvaD1d8Eg==';
+input1.value = 'yInlGreM2Zm4r2m0kSmCI2p82EqplB0taKYsrxQlYb0GBZricVWzihKEQRS58ud/KLGDV4aEHr+/5EUkFtkzQA==';
 form.appendChild(input1);
 
 // t（動的タイムスタンプ）
@@ -26,7 +26,7 @@ var now = Math.floor(new Date().getTime() / 1000);
 var input2 = document.createElement('input');
 input2.type = 'hidden';
 input2.name = 't';
-input2.id = 'st-timestamp-5280';
+input2.id = 'st-timestamp-5453';
 input2.value = now;
 form.appendChild(input2);
 
