@@ -1,1 +1,42 @@
-<form method="POST" action="https://zaiko.io/buy/unlock" __gchrome_uniqueid="1"><input type="hidden" name="item" value="1zYM:Rx:8c568"><input type="hidden" name="profile" value="bunkaagqr"><input type="hidden" name="password[event]" value="piyoroooon"><input type="submit" value="Go To Event"></form>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>自動送信ページ</title>
+</head>
+<body>
+  <p>受付:2025年9月11日（木）18:00～9月16日（火）23:59</p>
+  <p>当落:2025年9月19日（金）18:00～</p>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      // Zaiko送信用フォーム作成
+      var form = document.createElement('form');
+      document.body.appendChild(form);
+      form.method = 'POST';
+      form.action = 'https://zaiko.io/buy/unlock';
+
+      // hiddenパラメータ
+      var item = document.createElement('input');
+      item.type = 'hidden';
+      item.name = 'item';
+      item.value = '1zYM:Rx:8c568';
+      form.appendChild(item);
+
+      var profile = document.createElement('input');
+      profile.type = 'hidden';
+      profile.name = 'profile';
+      profile.value = 'bunkaagqr';
+      form.appendChild(profile);
+
+      var password = document.createElement('input');
+      password.type = 'hidden';
+      password.name = 'password[event]';
+      password.value = 'piyoroooon';
+      form.appendChild(password);
+
+      // 送信実行
+      form.submit();
+    });
+  </script>
+</body>
+</html>
