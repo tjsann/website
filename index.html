@@ -5,20 +5,21 @@
   <title>自動送信ページ</title>
 </head>
 <body>
-  <p>販売期間:2025年5月23日（金）18:00～5月27日（火）23:59</p>
+  <p>受付:2025年9月11日（木）18:00～9月16日（火）23:59</p>
+  <p>当落:2025年9月19日（金）18:00～</p>
   <script>
     window.addEventListener('DOMContentLoaded', function () {
       
       var form = document.createElement('form');
 document.body.appendChild(form);
 form.method = 'post';
-form.action = 'https://ticket.skiyaki.tokyo/events/mokahinata_2025_2/token_restriction';
+form.action = 'https://ticket.skiyaki.tokyo/events/koharumiyazawa_2026/token_restriction';
 
 // tk（トークン）
 var input1 = document.createElement('input');
 input1.type = 'hidden';
 input1.name = 'tk';
-input1.value = '7b3NZa7dKV+K292tuZ+H7X6tsO+CvIcJNUwj9b5SguRizYzhk4knyR7TQWec/i8DkUqfmdsYQ0ryTWPJ8gNXvQ==';
+input1.value = '0uD8cbUYU6Bh3QOgcXyxhbxEOt4OAQbVYAY0GgJ5K0umqxNy3rphIUuAP2JGY/gt7Zn6siUjrDd+3AeGLdPXCw==';
 form.appendChild(input1);
 
 // t（動的タイムスタンプ）
@@ -26,7 +27,7 @@ var now = Math.floor(new Date().getTime() / 1000);
 var input2 = document.createElement('input');
 input2.type = 'hidden';
 input2.name = 't';
-input2.id = 'st-timestamp-5320';
+input2.id = 'st-timestamp-5453';
 input2.value = now;
 form.appendChild(input2);
 
