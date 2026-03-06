@@ -37,20 +37,8 @@ body {
 }
 
 /* ===== STATUS BAR ===== */
-.status-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  z-index: 20;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: env(safe-area-inset-top, 14px);
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 4px;
-  pointer-events: none;
-}
-.time { font-size: 17px; font-weight: 700; color: white; }
+
+
 .status-icons { display: flex; gap: 5px; align-items: center; }
 .status-icons svg { fill: white; }
 
@@ -62,7 +50,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: calc(env(safe-area-inset-top, 14px) + 32px) 16px 10px 0px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 10px 0px;
   pointer-events: none;
 }
 .logo-area {
@@ -362,28 +350,7 @@ body {
 <div class="phone">
 
   <!-- Status bar -->
-  <div class="status-bar">
-    <span class="time" id="clockDisplay">--:--</span>
-    <div class="status-icons">
-      <svg width="15" height="11" viewBox="0 0 15 11">
-        <rect x="0" y="4" width="2.5" height="7" rx="0.5"/>
-        <rect x="3.5" y="2.5" width="2.5" height="8.5" rx="0.5"/>
-        <rect x="7" y="1" width="2.5" height="10" rx="0.5"/>
-        <rect x="10.5" y="0" width="2.5" height="11" rx="0.5" opacity="0.4"/>
-        <rect x="10.5" y="0" width="2.5" height="11" rx="0.5" fill="none" stroke="white" stroke-width="0.6"/>
-      </svg>
-      <svg width="15" height="11" viewBox="0 0 15 11">
-        <path d="M7.5 8.5a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/>
-        <path d="M4.2 6.4a4.7 4.7 0 016.6 0" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
-        <path d="M1.2 3.5a8.3 8.3 0 0112.6 0" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
-      </svg>
-      <svg width="24" height="11" viewBox="0 0 24 11">
-        <rect x="0" y="1" width="21" height="9" rx="2" stroke="white" stroke-width="1.4" fill="none"/>
-        <rect x="1.5" y="2.5" width="6" height="6" rx="1" fill="white"/>
-        <rect x="21" y="3.5" width="3" height="4" rx="1" fill="white"/>
-      </svg>
-    </div>
-  </div>
+  
 
   <!-- Header -->
   <div class="header">
