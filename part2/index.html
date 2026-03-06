@@ -121,7 +121,7 @@ body {
 /* Rainbow rect behind circles - shown only when selected */
 .circles-rainbow-bg {
   position: absolute;
-  top: 78px;
+  top: 54px;
   left: 0;
   width: 100%;
   height: 234px;
@@ -175,8 +175,8 @@ body {
 .wavy-wrap.white-fill {
   background: white;
 }
-.wavy-left  { top: 135px; left: 101px; }
-.wavy-right { top: 135px; left: 229px; }
+.wavy-left  { top: 111px; left: 101px; }
+.wavy-right { top: 111px; left: 229px; }
 .wavy-wrap canvas { display: block; }
 
 /* Blue gradient overlay for slide animation */
@@ -200,7 +200,7 @@ body {
 }
 .event-title {
   position: absolute;
-  top: 92px; left: 16px;
+  top: 68px; left: 16px;
   color: white;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 32px; font-weight: 700; letter-spacing: 12px;
@@ -349,9 +349,6 @@ body {
 <body>
 <div class="phone">
 
-  <!-- Status bar -->
-  
-
   <!-- Header -->
   <div class="header">
     <div class="header-left">
@@ -440,15 +437,7 @@ body {
 </div>
 
 <script>
-/* ========== CLOCK ========== */
-(function updateClock(){
-  const el = document.getElementById('clockDisplay');
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  el.textContent = h + ':' + m;
-  setTimeout(updateClock, (60 - now.getSeconds()) * 1000);
-})();
+/* clock removed - status bar removed */
 
 /* ========== STATE ========== */
 let isSelected  = false;
