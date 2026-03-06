@@ -50,7 +50,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 10px 0px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 14px 0px;
   pointer-events: none;
 }
 .logo-area {
@@ -121,10 +121,10 @@ body {
 /* Rainbow rect behind circles - shown only when selected */
 .circles-rainbow-bg {
   position: absolute;
-  top: 78px;
+  top: 93px;
   left: 0;
   width: 100%;
-  height: 234px;
+  height: 219px;
   border-radius: 0;
   z-index: 3;
   display: none;
@@ -175,8 +175,8 @@ body {
 .wavy-wrap.white-fill {
   background: white;
 }
-.wavy-left  { top: 135px; left: 101px; }
-.wavy-right { top: 135px; left: 229px; }
+.wavy-left  { top: 158px; left: 101px; }
+.wavy-right { top: 158px; left: 229px; }
 .wavy-wrap canvas { display: block; }
 
 /* Blue gradient overlay for slide animation */
@@ -200,21 +200,21 @@ body {
 }
 .event-title {
   position: absolute;
-  top: 92px; left: 16px;
+  top: 106px; left: 16px;
   color: white;
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 32px; font-weight: 700; letter-spacing: 12px;
+  font-size: 34px; font-weight: 700; letter-spacing: 12px;
   text-transform: uppercase;
   z-index: 5; pointer-events: none;
 }
 .event-date, .event-time {
   position: absolute; left: 16px;
-  color: white; font-size: 16px; font-weight: 500;
+  color: white; font-size: 18px; font-weight: 500;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
 }
-.event-date { bottom: 30px; }
-.event-time { bottom: 8px; }
+.event-date { bottom: 42px; }
+.event-time { bottom: 16px; }
 
 /* ===== WARNING BANNER ===== */
 .warning-banner {
