@@ -17,15 +17,15 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 20px 0;
+  padding: 24px 0;
 }
 
 /* ===== PHONE SHELL ===== */
 .phone {
-  width: 375px;
+  width: 430px;
   background: #ebebeb;
   position: relative;
-  border-radius: 40px;
+  border-radius: 52px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.4);
   overflow: hidden;
   display: flex;
@@ -43,7 +43,7 @@ body {
   padding: 14px 20px 6px;
   pointer-events: none;
 }
-.time { font-size: 15px; font-weight: 700; color: white; }
+.time { font-size: 17px; font-weight: 700; color: white; }
 .status-icons { display: flex; gap: 5px; align-items: center; }
 .status-icons svg { fill: white; }
 
@@ -55,7 +55,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 14px 10px;
+  padding: 46px 16px 10px;
   pointer-events: none;
 }
 .logo-area {
@@ -115,11 +115,17 @@ body {
 /* ===== HERO ===== */
 .hero {
   width: 100%;
-  height: 272px;
+  height: 312px;
   background: #ff00cc;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  transition: background 0.35s ease;
+}
+.hero.selected-hero {
+  background: radial-gradient(ellipse at 60% 45%,
+    #3a7bd5 0%, #2256c8 30%, #1240a8 60%, #0a2878 100%);
+  transition: background 0.35s ease;
 }
 
 /* Always-on ripple rings */
@@ -153,27 +159,30 @@ body {
 /* Wavy circles */
 .wavy-wrap {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   border-radius: 50%;
   overflow: hidden;
   display: none;
-  width: 72px; height: 72px;
+  width: 83px; height: 83px;
   background: transparent;
 }
-.wavy-left  { top: 118px; left: 88px; }
-.wavy-right { top: 118px; left: 200px; }
+.wavy-wrap.white-fill {
+  background: white;
+}
+.wavy-left  { top: 135px; left: 101px; }
+.wavy-right { top: 135px; left: 229px; }
 .wavy-wrap canvas { display: block; }
+
+/* Blue gradient overlay for slide animation */
+.hero-slide-bg {
+  display: none;
+}
 
 /* Invisible slide overlay */
 .slide-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  display: none;
-  touch-action: none;
-  cursor: ew-resize;
+  display: none !important;
 }
-.slide-track { opacity: 0; position: absolute; width: 220px; height: 36px;
+.slide-track { opacity: 0; position: absolute; width: 252px; height: 36px;
   bottom: 16px; left: 50%; transform: translateX(-50%); }
 .slide-thumb { width: 28px; height: 28px; background: white; border-radius: 50%;
   position: relative; left: 0; flex-shrink: 0; }
@@ -181,16 +190,16 @@ body {
 /* IDOLY PRIDE title - top-left under header */
 .event-title {
   position: absolute;
-  top: 80px; left: 14px;
+  top: 92px; left: 16px;
   color: white;
   font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
-  font-size: 25px; font-weight: 900; letter-spacing: 9px;
+  font-size: 29px; font-weight: 900; letter-spacing: 10px;
   text-transform: uppercase;
   z-index: 5; pointer-events: none;
 }
 .event-date, .event-time {
-  position: absolute; left: 14px;
-  color: white; font-size: 14px; font-weight: 500;
+  position: absolute; left: 16px;
+  color: white; font-size: 16px; font-weight: 500;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
 }
@@ -200,18 +209,18 @@ body {
 /* ===== WARNING BANNER ===== */
 .warning-banner {
   background: #d32f2f; color: white;
-  font-size: 12.5px; line-height: 1.55;
-  padding: 9px 14px;
+  font-size: 14.3px; line-height: 1.55;
+  padding: 10px 16px;
   display: none; flex-shrink: 0;
 }
 
 /* ===== TICKET AREA ===== */
-.ticket-section { padding: 14px 10px; background: #ebebeb; flex: 1; }
+.ticket-section { padding: 16px 12px; background: #ebebeb; flex: 1; }
 .ticket-header {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 11px;
+  margin-bottom: 13px;
 }
-.ticket-header span { font-size: 15px; color: #333; }
+.ticket-header span { font-size: 17px; color: #333; }
 
 /* Ticket card with shadow matching reference image */
 .ticket-card {
@@ -253,34 +262,34 @@ body {
 }
 
 .ticket-main {
-  padding: 14px 12px;
+  padding: 16px 14px;
   display: flex; align-items: flex-start; gap: 11px;
   cursor: pointer; user-select: none;
 }
-.ticket-type { font-size: 12.5px; color: #555; margin-bottom: 5px; }
+.ticket-type { font-size: 14.3px; color: #555; margin-bottom: 5px; }
 .ticket-card.selected .ticket-type { color: rgba(255,255,255,0.8); }
 
 .avatar-circle {
-  width: 44px; height: 44px;
+  width: 50px; height: 50px;
   border: 2px solid #1769aa; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11.5px; color: #1769aa; font-weight: bold;
-  flex-shrink: 0; margin-top: 16px; background: white;
+  font-size: 13.2px; color: #1769aa; font-weight: bold;
+  flex-shrink: 0; margin-top: 20px; background: white;
   transition: border-color 0.3s, color 0.3s;
 }
 .ticket-card.selected .avatar-circle { border-color: white; color: white; background: transparent; }
 
 .ticket-info { flex: 1; min-width: 0; }
-.ticket-number { font-size: 21px; font-weight: 900; color: #111; margin-bottom: 3px; font-family: 'Noto Sans JP', sans-serif; }
+.ticket-number { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 3px; font-family: 'Noto Sans JP', sans-serif; }
 .ticket-card.selected .ticket-number { color: white; }
-.ticket-detail { font-size: 12.5px; color: #444; line-height: 1.9; }
+.ticket-detail { font-size: 14.3px; color: #444; line-height: 1.9; }
 .ticket-card.selected .ticket-detail { color: rgba(255,255,255,0.9); }
 
 .checkbox {
   width: 24px; height: 24px;
   border: 2px solid #bbb; border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 18px; background: white;
+  flex-shrink: 0; margin-top: 20px; background: white;
   transition: all 0.25s;
 }
 .checkbox.checked { border-color: #e53935; }
@@ -302,11 +311,11 @@ body {
 
 .ticket-footer {
   border-top: 1px solid #eee;
-  padding: 11px 14px;
+  padding: 13px 16px;
   display: flex; justify-content: space-between; align-items: center;
 }
 .ticket-card.selected .ticket-footer { border-top-color: rgba(255,255,255,0.2); }
-.ticket-footer span { font-size: 13.5px; color: #666; }
+.ticket-footer span { font-size: 15.5px; color: #666; }
 .ticket-card.selected .ticket-footer span { color: rgba(255,255,255,0.85); }
 .ticket-footer svg { fill: #999; width: 18px; height: 18px; }
 .ticket-card.selected .ticket-footer svg { fill: rgba(255,255,255,0.65); }
@@ -314,12 +323,12 @@ body {
 /* ===== BOTTOM NAV ===== */
 .bottom-nav {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 22px 26px; background: #ebebeb; flex-shrink: 0;
+  padding: 14px 25px 30px; background: #ebebeb; flex-shrink: 0;
 }
-.nav-arrow { color: #1769aa; font-size: 22px; }
-.nav-link { color: #1769aa; font-size: 13.5px; display: flex; align-items: center; gap: 3px; }
+.nav-arrow { color: #1769aa; font-size: 25px; }
+.nav-link { color: #1769aa; font-size: 15.5px; display: flex; align-items: center; gap: 3px; }
 .home-indicator {
-  width: 116px; height: 4px; background: #222;
+  width: 133px; height: 5px; background: #222;
   border-radius: 3px; margin: 2px auto 10px;
 }
 </style>
@@ -367,14 +376,15 @@ body {
 
   <!-- Hero -->
   <div class="hero" id="hero">
+    <div class="hero-slide-bg" id="heroSlideBg"></div>
     <div class="ripple-container">
       <div class="ripple-ring"></div>
       <div class="ripple-ring"></div>
       <div class="ripple-ring"></div>
       <div class="ripple-ring"></div>
     </div>
-    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="72" height="72"></canvas></div>
-    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="72" height="72"></canvas></div>
+    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="83" height="83"></canvas></div>
+    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="83" height="83"></canvas></div>
     <div class="slide-overlay" id="slideOverlay">
       <div class="slide-track" id="slideTrack">
         <div class="slide-thumb" id="slideThumb"></div>
@@ -452,26 +462,28 @@ let isSelected  = false;
 let isCheckedIn = false;
 
 /* ========== WAVY CANVAS ========== */
-function drawWavy(canvas, offset){
+function drawWavy(canvas, offset, strokeColor, whiteFill){
   const ctx = canvas.getContext('2d');
   const w = canvas.width, h = canvas.height;
-  // Clear to fully transparent - hero pink shows through
   ctx.clearRect(0,0,w,h);
   ctx.save();
-  // Clip to circle
   ctx.beginPath();
   ctx.arc(w/2, h/2, w/2, 0, Math.PI*2);
   ctx.clip();
 
-  const sH  = 7;    // row height (gap between lines)
-  const zW  = 9;    // zigzag tooth width
-  const amp = 3.5;  // zigzag amplitude
+  if(whiteFill){
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,w,h);
+  }
+
+  const sH  = 7;
+  const zW  = 9;
+  const amp = 3.5;
   const xOff = (offset * 9) % (zW * 2);
 
-  // Draw only the zigzag lines as strokes - background stays transparent
-  ctx.strokeStyle = 'rgba(20, 28, 160, 0.88)';
-  ctx.lineWidth = 1.6;
-  ctx.lineJoin = 'miter';
+  ctx.strokeStyle = whiteFill ? 'rgba(20,28,130,0.80)' : (strokeColor || 'rgba(20,28,160,0.88)');
+  ctx.lineWidth   = whiteFill ? 2.2 : 1.6;
+  ctx.lineJoin    = 'miter';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
     const y = row * sH;
@@ -486,10 +498,12 @@ function drawWavy(canvas, offset){
   ctx.restore();
 }
 let wavyOff = 0, wavyRAF = null;
+let wavyStrokeColor = 'rgba(20, 28, 160, 0.88)';
+let wavyWhiteFill = false;
 function animateWavy(){
   wavyOff += 0.04;
-  drawWavy(document.getElementById('cvLeft'),  wavyOff);
-  drawWavy(document.getElementById('cvRight'), wavyOff + 0.8);
+  drawWavy(document.getElementById('cvLeft'),  wavyOff,       wavyStrokeColor, wavyWhiteFill);
+  drawWavy(document.getElementById('cvRight'), wavyOff + 0.8, wavyStrokeColor, wavyWhiteFill);
   wavyRAF = requestAnimationFrame(animateWavy);
 }
 function stopWavy(){
@@ -510,76 +524,110 @@ function onTicketTap(){
 
   if(isSelected){
     inner.style.background = '#1769aa';
-    // update inner text colors via class on card
     document.getElementById('ticketCard').classList.add('selected');
+    document.getElementById('hero').classList.add('selected-hero');
     chk.classList.add('checked');
     warn.style.display  = 'block';
     cnt.textContent     = '合計１／１枚';
     wl.style.display    = 'block';
     wr.style.display    = 'block';
-    overlay.style.display = 'block';
+    wl.classList.add('white-fill');
+    wr.classList.add('white-fill');
+    wavyWhiteFill = true;
     animateWavy();
     initSlide();
   } else {
     document.getElementById('ticketCard').classList.remove('selected');
+    document.getElementById('hero').classList.remove('selected-hero');
     inner.style.background = '';
     chk.classList.remove('checked');
     warn.style.display  = 'none';
     cnt.textContent     = '合計１枚';
     wl.style.display    = 'none';
     wr.style.display    = 'none';
-    overlay.style.display = 'none';
+    wl.classList.remove('white-fill');
+    wr.classList.remove('white-fill');
+    wavyWhiteFill = false;
     stopWavy();
-  }
+    // Reset slide bg
+    }
 }
 
 /* ========== SLIDE TO CHECK-IN ========== */
 let slideInited = false;
+
+/* ── lerp helper ── */
+function lerpColor(r1,g1,b1, r2,g2,b2, t){
+  return [Math.round(r1+(r2-r1)*t), Math.round(g1+(g2-g1)*t), Math.round(b1+(b2-b1)*t)];
+}
+
+/* ── Update hero visuals based on slide progress 0→1 ── */
+function updateSlideVisuals(progress){
+  const hero = document.getElementById('hero');
+  const wl   = document.getElementById('wavyLeft');
+  const wr   = document.getElementById('wavyRight');
+  // 丸がスライドに追従して右へ移動
+  const heroW = hero.offsetWidth;
+  const baseL = 101, baseR = 229;
+  const maxShift = heroW * 0.40;
+  wl.style.left = (baseL + progress * maxShift) + 'px';
+  wr.style.left = (baseR + progress * maxShift) + 'px';
+}
+
+/* ── Reset hero visuals (slide released without completing) ── */
+function resetSlideVisuals(){
+  const wl = document.getElementById('wavyLeft');
+  const wr = document.getElementById('wavyRight');
+  wl.style.transition = 'left 0.28s';
+  wr.style.transition = 'left 0.28s';
+  wl.style.left = '101px';
+  wr.style.left = '229px';
+  setTimeout(()=>{
+    wl.style.transition = 'none';
+    wr.style.transition = 'none';
+  }, 300);
+}
+
 function initSlide(){
   if(slideInited) return;
   slideInited = true;
-  const overlay = document.getElementById('slideOverlay');
-  const thumb   = document.getElementById('slideThumb');
-  const TRACK_W = 220;
-  const THUMB_W = 28;
-  const MAX_X   = TRACK_W - THUMB_W - 12;
-  let dragging = false, startX = 0, curX = 0;
+  const hero = document.getElementById('hero');
+  let dragging = false, startX = 0, curProgress = 0;
+  const COMPLETE_THRESHOLD = 0.82;
 
   function getClientX(e){ return e.touches ? e.touches[0].clientX : e.clientX; }
 
   function onStart(e){
     if(!isSelected || isCheckedIn) return;
-    if(e.touches && e.touches.length < 2) return;
     e.preventDefault();
     dragging = true;
     startX = getClientX(e);
-    curX = 0;
+    curProgress = 0;
   }
   function onMove(e){
     if(!dragging) return;
     e.preventDefault();
     const dx = getClientX(e) - startX;
-    curX = Math.max(0, Math.min(dx, MAX_X));
-    thumb.style.left = curX + 'px';
-    if(curX >= MAX_X * 0.88) doCheckIn();
+    const heroW = hero.offsetWidth;
+    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
+    updateSlideVisuals(curProgress);
+    if(curProgress >= COMPLETE_THRESHOLD) doCheckIn();
   }
   function onEnd(){
     if(!dragging) return;
     dragging = false;
-    if(curX < MAX_X * 0.88){
-      thumb.style.transition = 'left 0.25s';
-      thumb.style.left = '0px';
-      setTimeout(()=>{ thumb.style.transition = 'none'; }, 260);
+    if(curProgress < COMPLETE_THRESHOLD){
+      resetSlideVisuals();
     }
-    curX = 0;
+    curProgress = 0;
   }
 
-  overlay.addEventListener('touchstart', onStart, {passive:false});
-  overlay.addEventListener('touchmove',  onMove,  {passive:false});
-  overlay.addEventListener('touchend',   onEnd,   {passive:false});
-  overlay.addEventListener('mousedown', onStart);
-  window.addEventListener('mousemove',  onMove);
-  window.addEventListener('mouseup',    onEnd);
+  hero.addEventListener('touchstart', onStart, {passive:false});
+  hero.addEventListener('touchmove',  onMove,  {passive:false});
+  hero.addEventListener('touchend',   onEnd,   {passive:false});
+  hero.addEventListener('mousedown', onStart);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup',   onEnd);
 }
 
 /* ========== DO CHECK-IN ========== */
@@ -605,7 +653,11 @@ function doCheckIn(){
   const ts  = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   detail.innerHTML += '<br>入場時間：' + ts;
 
-  // Revert card to white
+  // Revert hero and card
+  document.getElementById('hero').classList.remove('selected-hero');
+  document.getElementById('wavyLeft').classList.remove('white-fill');
+  document.getElementById('wavyRight').classList.remove('white-fill');
+  wavyWhiteFill = false;
   card.classList.remove('selected');
   inner.style.background = '';
 
@@ -617,7 +669,7 @@ function doCheckIn(){
   wl.style.display = 'none';
   wr.style.display = 'none';
   stopWavy();
-  overlay.style.display = 'none';
+  /* overlay removed */
 
   // Reset count, hide warning
   document.getElementById('ticketCount').textContent = '合計１枚';
