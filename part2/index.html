@@ -218,7 +218,7 @@ body {
 
 /* ===== WARNING BANNER ===== */
 .warning-banner {
-  background: #d32f2f; color: white;
+  background: #f03030; color: white;
   font-size: 14.3px; line-height: 1.55;
   padding: 10px 16px;
   display: none; flex-shrink: 0;
@@ -255,9 +255,9 @@ body {
   overflow: hidden;
   position: relative;
   background: white;
-  transition: background 0.3s;
 }
-.ticket-card.selected .ticket-inner { background: #1769aa; }
+.ticket-card.selected .ticket-main { background: #1769aa; }
+.ticket-card.selected .ticket-footer { background: white !important; border-top: 1px solid #eee !important; }
 
 /* 入場済 stamp - positioned like reference: top area, slightly rotated, pink */
 .nyujozumi-stamp {
@@ -278,9 +278,10 @@ body {
   padding: 16px 14px;
   display: flex; align-items: flex-start; gap: 11px;
   cursor: pointer; user-select: none;
+  transition: background 0.3s;
 }
 .ticket-type { font-size: 14.3px; color: #555; margin-bottom: 5px; }
-.ticket-card.selected .ticket-type { color: rgba(255,255,255,0.8); }
+.ticket-card.selected .ticket-main .ticket-type { color: rgba(255,255,255,0.8); }
 
 .avatar-circle {
   width: 50px; height: 50px;
@@ -290,13 +291,13 @@ body {
   flex-shrink: 0; margin-top: 42px; background: white;
   transition: border-color 0.3s, color 0.3s;
 }
-.ticket-card.selected .avatar-circle { border-color: white; color: white; background: transparent; }
+.ticket-card.selected .ticket-main .avatar-circle { border-color: white; color: white; background: transparent; }
 
 .ticket-info { flex: 1; min-width: 0; }
 .ticket-number { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 3px; font-family: 'Noto Sans JP', sans-serif; }
-.ticket-card.selected .ticket-number { color: white; }
+.ticket-card.selected .ticket-main .ticket-number { color: white; }
 .ticket-detail { font-size: 14.3px; color: #444; line-height: 1.9; }
-.ticket-card.selected .ticket-detail { color: rgba(255,255,255,0.9); }
+.ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
 .checkbox {
   width: 24px; height: 24px;
@@ -327,16 +328,17 @@ body {
   padding: 13px 16px;
   display: flex; justify-content: space-between; align-items: center;
 }
-.ticket-card.selected .ticket-footer { border-top-color: rgba(255,255,255,0.2); }
+
 .ticket-footer span { font-size: 15.5px; color: #666; }
-.ticket-card.selected .ticket-footer span { color: rgba(255,255,255,0.85); }
+.ticket-card.selected .ticket-footer span { color: #555; }
 .ticket-footer svg { fill: #999; width: 18px; height: 18px; }
-.ticket-card.selected .ticket-footer svg { fill: rgba(255,255,255,0.65); }
+.ticket-card.selected .ticket-footer svg { fill: #999; }
 
 /* ===== BOTTOM NAV ===== */
 .bottom-nav-outer {
   background: #dff0fa;
-  border-top: 1px solid #b8d8ee;
+  border-top: none;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.12), 0 -1px 4px rgba(0,0,0,0.08);
   padding-bottom: env(safe-area-inset-bottom, 0px);
   flex-shrink: 0;
 }
@@ -510,7 +512,7 @@ function onTicketTap(){
   const overlay = document.getElementById('slideOverlay');
 
   if(isSelected){
-    inner.style.background = '#1769aa';
+    document.getElementById('ticketMain').style.background = '#1769aa';
     document.getElementById('ticketCard').classList.add('selected');
     chk.classList.add('checked');
     warn.style.display  = 'block';
@@ -521,7 +523,7 @@ function onTicketTap(){
     initSlide();
   } else {
     document.getElementById('ticketCard').classList.remove('selected');
-    inner.style.background = '';
+    document.getElementById('ticketMain').style.background = '';
     chk.classList.remove('checked');
     warn.style.display  = 'none';
     cnt.textContent     = '合計１枚';
