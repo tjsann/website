@@ -294,9 +294,9 @@ body {
 .ticket-card.selected .ticket-main .avatar-circle { border-color: white; color: white; background: transparent; }
 
 .ticket-info { flex: 1; min-width: 0; }
-.ticket-number { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 3px; font-family: 'Noto Sans JP', sans-serif; }
+.ticket-number { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 3px; letter-spacing: -1.5px; font-family: 'Noto Sans JP', sans-serif; }
 .ticket-card.selected .ticket-main .ticket-number { color: white; }
-.ticket-detail { font-size: 14.3px; color: #444; line-height: 1.9; }
+.ticket-detail { font-size: 14.3px; color: #444; line-height: 1.6; letter-spacing: -1.0px; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
 .checkbox {
@@ -345,12 +345,12 @@ body {
 .bottom-nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px 18px;
+  align-items: flex-start;
+  padding: 14px 20px 6px;
   background: transparent;
 }
-.nav-arrow { color: #1769aa; font-size: 28px; line-height: 1; }
-.nav-link { color: #1769aa; font-size: 17px; display: flex; align-items: center; gap: 3px; }
+.nav-arrow { color: #1769aa; font-size: 20px; font-weight: 500; line-height: 1.2; }
+.nav-link { color: #1769aa; font-size: 17px; display: flex; align-items: center; gap: 4px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -438,7 +438,7 @@ body {
   <!-- Bottom nav -->
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
-      <span class="nav-arrow">←</span>
+      <div class="nav-link" style="font-size:20px;">←</div>
       <div class="nav-link">チケット詳細／分配／受取 <span style="font-size:20px;">→</span></div>
     </div>
   </div>
