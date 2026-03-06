@@ -287,7 +287,7 @@ body {
   border: 2px solid #1769aa; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 13.2px; color: #1769aa; font-weight: bold;
-  flex-shrink: 0; margin-top: 20px; background: white;
+  flex-shrink: 0; margin-top: 42px; background: white;
   transition: border-color 0.3s, color 0.3s;
 }
 .ticket-card.selected .avatar-circle { border-color: white; color: white; background: transparent; }
@@ -302,7 +302,7 @@ body {
   width: 24px; height: 24px;
   border: 2px solid #bbb; border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 20px; background: white;
+  flex-shrink: 0; margin-top: 42px; background: white;
   transition: all 0.25s;
 }
 .checkbox.checked { border-color: #e53935; }
@@ -334,16 +334,21 @@ body {
 .ticket-card.selected .ticket-footer svg { fill: rgba(255,255,255,0.65); }
 
 /* ===== BOTTOM NAV ===== */
+.bottom-nav-outer {
+  background: #dff0fa;
+  border-top: 1px solid #b8d8ee;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  flex-shrink: 0;
+}
 .bottom-nav {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 14px 25px calc(env(safe-area-inset-bottom, 0px) + 20px);
-  background: #ebebeb;
-  flex-shrink: 0;
+  align-items: center;
+  padding: 16px 24px 18px;
+  background: transparent;
 }
-.nav-arrow { color: #1769aa; font-size: 25px; }
-.nav-link { color: #1769aa; font-size: 15.5px; display: flex; align-items: center; gap: 3px; }
+.nav-arrow { color: #1769aa; font-size: 28px; line-height: 1; }
+.nav-link { color: #1769aa; font-size: 17px; display: flex; align-items: center; gap: 3px; }
 </style>
 </head>
 <body>
@@ -429,9 +434,11 @@ body {
   </div>
 
   <!-- Bottom nav -->
-  <div class="bottom-nav">
-    <span class="nav-arrow">←</span>
-    <div class="nav-link">チケット詳細／分配／受取 <span style="font-size:20px;">→</span></div>
+  <div class="bottom-nav-outer">
+    <div class="bottom-nav">
+      <span class="nav-arrow">←</span>
+      <div class="nav-link">チケット詳細／分配／受取 <span style="font-size:20px;">→</span></div>
+    </div>
   </div>
 
 <script>
