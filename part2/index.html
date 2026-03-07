@@ -424,10 +424,10 @@ body {
           <div class="avatar-circle">あなた</div>
           <div class="ticket-info">
             <div class="ticket-type" id="ticketType">１Ｆ　全自由　＜チケットのみ＞</div>
-            <div class="ticket-number" id="ticketNumber">整理番号972番</div>
+            <div class="ticket-number" id="ticketNumber">整理番号9番</div>
             <div class="ticket-detail" id="ticketDetail">
-              小川　凛子様<br>
-              09077829190<br>
+              藤原　陸様<br>
+              09058254425<br>
               9,000円
             </div>
           </div>
@@ -603,14 +603,14 @@ function initSlide(){
   function startInertia(){
     cancelInertia();
     const heroW = hero.offsetWidth;
-    const FRICTION = 0.92;
+    const FRICTION = 0.88;
     const MIN_VEL = 0.002;
     function tick(){
       velocity *= FRICTION;
       const delta = velocity / heroW;
       curProgress = Math.max(0, Math.min(1, curProgress + delta));
       updateSlideVisuals(curProgress);
-      if(curProgress >= 1.0){
+      if(curProgress >= 0.75){
         doCheckIn(); return;
       }
       if(Math.abs(velocity) < MIN_VEL * heroW || curProgress <= 0){
@@ -656,7 +656,7 @@ function initSlide(){
     lastX = cx; lastT = now;
     const dx = cx - startX;
     const heroW = hero.offsetWidth;
-    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
+    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.45)));
     updateSlideVisuals(curProgress);
     if(curProgress >= 1.0) doCheckIn();
   }
@@ -665,8 +665,8 @@ function initSlide(){
     if(!dragging) return;
     dragging = false;
     // Need minimum velocity OR position >= threshold to trigger
-    const MIN_TRIGGER_VEL = 3; // px/frame
-    if(velocity >= MIN_TRIGGER_VEL || curProgress >= 0.6){
+    const MIN_TRIGGER_VEL = 1; // px/frame
+    if(velocity >= MIN_TRIGGER_VEL || curProgress >= 0.3){
       startInertia();
     } else {
       document.getElementById('wavyLeft').classList.remove('white-fill');
