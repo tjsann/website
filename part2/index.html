@@ -158,19 +158,15 @@ body {
   top: 50%; left: 50%;
   transform: translate(-50%,-50%) scale(0.05);
   border-radius: 28%;
-  border: 16px solid rgba(255,255,255,0.4);
+  border: 12px solid rgba(255,255,255,0.35);
   width: 130px; height: 130px;
-  animation: rippleOut 3s ease-out infinite;
+  animation: rippleOut 4s ease-out infinite;
   opacity: 0;
 }
-.ripple-ring:nth-child(1) { animation-delay: 0s; }
-.ripple-ring:nth-child(2) { animation-delay: 0.75s; }
-.ripple-ring:nth-child(3) { animation-delay: 1.5s; }
-.ripple-ring:nth-child(4) { animation-delay: 2.25s; }
 @keyframes rippleOut {
-  0%   { transform: translate(-50%,-50%) scale(0.05); opacity: 0.85; }
-  60%  { opacity: 0.25; }
-  100% { transform: translate(-50%,-50%) scale(3.0); opacity: 0; }
+  0%   { transform: translate(-50%,-50%) scale(0.05); opacity: 0.75; }
+  70%  { opacity: 0.15; }
+  100% { transform: translate(-50%,-50%) scale(5.5); opacity: 0; }
 }
 
 /* Wavy circles */
@@ -180,7 +176,7 @@ body {
   border-radius: 50%;
   overflow: hidden;
   display: none;
-  width: 83px; height: 83px;
+  width: 72px; height: 72px;
   background: transparent;
 }
 .wavy-wrap.white-fill {
@@ -211,7 +207,7 @@ body {
 }
 .event-title {
   position: absolute;
-  top: 96px; left: 16px;
+  top: 110px; left: 16px;
   color: white;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 28px; font-weight: 700; letter-spacing: 8px;
@@ -230,7 +226,7 @@ body {
 /* ===== WARNING BANNER ===== */
 .warning-banner {
   background: #f03030; color: white;
-  font-size: 14.3px; line-height: 1.55;
+  font-size: 14.3px; line-height: 1.55; font-weight: 700;
   padding: 10px 16px;
   display: none; flex-shrink: 0;
 }
@@ -311,7 +307,7 @@ body {
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
 .checkbox {
-  width: 24px; height: 24px;
+  width: 26px; height: 26px;
   border: 2px solid #bbb; border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 42px; background: white;
@@ -362,7 +358,8 @@ body {
   background: transparent;
 }
 .nav-arrow { color: #1769aa; font-size: 16px; font-weight: 400; }
-.nav-link { color: #1769aa; font-size: 22px; display: flex; align-items: center; gap: 3px; font-weight: 400; letter-spacing: 0; }
+.nav-link { color: #1769aa; font-size: 14px; display: flex; align-items: center; gap: 3px; font-weight: 400; letter-spacing: 0; }
+.nav-arrow-btn { color: #1769aa; font-size: 22px; font-weight: 400; }
 </style>
 </head>
 <body>
@@ -388,13 +385,10 @@ body {
     <div class="hero-o-ring"></div>
     <div class="ripple-container">
       <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
-      <div class="ripple-ring"></div>
     </div>
     <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
-    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="83" height="83"></canvas></div>
-    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="83" height="83"></canvas></div>
+    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="72" height="72"></canvas></div>
+    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="72" height="72"></canvas></div>
     <div class="slide-overlay" id="slideOverlay">
       <div class="slide-track" id="slideTrack">
         <div class="slide-thumb" id="slideThumb"></div>
@@ -451,8 +445,8 @@ body {
   <!-- Bottom nav -->
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
-      <div class="nav-link">←</div>
-      <div class="nav-link">チケット詳細／分配／受取 →</div>
+      <div class="nav-arrow-btn">←</div>
+      <div class="nav-link" style="font-size:14px;">チケット詳細／分配／受取 <span class="nav-arrow-btn">→</span></div>
     </div>
   </div>
 
@@ -799,13 +793,13 @@ function applySettings(){
     <input id="s_seat" type="text" value="１Ｆ　全自由　＜チケットのみ＞" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">整理番号</label>
-    <input id="s_num" type="text" value="整理番号972番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_num" type="text" value="整理番号10番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">名前</label>
-    <input id="s_name" type="text" value="小川　凛子" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_name" type="text" value="藤原　寿雅" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">電話番号</label>
-    <input id="s_tel" type="tel" value="09077829190" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_tel" type="tel" value="09072645663" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">金額</label>
     <input id="s_price" type="text" value="9,000円" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:28px;box-sizing:border-box;">
