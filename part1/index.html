@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<title>IDOLY PRIDE チケット (Blue)</title>
+<title>IDOLY PRIDE チケット</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&family=Montserrat:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -114,7 +114,7 @@ body {
 .hero {
   width: 100%;
   height: 312px;
-  background: linear-gradient(160deg, #1a3fa8 0%, #1565c0 40%, #0d47a1 70%, #1a237e 100%);
+  background: #ff00cc;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
@@ -130,7 +130,7 @@ body {
   z-index: 3;
   display: none;
   background: linear-gradient(90deg,
-    #e8003d 0%, #e8207b 30%, #ff60c0 55%, #e8003d 100%);
+    #7b3de8 0%, #3a5de8 30%, #2ab8e8 55%, #7b3de8 100%);
   opacity: 0.88;
 }
 
@@ -201,10 +201,10 @@ body {
 }
 .event-title {
   position: absolute;
-  top: 106px; left: 16px;
+  top: 82px; left: 16px;
   color: white;
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 34px; font-weight: 700; letter-spacing: 12px;
+  font-size: 28px; font-weight: 700; letter-spacing: 8px;
   text-transform: uppercase;
   z-index: 5; pointer-events: none;
 }
@@ -350,8 +350,8 @@ body {
   padding: 14px 20px 6px;
   background: transparent;
 }
-.nav-arrow { color: #1769aa; font-size: 20px; font-weight: 500; line-height: 1.2; }
-.nav-link { color: #1769aa; font-size: 17px; display: flex; align-items: center; gap: 4px; font-weight: 500; }
+.nav-arrow { color: #1769aa; font-size: 16px; font-weight: 400; }
+.nav-link { color: #1769aa; font-size: 16px; display: flex; align-items: center; gap: 3px; font-weight: 400; letter-spacing: 0; }
 </style>
 </head>
 <body>
@@ -439,8 +439,8 @@ body {
   <!-- Bottom nav -->
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
-      <div class="nav-link" style="font-size:20px;">←</div>
-      <div class="nav-link">チケット詳細／分配／受取 <span style="font-size:20px;">→</span></div>
+      <div class="nav-link">←</div>
+      <div class="nav-link">チケット詳細／分配／受取 →</div>
     </div>
   </div>
 
@@ -471,8 +471,8 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   const amp = 3.5;
   const xOff = (offset * 9) % (zW * 2);
 
-  ctx.strokeStyle = whiteFill ? 'rgba(220,20,120,0.80)' : (strokeColor || 'rgba(220,20,120,0.88)');
-  ctx.lineWidth   = whiteFill ? 2.0 : 1.8;
+  ctx.strokeStyle = whiteFill ? 'rgba(20,28,130,0.80)' : (strokeColor || 'rgba(20,28,160,0.88)');
+  ctx.lineWidth   = whiteFill ? 2.2 : 1.6;
   ctx.lineJoin    = 'miter';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
@@ -488,7 +488,7 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   ctx.restore();
 }
 let wavyOff = 0, wavyRAF = null;
-let wavyStrokeColor = 'rgba(220, 20, 120, 0.88)';
+let wavyStrokeColor = 'rgba(20, 28, 160, 0.88)';
 let wavyWhiteFill = false;
 function animateWavy(){
   wavyOff += 0.04;
