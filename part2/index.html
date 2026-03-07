@@ -160,7 +160,7 @@ body {
   border-radius: 28%;
   border: 12px solid rgba(255,255,255,0.35);
   width: 130px; height: 130px;
-  animation: rippleOut 4s ease-out infinite;
+  animation: rippleOut 2.5s ease-out infinite;
   opacity: 0;
 }
 @keyframes rippleOut {
@@ -401,7 +401,7 @@ body {
     </div>
     <div class="event-time">
       <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
-      開場 <span id="eventOpenTime">17:45</span>　開演 <span id="eventStartTime">18:45</span>
+      開場 <span id="eventOpenTime">14:00</span>　開演 <span id="eventStartTime">15:00</span>
     </div>
   </div>
 
@@ -424,10 +424,10 @@ body {
           <div class="avatar-circle">あなた</div>
           <div class="ticket-info">
             <div class="ticket-type" id="ticketType">１Ｆ　全自由　＜チケットのみ＞</div>
-            <div class="ticket-number" id="ticketNumber">整理番号10番</div>
+            <div class="ticket-number" id="ticketNumber">整理番号972番</div>
             <div class="ticket-detail" id="ticketDetail">
-              藤原　寿雅様<br>
-              09034557656<br>
+              小川　凛子様<br>
+              09077829190<br>
               9,000円
             </div>
           </div>
@@ -586,45 +586,96 @@ function initSlide(){
   slideInited = true;
   const hero = document.getElementById('hero');
   let dragging = false, startX = 0, curProgress = 0;
-  const COMPLETE_THRESHOLD = 0.82;
+  let lastX = 0, lastT = 0, velocity = 0;
+  let inertiaRAF = null;
 
-  function getClientX(e){ return e.touches ? e.touches[0].clientX : e.clientX; }
+  function getClientX(e){
+    if(e.touches && e.touches.length >= 2){
+      return (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    }
+    return e.touches ? e.touches[0].clientX : e.clientX;
+  }
+
+  function cancelInertia(){
+    if(inertiaRAF){ cancelAnimationFrame(inertiaRAF); inertiaRAF = null; }
+  }
+
+  function startInertia(){
+    cancelInertia();
+    const heroW = hero.offsetWidth;
+    const FRICTION = 0.92;
+    const MIN_VEL = 0.002;
+    function tick(){
+      velocity *= FRICTION;
+      const delta = velocity / heroW;
+      curProgress = Math.max(0, Math.min(1, curProgress + delta));
+      updateSlideVisuals(curProgress);
+      if(curProgress >= 1.0){
+        doCheckIn(); return;
+      }
+      if(Math.abs(velocity) < MIN_VEL * heroW || curProgress <= 0){
+        // Not enough momentum - reset
+        const wl = document.getElementById('wavyLeft');
+        const wr = document.getElementById('wavyRight');
+        wl.classList.remove('white-fill');
+        wr.classList.remove('white-fill');
+        wavyWhiteFill = false;
+        document.getElementById('circlesRainbowBg').style.display = 'none';
+        resetSlideVisuals();
+        curProgress = 0; return;
+      }
+      inertiaRAF = requestAnimationFrame(tick);
+    }
+    inertiaRAF = requestAnimationFrame(tick);
+  }
 
   function onStart(e){
     if(!isSelected || isCheckedIn) return;
+    if(e.touches && e.touches.length < 2) return;
+    cancelInertia();
     e.preventDefault();
     dragging = true;
-    startX = getClientX(e);
+    startX = lastX = getClientX(e);
+    lastT = Date.now();
+    velocity = 0;
     curProgress = 0;
-    const wl2 = document.getElementById('wavyLeft');
-    const wr2 = document.getElementById('wavyRight');
-    wl2.classList.add('white-fill');
-    wr2.classList.add('white-fill');
+    document.getElementById('wavyLeft').classList.add('white-fill');
+    document.getElementById('wavyRight').classList.add('white-fill');
     wavyWhiteFill = true;
     document.getElementById('circlesRainbowBg').style.display = 'block';
   }
+
   function onMove(e){
     if(!dragging) return;
+    if(e.touches && e.touches.length < 2) return;
     e.preventDefault();
-    const dx = getClientX(e) - startX;
+    const now = Date.now();
+    const cx = getClientX(e);
+    const dt = Math.max(1, now - lastT);
+    velocity = (cx - lastX) / dt * 16; // px per frame (~60fps)
+    lastX = cx; lastT = now;
+    const dx = cx - startX;
     const heroW = hero.offsetWidth;
     curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
     updateSlideVisuals(curProgress);
-    if(curProgress >= COMPLETE_THRESHOLD) doCheckIn();
+    if(curProgress >= 1.0) doCheckIn();
   }
+
   function onEnd(){
     if(!dragging) return;
     dragging = false;
-    if(curProgress < COMPLETE_THRESHOLD){
-      resetSlideVisuals();
-      const wl3 = document.getElementById('wavyLeft');
-      const wr3 = document.getElementById('wavyRight');
-      wl3.classList.remove('white-fill');
-      wr3.classList.remove('white-fill');
+    // Need minimum velocity OR position >= threshold to trigger
+    const MIN_TRIGGER_VEL = 3; // px/frame
+    if(velocity >= MIN_TRIGGER_VEL || curProgress >= 0.6){
+      startInertia();
+    } else {
+      document.getElementById('wavyLeft').classList.remove('white-fill');
+      document.getElementById('wavyRight').classList.remove('white-fill');
       wavyWhiteFill = false;
       document.getElementById('circlesRainbowBg').style.display = 'none';
-      }
-    curProgress = 0;
+      resetSlideVisuals();
+      curProgress = 0;
+    }
   }
 
   hero.addEventListener('touchstart', onStart, {passive:false});
@@ -634,6 +685,7 @@ function initSlide(){
   window.addEventListener('mousemove', onMove);
   window.addEventListener('mouseup',   onEnd);
 }
+
 
 /* ========== DO CHECK-IN ========== */
 function doCheckIn(){
@@ -793,13 +845,13 @@ function applySettings(){
     <input id="s_seat" type="text" value="１Ｆ　全自由　＜チケットのみ＞" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">整理番号</label>
-    <input id="s_num" type="text" value="整理番号10番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_num" type="text" value="整理番号972番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">名前</label>
-    <input id="s_name" type="text" value="藤原　寿雅" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_name" type="text" value="小川　凛子" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">電話番号</label>
-    <input id="s_tel" type="tel" value="09072645663" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_tel" type="tel" value="09077829190" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">金額</label>
     <input id="s_price" type="text" value="9,000円" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:28px;box-sizing:border-box;">
