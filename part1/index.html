@@ -163,20 +163,6 @@ body {
   10%  { opacity: 0.85; }
   70%  { opacity: 0.25; }
   100% { transform: translate(-50%,-50%) scale(3.2); opacity: 0; }
-}.ripple-ring {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%) scale(0.05);
-  border-radius: 28%;
-  border: 12px solid rgba(255,255,255,0.35);
-  width: 130px; height: 130px;
-  animation: rippleOut 2.5s ease-out infinite;
-  opacity: 0;
-}
-@keyframes rippleOut {
-  0%   { transform: translate(-50%,-50%) scale(0.05); opacity: 0.75; }
-  70%  { opacity: 0.15; }
-  100% { transform: translate(-50%,-50%) scale(5.5); opacity: 0; }
 }
 
 /* Wavy circles */
