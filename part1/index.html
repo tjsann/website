@@ -306,10 +306,10 @@ body {
 .ticket-detail { font-size: 14.3px; color: #444; line-height: 1.6; letter-spacing: -1.0px; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
-/* 右端の青いゾーン（チェックボックス領域） */
+/* 右端のチェックボックス領域 - デフォルトは透明、選択時に青 */
 .checkbox-zone {
   width: 64px;
-  background: #1769aa;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,15 +319,29 @@ body {
 }
 .checkbox-zone.hidden { display: none; }
 
+/* 選択時：青ゾーン背景を表示 */
+.ticket-card.selected .checkbox-zone {
+  background: #1769aa;
+}
+
+/* チェックボックス本体：未選択時は白背景＋グレー枠 */
 .checkbox {
   width: 28px; height: 28px;
-  border: 2px solid white;
+  border: 2px solid #c0c0c0;
   border-radius: 5px;
-  background: #1769aa;
+  background: white;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: all 0.25s;
 }
+
+/* 選択時：白背景＋白枠（青ゾーンの中で映える） */
+.ticket-card.selected .checkbox {
+  border-color: white;
+  background: white;
+}
+
+/* チェック済み時：白背景＋赤チェックマーク */
 .checkbox.checked { 
   background: white; 
   border-color: white;
