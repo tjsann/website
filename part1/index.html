@@ -586,7 +586,7 @@ function initSlide(){
   slideInited = true;
   const hero = document.getElementById('hero');
   let dragging = false, startX = 0, curProgress = 0;
-  const COMPLETE_THRESHOLD = 0.82;
+  const COMPLETE_THRESHOLD = 0.55;
 
   function getClientX(e){
     if(e.touches && e.touches.length >= 2){
@@ -616,7 +616,7 @@ function initSlide(){
     e.preventDefault();
     const dx = getClientX(e) - startX;
     const heroW = hero.offsetWidth;
-    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
+    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.45)));
     updateSlideVisuals(curProgress);
     if(curProgress >= COMPLETE_THRESHOLD) doCheckIn();
   }
