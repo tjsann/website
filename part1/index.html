@@ -706,9 +706,9 @@ function doCheckIn(){
   inner.style.background = '';
   document.getElementById('ticketMain').style.background = '';
 
-  // Hide checkbox
+  // Hide checkbox zone (青ゾーンごと非表示)
   chk.classList.remove('checked');
-  chk.classList.add('hidden');
+  document.getElementById('checkboxZone').classList.add('hidden');
 
   // Hide wavy circles and overlay
   wl.style.display = 'none';
