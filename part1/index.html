@@ -616,7 +616,7 @@ function initSlide(){
     e.preventDefault();
     const dx = getClientX(e) - startX;
     const heroW = hero.offsetWidth;
-    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.45)));
+    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
     updateSlideVisuals(curProgress);
     if(curProgress >= COMPLETE_THRESHOLD) doCheckIn();
   }
