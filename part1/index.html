@@ -119,16 +119,7 @@ body {
   overflow: hidden;
   flex-shrink: 0;
 }
-/* Large O ring overlay */
-.hero-o-ring {
-  position: absolute;
-  top: -10%; right: -18%;
-  width: 82%; padding-top: 90%;
-  border-radius: 50%;
-  border: 28px solid rgba(255,255,255,0.18);
-  pointer-events: none;
-  z-index: 1;
-}
+
 /* Rainbow rect behind circles - shown only when selected */
 .circles-rainbow-bg {
   position: absolute;
@@ -153,7 +144,26 @@ body {
   z-index: 2;
   pointer-events: none;
 }
+/* Always-on ripple rings - O-shaped (squircle) icon expanding outward */
 .ripple-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(0.05);
+  border-radius: 38%;
+  border: 22px solid rgba(255,255,255,0.32);
+  width: 180px; height: 180px;
+  animation: rippleOut 3.6s ease-out infinite;
+  opacity: 0;
+}
+.ripple-ring.r2 { animation-delay: 1.2s; }
+.ripple-ring.r3 { animation-delay: 2.4s; }
+
+@keyframes rippleOut {
+  0%   { transform: translate(-50%,-50%) scale(0.15); opacity: 0; }
+  10%  { opacity: 0.85; }
+  70%  { opacity: 0.25; }
+  100% { transform: translate(-50%,-50%) scale(3.2); opacity: 0; }
+}.ripple-ring {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%) scale(0.05);
@@ -382,10 +392,11 @@ body {
   <!-- Hero -->
   <div class="hero" id="hero">
     <div class="hero-slide-bg" id="heroSlideBg"></div>
-    <div class="hero-o-ring"></div>
     <div class="ripple-container">
-      <div class="ripple-ring"></div>
-    </div>
+  <div class="ripple-ring"></div>
+  <div class="ripple-ring r2"></div>
+  <div class="ripple-ring r3"></div>
+</div>
     <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
     <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="72" height="72"></canvas></div>
     <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="72" height="72"></canvas></div>
