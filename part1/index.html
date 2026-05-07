@@ -9,7 +9,7 @@
 <title>IDOLY PRIDE チケット</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
 html { height: 100%; }
@@ -105,6 +105,7 @@ body {
   color: white;
   font-size: 15px;
   font-weight: 500;
+  font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   margin-left: 6px;
 }
 .header-icons { display: flex; gap: 16px; pointer-events: auto; }
@@ -226,22 +227,19 @@ body {
   position: relative; left: 0; flex-shrink: 0; }
 
 /* IDOLY PRIDE title - top-left under header */
-.serif-i {
-  font-family: 'Times New Roman', 'Georgia', serif;
-  font-weight: 900;
-}
 .event-title {
   position: absolute;
   top: 110px; left: 16px;
   color: white;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 28px; font-weight: 700; letter-spacing: 8px;
-  text-transform: uppercase;
+  /* Real app uses NotoSansJP-Bold for the event title (text comes from API). */
+  font-family: 'Noto Sans JP','Hiragino Sans','Yu Gothic Medium',sans-serif;
+  font-size: 28px; font-weight: 700; letter-spacing: 4px;
   z-index: 5; pointer-events: none;
 }
 .event-date, .event-time {
   position: absolute; left: 16px;
   color: white; font-size: 18px; font-weight: 500;
+  font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
 }
@@ -252,6 +250,7 @@ body {
 .warning-banner {
   background: #f03030; color: white;
   font-size: 14.3px; line-height: 1.55; font-weight: 700;
+  font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   padding: 10px 16px;
   display: none; flex-shrink: 0;
 }
@@ -265,7 +264,7 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 13px;
 }
-.ticket-header span { font-size: 17px; color: #333; }
+.ticket-header span { font-size: 17px; color: #333; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; }
 
 /* Ticket card with shadow matching reference image */
 .ticket-card {
@@ -313,14 +312,15 @@ body {
   transition: background 0.3s;
   position: relative;
 }
-.ticket-type { font-size: 14.3px; color: #555; margin-bottom: 5px; }
+.ticket-type { font-size: 14.3px; color: #555; margin-bottom: 5px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; }
 .ticket-card.selected .ticket-main .ticket-type { color: rgba(255,255,255,0.8); }
 
 .avatar-circle {
   width: 50px; height: 50px;
   border: 2px solid #1769aa; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13.2px; color: #1769aa; font-weight: bold;
+  font-size: 13.2px; color: #1769aa; font-weight: 700;
+  font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   flex-shrink: 0; margin-top: 42px; background: white;
   transition: border-color 0.3s, color 0.3s;
 }
@@ -333,7 +333,7 @@ body {
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
 }
 .ticket-card.selected .ticket-main .ticket-number { color: white; }
-.ticket-detail { font-size: 14.3px; color: #444; line-height: 1.6; letter-spacing: -1.0px; }
+.ticket-detail { font-size: 14.3px; color: #444; line-height: 1.6; letter-spacing: -1.0px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
 /* 右端のチェックボックス領域 - デフォルトは透明、選択時に青 */
@@ -404,7 +404,7 @@ body {
   display: flex; justify-content: space-between; align-items: center;
 }
 
-.ticket-footer span { font-size: 15.5px; color: #666; }
+.ticket-footer span { font-size: 15.5px; color: #666; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; }
 .ticket-card.selected .ticket-footer span { color: #555; }
 .ticket-footer svg { fill: #999; width: 18px; height: 18px; }
 .ticket-card.selected .ticket-footer svg { fill: #999; }
