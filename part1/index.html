@@ -152,9 +152,10 @@ body {
  *   400-tall CopyProtect area (intentionally clipped).
  */
 .ripple-container {
+  /* must span the full hero so .ripple-ring's % width resolves correctly. */
   position: absolute;
-  top: 50%; left: 50%;
-  width: 1px; height: 1px;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   z-index: 2;
   pointer-events: none;
 }
