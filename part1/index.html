@@ -103,10 +103,11 @@ body {
   line-height: 1;
   white-space: nowrap;
 }
+/* Unity Header/Title Text: NotoSansJP-Regular size 32, color #DAECF8 (extracted from libil2cpp). */
 .header-title {
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
+  color: #DAECF8;
+  font-size: 16px;
+  font-weight: 400;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   margin-left: 6px;
 }
@@ -239,14 +240,15 @@ body {
   position: absolute;
   top: 110px; left: 16px;
   color: white;
-  /* Real app uses NotoSansJP-Bold for the event title (text comes from API). */
+  /* Unity TicketHeader/TitleText: NotoSansJP-Bold size 40 (extracted), 0.5x scale = 20px. */
   font-family: 'Noto Sans JP','Hiragino Sans','Yu Gothic Medium',sans-serif;
-  font-size: 28px; font-weight: 700; letter-spacing: 4px;
+  font-size: 20px; font-weight: 700; letter-spacing: 2px;
   z-index: 5; pointer-events: none;
 }
+/* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
 .event-date, .event-time {
   position: absolute; left: 16px;
-  color: white; font-size: 18px; font-weight: 500;
+  color: white; font-size: 16px; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
@@ -272,7 +274,8 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 13px;
 }
-.ticket-header span { font-size: 17px; color: #333; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; }
+/* Unity ListTitle/Total Text: NotoSansJP-Regular size 40, color #171513 (extracted from libil2cpp). */
+.ticket-header span { font-size: 20px; color: #171513; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
 
 /* Ticket card with shadow matching reference image */
 .ticket-card {
@@ -321,15 +324,15 @@ body {
   position: relative;
 }
 /* Unity Zashu/Gate Text: NotoSansJP-Regular size 32, color #323232 (extracted from libil2cpp). */
-.ticket-type { font-size: 19px; color: #323232; margin-bottom: 5px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
+.ticket-type { font-size: 16px; color: #323232; margin-bottom: 4px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
 .ticket-card.selected .ticket-main .ticket-type { color: rgba(255,255,255,0.8); }
 
 /* Unity StatusIcon Text: NotoSansJP-Bold size 20, color #005186 (extracted from libil2cpp). */
 .avatar-circle {
-  width: 43px; height: 43px;
+  width: 36px; height: 36px;
   border: 2px solid #005186; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; color: #005186; font-weight: 700;
+  font-size: 10px; color: #005186; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   flex-shrink: 0; margin-top: 42px; background: white;
   transition: border-color 0.3s, color 0.3s;
@@ -339,13 +342,13 @@ body {
 .ticket-info { flex: 1; min-width: 0; padding-right: 8px; }
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
 .ticket-number {
-  font-size: 24px; font-weight: 700; color: #323232; margin-bottom: 3px;
-  letter-spacing: -1.0px;
+  font-size: 20px; font-weight: 700; color: #323232; margin-bottom: 3px;
+  letter-spacing: -0.5px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
 }
 .ticket-card.selected .ticket-main .ticket-number { color: white; }
 /* Unity Name/PhoneNum/Price Text: all NotoSansJP-Regular size 24, color #323232 (extracted from libil2cpp). */
-.ticket-detail { font-size: 14px; color: #323232; line-height: 1.6; letter-spacing: -1.0px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
+.ticket-detail { font-size: 12px; color: #323232; line-height: 1.7; letter-spacing: -0.5px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 
 /* 右端のチェックボックス領域 - デフォルトは透明、選択時に青 */
@@ -368,9 +371,9 @@ body {
 
 /* チェックボックス本体：未選択時は白背景＋グレー枠 */
 .checkbox {
-  width: 28px; height: 28px;
+  width: 24px; height: 24px;
   border: 2px solid #c0c0c0;
-  border-radius: 5px;
+  border-radius: 4px;
   background: white;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -388,27 +391,33 @@ body {
   background: #1769aa; 
   border-color: white;
 }
-.checkbox.checked::after { 
-  content: '✓'; 
-  color: #e53935; 
-  font-size: 18px; 
-  font-weight: 900; 
+.checkbox.checked::after {
+  content: '✓';
+  color: #e53935;
+  font-size: 16px;
+  font-weight: 900;
   line-height: 1;
 }
 .checkbox.hidden { display: none; }
 
-/* Ticket notch */
+/* Ticket notch — small half-circles on both sides + dashed separator line.
+   Real app uses ticket_line_dots sprite for the separator. */
 .ticket-notch {
-  width: 100%; height: 10px; position: relative; overflow: visible;
+  width: 100%; height: 14px; position: relative; overflow: visible;
+  /* dashed separator line in the middle */
+  background-image: radial-gradient(circle, #b8b8b8 0.9px, transparent 1.2px);
+  background-size: 6px 6px;
+  background-repeat: repeat-x;
+  background-position: 14px center;
 }
 .ticket-notch::before, .ticket-notch::after {
-  content: ''; width: 13px; height: 13px;
+  content: ''; width: 14px; height: 14px;
   background: #ebebeb; border-radius: 50%;
-  position: absolute; top: -3px;
+  position: absolute; top: 0;
   z-index: 2;
 }
-.ticket-notch::before { left: -6px; }
-.ticket-notch::after  { right: -6px; }
+.ticket-notch::before { left: -7px; }
+.ticket-notch::after  { right: -7px; }
 
 .ticket-footer {
   border-top: 1px solid #eee;
@@ -421,25 +430,53 @@ body {
 .ticket-footer svg { fill: #999; width: 18px; height: 18px; }
 .ticket-card.selected .ticket-footer svg { fill: #999; }
 
-/* ===== BOTTOM NAV ===== */
+/* ===== BOTTOM NAV =====
+   Unity Footer/Background m_Color: (218,236,248) = #DAECF8.
+   Footer/Back & Footer/Next sprite=rectR6 (rounded rect), bg color (221,236,247) = #DDECF7.
+   Footer/{Back,Next}/Title NotoSansJP-Regular size 28 color #0074BD.
+   Footer/{Back,Next}/Icon footer_arrow 48x48 color #0074BD. */
 .bottom-nav-outer {
   margin-top: 8px;
-  background: #dff0fa;
+  background: #DAECF8;
   border-top: none;
   box-shadow: 0 -4px 12px rgba(0,0,0,0.12), 0 -1px 4px rgba(0,0,0,0.08);
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 4px);
+  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 8px);
   flex-shrink: 0;
 }
 .bottom-nav {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 14px 20px 6px;
+  gap: 8px;
+  align-items: stretch;
   background: transparent;
 }
-.nav-arrow { color: #1769aa; font-size: 16px; font-weight: 400; }
-.nav-link { color: #1769aa; font-size: 14px; display: flex; align-items: center; gap: 3px; font-weight: 400; letter-spacing: 0; }
-.nav-arrow-btn { color: #1769aa; font-size: 22px; font-weight: 400; }
+.nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #DDECF7;
+  border-radius: 6px;
+  color: #0074BD;
+  font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  min-height: 36px;
+  cursor: pointer;
+  user-select: none;
+}
+.nav-btn .nav-icon {
+  width: 20px; height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0074BD;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1;
+}
+.nav-btn .nav-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 </head>
 <body>
@@ -524,11 +561,17 @@ body {
     </div>
   </div>
 
-  <!-- Bottom nav -->
+  <!-- Bottom nav (Unity Footer: 2 rounded buttons, light blue bg #DAECF8) -->
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
-      <div class="nav-arrow-btn">←</div>
-      <div class="nav-link" style="font-size:14px;">チケット詳細／分配／受取 <span class="nav-arrow-btn">→</span></div>
+      <div class="nav-btn">
+        <span class="nav-icon">←</span>
+        <span class="nav-text">戻る</span>
+      </div>
+      <div class="nav-btn">
+        <span class="nav-text">チケット詳細／分配／受取</span>
+        <span class="nav-icon">→</span>
+      </div>
     </div>
   </div>
 
