@@ -337,7 +337,7 @@ body {
   flex-shrink: 0; margin-top: 42px; background: white;
   transition: border-color 0.3s, color 0.3s;
 }
-.ticket-card.selected .ticket-main .avatar-circle { border-color: white; color: white; background: transparent; }
+/* Real app: avatar circle does NOT change appearance when selected — stays white center, dark blue border, dark blue text. */
 
 .ticket-info { flex: 1; min-width: 0; padding-right: 8px; }
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
@@ -391,9 +391,10 @@ body {
   background: #1769aa; 
   border-color: white;
 }
+/* Unity ticket_icon_check sprite color: rgba(255,64,129,1.0) = #FF4081 (pink). */
 .checkbox.checked::after {
   content: '✓';
-  color: #e53935;
+  color: #FF4081;
   font-size: 16px;
   font-weight: 900;
   line-height: 1;
@@ -432,51 +433,37 @@ body {
 
 /* ===== BOTTOM NAV =====
    Unity Footer/Background m_Color: (218,236,248) = #DAECF8.
-   Footer/Back & Footer/Next sprite=rectR6 (rounded rect), bg color (221,236,247) = #DDECF7.
+   Footer/Back & Footer/Next bg #DDECF7 — almost identical to footer bg, so buttons are visually flat in real app.
    Footer/{Back,Next}/Title NotoSansJP-Regular size 28 color #0074BD.
    Footer/{Back,Next}/Icon footer_arrow 48x48 color #0074BD. */
 .bottom-nav-outer {
-  margin-top: 8px;
   background: #DAECF8;
   border-top: none;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.12), 0 -1px 4px rgba(0,0,0,0.08);
-  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 8px);
+  padding: 12px 20px calc(env(safe-area-inset-bottom, 0px) + 12px);
   flex-shrink: 0;
 }
 .bottom-nav {
   display: flex;
-  gap: 8px;
-  align-items: stretch;
+  align-items: center;
+  justify-content: space-between;
   background: transparent;
 }
-.nav-btn {
-  flex: 1;
+.nav-back, .nav-next {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 12px;
-  background: #DDECF7;
-  border-radius: 6px;
+  gap: 8px;
   color: #0074BD;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-size: 14px;
   font-weight: 400;
-  min-height: 36px;
   cursor: pointer;
   user-select: none;
 }
-.nav-btn .nav-icon {
-  width: 20px; height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.nav-back .nav-icon, .nav-next .nav-icon {
+  font-size: 20px;
   color: #0074BD;
-  font-size: 18px;
-  font-weight: 400;
   line-height: 1;
 }
-.nav-btn .nav-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 </head>
 <body>
@@ -561,15 +548,14 @@ body {
     </div>
   </div>
 
-  <!-- Bottom nav (Unity Footer: 2 rounded buttons, light blue bg #DAECF8) -->
+  <!-- Bottom nav: Unity Footer bg #DAECF8, flat layout (back/next buttons same color as bg → visually flat) -->
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
-      <div class="nav-btn">
+      <div class="nav-back">
         <span class="nav-icon">←</span>
-        <span class="nav-text">戻る</span>
       </div>
-      <div class="nav-btn">
-        <span class="nav-text">チケット詳細／分配／受取</span>
+      <div class="nav-next">
+        <span>チケット詳細／分配／受取</span>
         <span class="nav-icon">→</span>
       </div>
     </div>
