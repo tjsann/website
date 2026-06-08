@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EPLUS スマチケ モック</title>
+<style>
+  :root{
+    --pink:#E5478E;
+    --pink-dark:#C5337A;
+    --pink-soft:#F0CCDA;
+    --pink-bg:#FDF1F6;
+    --teal:#2BB5BA;
+    --teal-dark:#1F8E92;
+    --navy:#1A3FA8;
+    --navy-dark:#102A78;
+    --yellow:#FFEB3B;
+    --yellow-soft:#FFFDE7;
+    --text:#212121;
+    --sub:#757575;
+    --line:#E0E0E0;
+    --bg:#F5F5F5;
+    --used:#9E9E9E;
+    --used-bg:#EEEEEE;
+    --red:#D32F2F;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif;color:var(--text);background:#000;font-size:14px;line-height:1.5;}
+  body{display:flex;justify-content:center;min-height:100vh;}
+  .device{
+    width:100%;max-width:420px;min-height:100vh;
+    background:#fff;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+
+  /* ===== 共通: トップヘッダー（一覧用） ===== */
+  .home-header{
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:5;
+  }
+  .home-header .tabs{
+    display:flex;padding:8px 12px 0;gap:14px;justify-content:center;
+  }
+  .home-header .tabs button{
+    background:none;border:none;color:var(--sub);font-size:13px;
+    padding:8px 4px 10px;cursor:pointer;font-weight:500;
+    border-bottom:3px solid transparent;
+  }
+  .home-header .tabs button.active{
+    color:var(--pink);border-bottom-color:var(--pink);font-weight:700;
+  }
+  .home-header .subtabs{
+    display:flex;padding:0 16px;border-bottom:1px solid var(--line);background:#fff;
+  }
+  .home-header .subtabs button{
+    flex:1;background:none;border:none;color:var(--sub);font-size:13px;
+    padding:10px 0;cursor:pointer;
+    border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .home-header .subtabs button.active{
+    color:var(--pink);border-bottom-color:var(--pink);font-weight:700;
+  }
+  .home-header .top-icons{
+    background:var(--pink);height:6px;
+  }
+  .config-gear{display:none;}
+
+  /* ===== 一覧画面 ===== */
+  .list-area{flex:1;padding:14px 12px 80px;background:var(--bg);overflow-y:auto;}
+  .pill-label{
+    text-align:center;background:var(--pink);color:#fff;
+    border-radius:18px;padding:8px 16px;font-size:13px;font-weight:700;
+    margin:4px auto 14px;display:inline-block;
+  }
+  .pill-wrap{text-align:center;}
+  .ticket-card{
+    background:#fff;border-radius:8px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    margin-bottom:14px;cursor:pointer;
+    position:relative;
+  }
+  .ticket-card .ribbon{
+    position:absolute;top:8px;left:8px;z-index:2;
+    background:var(--pink);color:#fff;font-size:11px;font-weight:700;
+    padding:3px 10px;border-radius:3px;letter-spacing:.05em;
+  }
+  .ticket-card .poster{
+    width:100%;height:140px;background:#222;
+    background-image:linear-gradient(135deg,#3a1a4a 0%,#7a1c5a 50%,#c2185b 100%);
+    background-size:cover;background-position:center;
+    position:relative;display:flex;align-items:flex-end;justify-content:center;
+    color:#fff;
+  }
+  .ticket-card .poster::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 30% 80%,rgba(255,200,255,.4) 0,transparent 30%),
+      radial-gradient(circle at 70% 60%,rgba(180,220,255,.3) 0,transparent 30%);
+  }
+  .ticket-card .poster .silhouette{
+    position:relative;width:100%;height:100%;
+    background-image:
+      radial-gradient(ellipse at 20% 100%,rgba(0,0,0,.6) 0,transparent 25%),
+      radial-gradient(ellipse at 40% 100%,rgba(0,0,0,.7) 0,transparent 22%),
+      radial-gradient(ellipse at 60% 100%,rgba(0,0,0,.6) 0,transparent 24%),
+      radial-gradient(ellipse at 80% 100%,rgba(0,0,0,.7) 0,transparent 23%),
+      radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.7) 0,transparent 26%);
+  }
+  .ticket-card .info{padding:12px 14px;}
+  .ticket-card .year{font-size:12px;color:var(--sub);}
+  .ticket-card .date{
+    font-size:18px;font-weight:700;color:var(--pink);margin:2px 0 6px;
+  }
+  .ticket-card .date .day{font-size:13px;}
+  .ticket-card .date .time{color:#222;margin-left:6px;font-size:14px;}
+  .ticket-card .title{font-size:14px;font-weight:600;line-height:1.4;}
+  .ticket-card .venue{font-size:12px;color:var(--sub);margin-top:4px;}
+  .ticket-card .cta{
+    background:var(--pink);color:#fff;text-align:center;
+    padding:10px;font-size:13px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .ticket-card .cta::after{content:"›";font-size:18px;}
+
+  /* カード下の3アイコン行 */
+  .action-icons{
+    display:flex;justify-content:space-around;
+    background:#fff;border-radius:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    padding:10px 4px;margin-bottom:14px;
+  }
+  .action-icons .item{
+    flex:1;display:flex;flex-direction:column;align-items:center;
+    gap:4px;font-size:10px;color:var(--text);text-align:center;
+    cursor:pointer;line-height:1.3;
+  }
+  .action-icons .item .ic{
+    width:32px;height:32px;border:1.5px solid var(--pink);
+    border-radius:50%;color:var(--pink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;background:#fff;
+  }
+
+  /* ===== 詳細画面 ===== */
+  .detail-header{
+    background:#fff;padding:10px 12px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:5;
+  }
+  .detail-header .back{
+    background:none;border:none;font-size:20px;color:var(--sub);
+    padding:4px 8px;cursor:pointer;
+  }
+  .btn-pink-pill{
+    background:var(--pink);color:#fff;border:none;
+    padding:8px 16px;border-radius:18px;font-size:13px;font-weight:700;
+    cursor:pointer;
+    box-shadow:0 1px 2px rgba(233,30,99,.3);
+  }
+  .btn-pink-pill:active{background:var(--pink-dark);}
+  .detail-body{flex:1;padding:14px 14px 80px;overflow-y:auto;background:#fff;}
+  .detail-date{margin-bottom:14px;}
+  .detail-date .year{font-size:12px;color:var(--sub);}
+  .detail-date .big{
+    display:flex;align-items:baseline;gap:10px;
+    font-weight:700;
+  }
+  .detail-date .big .md{font-size:30px;color:var(--pink);}
+  .detail-date .big .dw{font-size:14px;color:var(--pink);margin-left:-6px;}
+  .detail-date .big .tm{font-size:14px;color:#222;font-weight:600;}
+  .detail-date .ev-title{margin-top:4px;font-size:14px;font-weight:600;line-height:1.4;}
+  .detail-date .venue{font-size:12px;color:var(--sub);margin-top:2px;}
+
+  .detail-ticket{
+    border-top:1px solid var(--line);padding:14px 0;position:relative;
+  }
+  .detail-ticket .buyer{
+    display:flex;justify-content:space-between;align-items:center;
+    font-weight:700;font-size:14px;margin-bottom:10px;
+  }
+  .detail-ticket .buyer .idx{
+    font-size:12px;color:var(--sub);font-weight:500;
+  }
+  .detail-ticket .row{
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .ticket-icon{
+    width:64px;height:48px;background:var(--pink);border-radius:6px;
+    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    flex-shrink:0;position:relative;font-size:10px;
+  }
+  .ticket-icon::before{
+    content:"";position:absolute;left:-4px;top:50%;width:8px;height:8px;
+    background:#fff;border-radius:50%;transform:translateY(-50%);
+  }
+  .ticket-icon::after{
+    content:"";position:absolute;right:-4px;top:50%;width:8px;height:8px;
+    background:#fff;border-radius:50%;transform:translateY(-50%);
+  }
+  .ticket-icon .ic{font-size:22px;}
+  .ticket-icon .lb{
+    position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+    background:#fff;color:var(--pink);border:1px solid var(--pink);
+    font-size:9px;padding:1px 6px;border-radius:3px;white-space:nowrap;
+  }
+  .detail-ticket .seat{flex:1;}
+  .detail-ticket .seat .type{color:var(--pink);font-weight:700;font-size:14px;}
+  .detail-ticket .seat .blk{font-size:13px;margin-top:2px;}
+  .detail-ticket .seat .price{font-size:13px;margin-top:2px;font-weight:600;}
+  .detail-ticket .dist{
+    margin-top:14px;padding:8px;text-align:center;
+    border:1px solid var(--pink);color:var(--pink);border-radius:4px;
+    font-size:13px;font-weight:600;background:#fff;cursor:pointer;
+  }
+  .detail-ticket .desc{
+    font-size:11px;color:#444;line-height:1.7;margin-top:12px;
+    background:var(--pink-bg);padding:10px;border-radius:4px;
+  }
+  .detail-ticket .meta{
+    font-size:11px;color:var(--sub);margin-top:8px;line-height:1.7;
+  }
+
+  /* ===== 入場（選択シート） ===== */
+  .sheet-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.4);
+    display:none;align-items:flex-end;justify-content:center;
+    z-index:100;
+  }
+  .sheet-overlay.show{display:flex;}
+  .sheet{
+    width:100%;max-width:420px;height:100%;background:#fff;
+    display:flex;flex-direction:column;
+    animation:slideUp .3s ease;
+  }
+  @keyframes slideUp{
+    from{transform:translateY(100%);}
+    to{transform:translateY(0);}
+  }
+  .sheet-header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 16px;border-bottom:1px solid var(--line);background:#fff;
+  }
+  .sheet-header{transition:opacity .2s, max-height .2s;}
+  .sheet-header.hidden-during-gate{
+    opacity:0;max-height:0;padding:0;border:0;overflow:hidden;
+  }
+  .sheet-header .cnt{
+    font-size:15px;color:#666;font-weight:500;
+  }
+  .sheet-header .cnt b{color:var(--pink);font-weight:700;}
+  .sheet-header .x{
+    background:none;border:none;font-size:22px;color:var(--sub);cursor:pointer;
+    padding:0 4px;
+  }
+  .ts-banner{
+    background:var(--teal);color:#fff;text-align:center;
+    padding:10px;font-size:15px;font-weight:600;
+    font-family:"SF Mono","Consolas","Menlo",monospace;
+    letter-spacing:.04em;
+  }
+  .sheet-body{flex:1;overflow-y:auto;background:var(--bg);padding:0;}
+  .ev-card{
+    background:#fff;margin:10px 12px 0;border-radius:6px;
+    padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);
+  }
+  .ev-card .head{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  }
+  .ev-card .md-big{
+    font-size:30px;font-weight:700;line-height:1.1;
+  }
+  .ev-card .md-big .dw{font-size:14px;font-weight:700;}
+  .ev-card .times{font-size:13px;text-align:right;padding-top:6px;}
+  .ev-card .times div{margin:1px 0;}
+  .ev-card .stars{
+    display:flex;justify-content:space-around;align-items:center;
+    margin:10px 0 6px;padding:0 30px;
+  }
+  .ev-card .star{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;background:#7ED321;border-radius:50%;
+    color:#fff;font-size:22px;font-weight:900;
+    flex-shrink:0;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
+    user-select:none;-webkit-user-select:none;touch-action:none;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .ev-card.ready .star{
+    cursor:pointer;
+    animation:starPulse 1.4s ease-in-out infinite;
+  }
+  .ev-card .star.pressed{
+    transform:scale(.85);background:#5CB317;
+    box-shadow:0 0 0 4px rgba(126,211,33,.35);
+  }
+  @keyframes starPulse{
+    0%,100%{transform:scale(1);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 0 rgba(126,211,33,.5);}
+    50%{transform:scale(1.06);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 8px rgba(126,211,33,0);}
+  }
+  .ev-card .venue{font-size:12px;color:#333;margin-top:4px;}
+  .ev-card .ev-title{font-size:12px;color:#333;margin-top:2px;line-height:1.4;}
+
+  .sel-card{
+    background:#fff;margin:10px 12px 0;border-radius:6px;
+    padding:0;cursor:pointer;
+    transition:background .15s, color .15s;
+    box-shadow:0 1px 2px rgba(0,0,0,.05);
+    overflow:hidden;
+  }
+  .sel-card.selected{
+    background:var(--pink);color:#fff;
+  }
+  .sel-card .buyer{
+    font-weight:700;font-size:14px;color:#222;
+    padding:10px 14px 8px;
+    border-bottom:1px dashed var(--pink-soft);
+  }
+  .sel-card.selected .buyer{
+    color:#fff;
+    background:transparent;
+    border-bottom:1px dashed rgba(255,255,255,.6);
+  }
+  .sel-card .body{
+    display:flex;align-items:center;gap:18px;
+    padding:14px 16px;
+  }
+  .sel-card .check{
+    width:54px;height:54px;border-radius:50%;border:3px solid #F0CCDA;
+    background:#fff;color:#F0CCDA;
+    display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;
+    flex-shrink:0;
+    transition:all .15s;
+  }
+  .sel-card.selected .check{
+    background:#fff;color:var(--pink);border-color:#fff;
+  }
+  .sel-card .seat .type{color:var(--pink);font-weight:700;font-size:15px;line-height:1.4;}
+  .sel-card.selected .seat .type{color:#fff;}
+  .sel-card .seat .blk{font-size:14px;font-weight:600;color:#222;line-height:1.4;}
+  .sel-card.selected .seat .blk{color:#fff;}
+  .sel-card .seat .num{font-size:15px;font-weight:700;color:var(--pink);line-height:1.4;}
+  .sel-card.selected .seat .num{color:#fff;}
+
+  /* ===== GATE スライド ===== */
+  .warn-banner{
+    background:var(--yellow);color:var(--red);text-align:center;
+    padding:10px;font-size:13px;font-weight:700;line-height:1.5;
+  }
+  .gate-area{
+    background:var(--navy);margin:10px 12px 0;border-radius:6px;
+    height:110px;position:relative;overflow:hidden;
+    display:flex;align-items:center;
+    cursor:grab;touch-action:none;user-select:none;
+    border-left:10px solid #7ED321;
+    border-right:14px solid var(--teal);
+    transition:background .15s;
+  }
+  .gate-area:active{cursor:grabbing;}
+  .gate-area.morphing{
+    transition:all .3s ease;
+    height:120px;background:var(--pink);border-color:var(--pink);
+  }
+  .gate-reveal-l{
+    position:absolute;top:0;left:0;bottom:0;width:0;
+    background:#7ED321;z-index:2;pointer-events:none;
+    transition:background .1s;
+  }
+  .gate-reveal-r{
+    position:absolute;top:0;right:0;bottom:0;width:0;
+    background:var(--teal);z-index:2;pointer-events:none;
+    transition:background .1s;
+  }
+  .gate-content{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    color:#7DD3FC;font-size:42px;font-weight:900;letter-spacing:.08em;
+    font-family:Impact,"Arial Black",sans-serif;
+    text-shadow:0 0 12px rgba(125,211,252,.7);
+    position:relative;z-index:1;
+  }
+  .gate-arrows-l, .gate-arrows-r{
+    position:absolute;color:var(--yellow);font-size:32px;font-weight:900;
+    animation:arrowPulse 1s ease-in-out infinite;
+    z-index:1;letter-spacing:-4px;
+    transition:opacity .2s;
+  }
+  .gate-arrows-l{left:22px;}
+  .gate-arrows-r{right:24px;}
+  .gate-area.touching .gate-arrows-l,
+  .gate-area.touching .gate-arrows-r{opacity:0;animation:none;}
+  @keyframes arrowPulse{
+    0%,100%{opacity:.65;transform:translateX(0);}
+    50%{opacity:1;transform:translateX(-6px);}
+  }
+  .gate-success-text{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:22px;font-weight:700;z-index:4;
+    opacity:0;transition:opacity .25s;
+    letter-spacing:.04em;
+  }
+  .gate-area.morphing .gate-content,
+  .gate-area.morphing .gate-arrows-l,
+  .gate-area.morphing .gate-arrows-r,
+  .gate-area.morphing .gate-reveal-l,
+  .gate-area.morphing .gate-reveal-r{opacity:0;}
+  .gate-area.morphing .gate-success-text{opacity:1;}
+
+  /* ===== 使用後 ===== */
+  .used-banner-pink{
+    background:var(--pink);color:#fff;text-align:center;
+    padding:30px 14px;font-size:20px;font-weight:700;
+    margin:10px 12px 0;border-radius:6px;
+    animation:fadeIn .4s ease;
+    letter-spacing:.02em;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;}}
+  .used-card{
+    background:#F5F5F5;margin:10px 12px 0;border-radius:6px;
+    position:relative;overflow:hidden;
+  }
+  .used-card .buyer{
+    background:var(--pink);color:#fff;font-weight:700;font-size:14px;
+    padding:8px 14px;
+  }
+  .used-card .body{
+    display:flex;align-items:center;gap:16px;
+    padding:14px 16px;position:relative;
+  }
+  .used-card .icon{
+    width:54px;height:46px;background:#fff;border:1px solid #BBB;border-radius:4px;
+    color:#555;display:flex;align-items:center;justify-content:center;
+    font-size:24px;position:relative;flex-shrink:0;
+  }
+  .used-card .icon::before{
+    content:"💺";font-size:26px;filter:grayscale(1) brightness(.7);
+  }
+  .used-card .icon .badge{
+    position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);
+    background:#fff;border:1px solid #999;color:#666;
+    font-size:9px;padding:1px 5px;border-radius:2px;white-space:nowrap;
+    font-weight:600;
+  }
+  .used-card .seat{flex:1;}
+  .used-card .seat .type{font-size:14px;color:#666;font-weight:700;}
+  .used-card .seat .blk{font-size:13px;color:#666;}
+  .used-card .seat .num{font-size:14px;font-weight:700;color:#666;}
+  .used-card .stamp{
+    position:absolute;top:50%;right:14px;transform:translateY(-50%) rotate(-8deg);
+    border:3px solid var(--red);color:var(--red);
+    padding:5px 14px 3px;border-radius:3px;
+    font-size:20px;font-weight:900;letter-spacing:.15em;
+    font-family:"YuMincho","Yu Mincho","ヒラギノ明朝 ProN","Hiragino Mincho ProN",serif;
+    background:rgba(255,255,255,.9);
+    line-height:1;
+  }
+  .used-card .when{
+    font-size:11px;color:#666;
+    padding:0 16px 12px;
+  }
+
+  /* ===== 設定モーダル ===== */
+  .cfg-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);
+    display:none;align-items:center;justify-content:center;
+    z-index:200;padding:14px;
+  }
+  .cfg-overlay.show{display:flex;}
+  .cfg{
+    background:#fff;border-radius:8px;width:100%;max-width:380px;
+    max-height:88vh;overflow-y:auto;
+  }
+  .cfg h3{
+    margin:0;padding:14px;background:var(--pink);color:#fff;
+    border-radius:8px 8px 0 0;font-size:15px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .cfg h3 .x{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;}
+  .cfg-body{padding:14px;}
+  .cfg-section{
+    border:1px solid var(--line);border-radius:6px;padding:10px;margin-bottom:10px;
+  }
+  .cfg-section h4{
+    margin:0 0 8px;font-size:12px;color:var(--pink-dark);
+    border-left:3px solid var(--pink);padding-left:6px;
+  }
+  .cfg label{display:block;font-size:11px;color:var(--sub);margin-bottom:3px;}
+  .cfg input{
+    width:100%;padding:8px;border:1px solid var(--line);border-radius:4px;
+    font-size:13px;font-family:inherit;margin-bottom:8px;
+  }
+  .cfg input:focus{outline:none;border-color:var(--pink);}
+  .cfg .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .cfg .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .cfg .btn-row{display:flex;gap:8px;padding:10px 14px 14px;}
+  .cfg .btn{
+    flex:1;padding:12px;border:none;border-radius:4px;
+    font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .cfg .btn.primary{background:var(--pink);color:#fff;}
+  .cfg .btn.ghost{background:#fff;color:var(--sub);border:1px solid var(--line);}
+  .seat-list{margin-top:8px;}
+  .seat-list .seat-row{
+    display:flex;gap:6px;align-items:center;margin-bottom:6px;
+  }
+  .seat-list .seat-row input{margin:0;}
+  .seat-list .seat-row .del{
+    background:#fff;border:1px solid var(--line);color:var(--sub);
+    width:28px;height:32px;border-radius:4px;cursor:pointer;flex-shrink:0;
+  }
+  .seat-list .add{
+    background:#fff;border:1px dashed var(--pink);color:var(--pink);
+    padding:8px;border-radius:4px;width:100%;font-size:12px;cursor:pointer;
+    font-weight:600;
+  }
+
+  /* ===== ボトムタブ ===== */
+  .tabbar{
+    position:fixed;bottom:0;left:0;right:0;
+    max-width:420px;margin:0 auto;
+    background:#fff;display:flex;border-top:1px solid var(--line);
+    z-index:6;
+  }
+  .tabbar button{
+    flex:1;padding:8px 4px 6px;background:none;border:none;
+    font-size:10px;color:var(--sub);cursor:pointer;
+    position:relative;
+  }
+  .tabbar button .ic{display:block;font-size:18px;margin-bottom:2px;}
+  .tabbar button.active{color:var(--pink);}
+  .tabbar .badge{
+    position:absolute;top:4px;right:24%;
+    background:var(--pink);color:#fff;border-radius:10px;
+    font-size:9px;padding:1px 5px;
+  }
+
+  .hidden{display:none !important;}
+
+  /* MOC マーカー（一覧画面 左下・透過水印） */
+  .moc-marker{
+    position:fixed;
+    bottom:68px;
+    left:8px;
+    z-index:7;
+    color:rgba(0,0,0,.42);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.2em;
+    padding:4px 10px;
+    border:1px solid rgba(0,0,0,.25);
+    border-radius:3px;
+    pointer-events:none;
+    font-family:"SF Mono","Consolas","Menlo",monospace;
+    background:rgba(255,255,255,.5);
+    backdrop-filter:blur(2px);
+  }
+
+  /* GATE中の波紋 */
+  .gate-result-overlay{
+    position:fixed;inset:0;background:rgba(26,63,168,.92);
+    display:none;align-items:center;justify-content:center;
+    flex-direction:column;color:#fff;z-index:300;
+  }
+  .gate-result-overlay.show{display:flex;}
+  .gate-result-overlay .ic{
+    font-size:60px;background:#fff;color:var(--pink);
+    width:120px;height:120px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    animation:pop .4s ease;
+  }
+  @keyframes pop{
+    0%{transform:scale(.3);opacity:0;}
+    60%{transform:scale(1.1);}
+    100%{transform:scale(1);opacity:1;}
+  }
+  .gate-result-overlay h2{
+    margin:20px 0 4px;font-size:22px;letter-spacing:.08em;
+  }
+  .gate-result-overlay p{margin:0;font-size:14px;opacity:.85;}
+</style>
+</head>
+<body>
+<div class="device">
+
+  <!-- 設定歯車（全画面共通） -->
+  <button class="config-gear" id="btnOpenCfg" title="モック設定">⚙</button>
+
+  <!-- ============== 一覧画面 ============== -->
+  <div id="screenList">
+    <div class="home-header">
+      <div class="top-icons"></div>
+      <div class="tabs">
+        <button>申込み履歴</button>
+        <button class="active">スマチケ</button>
+        <button>QRチケット</button>
+      </div>
+      <div class="subtabs">
+        <button class="active">未使用</button>
+        <button>使用済み・確認</button>
+      </div>
+    </div>
+
+    <div class="list-area" id="listArea">
+      <div class="pill-wrap">
+        <div class="pill-label">入場できるチケット</div>
+      </div>
+      <div id="listCardSlot"></div>
+    </div>
+
+    <div class="tabbar">
+      <button><span class="ic">⌂</span>ホーム</button>
+      <button><span class="ic">📰</span>ニュース</button>
+      <button><span class="ic">★</span>お気に入り</button>
+      <button><span class="ic">🔔</span>通知<span class="badge">7</span></button>
+      <button class="active"><span class="ic">🎫</span>チケット</button>
+    </div>
+
+    <div class="moc-marker">MOC</div>
+  </div>
+
+  <!-- ============== 詳細画面 ============== -->
+  <div id="screenDetail" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
+    <div class="detail-header">
+      <button class="back" id="btnBack">‹</button>
+      <button class="btn-pink-pill" id="btnGoEntry">入場画面に進む</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+
+</div>
+
+<!-- ============== 選択シート / GATE / 結果 ============== -->
+<div class="sheet-overlay" id="sheet">
+  <div class="sheet">
+    <div class="sheet-header">
+      <span class="cnt" id="selCount">0/0枚 選択中</span>
+      <button class="x" id="btnCloseSheet">×</button>
+    </div>
+    <div class="ts-banner" id="tsBanner">----/--/--(-) --:--:--.--</div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- GATE 完了オーバーレイ -->
+<div class="gate-result-overlay" id="gateResult">
+  <div class="ic">✓</div>
+  <h2 id="gateResultText">使用処理中...</h2>
+  <p id="gateResultSub">少々お待ちください</p>
+</div>
+
+<!-- 設定モーダル -->
+<div class="cfg-overlay" id="cfgOverlay">
+  <div class="cfg">
+    <h3>モック設定<button class="x" id="btnCloseCfg">×</button></h3>
+    <div class="cfg-body">
+      <div class="cfg-section">
+        <h4>公演情報</h4>
+        <label>公演名</label>
+        <input id="cf-title" type="text">
+        <label>会場</label>
+        <input id="cf-venue" type="text">
+        <div class="grid2">
+          <div>
+            <label>公演日</label>
+            <input id="cf-date" type="date">
+          </div>
+          <div>
+            <label>料金</label>
+            <input id="cf-price" type="text">
+          </div>
+        </div>
+        <div class="grid2">
+          <div>
+            <label>開場</label>
+            <input id="cf-open" type="time">
+          </div>
+          <div>
+            <label>開演</label>
+            <input id="cf-start" type="time">
+          </div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <h4>購入者・チケット番号</h4>
+        <label>購入者名</label>
+        <input id="cf-buyer" type="text">
+        <label>イープラス番号</label>
+        <input id="cf-orderno" type="text">
+      </div>
+
+      <div class="cfg-section">
+        <h4>座席（複数可）</h4>
+        <label>券種</label>
+        <input id="cf-type" type="text">
+        <div class="grid2">
+          <div>
+            <label>枚数</label>
+            <input id="cf-count" type="number" min="1" max="10" step="1">
+          </div>
+          <div></div>
+        </div>
+        <div class="seat-list" id="seatList"></div>
+        <button class="add" id="btnAddSeat">＋ 座席を追加</button>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn ghost" id="btnResetUsed">使用状態リセット</button>
+      <button class="btn primary" id="btnSaveCfg">保存して反映</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY = "eplus_mock_v2";
+const $ = id => document.getElementById(id);
+
+const defaultData = {
+  title:"TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会",
+  venue:"鶴岡八幡宮",
+  date:"2024-06-23",
+  open:"18:30",
+  start:"19:00",
+  price:"¥1,100(税込)",
+  buyer:"西村 太希",
+  orderno:"1140054981920",
+  type:"全席指定",
+  seats:[
+    {block:"A", row:"9", num:"7", used:false, usedAt:null, refno:"DSO-3185-6483-1"},
+    {block:"A", row:"9", num:"6", used:false, usedAt:null, refno:"DSO-3185-6483-2"}
+  ]
+};
+
+function load(){
+  try{ return JSON.parse(localStorage.getItem(KEY)) || JSON.parse(JSON.stringify(defaultData)); }
+  catch(e){ return JSON.parse(JSON.stringify(defaultData)); }
+}
+function save(d){ localStorage.setItem(KEY, JSON.stringify(d)); }
+let state = load();
+// ページロード時は使用状態をクリーンにリセット（公演情報は維持）
+state.seats.forEach(s=>{ s.used = false; s.usedAt = null; });
+save(state);
+
+// ===== 日付フォーマット =====
+function fmtDateJP(iso){
+  if(!iso) return {y:"",md:"",day:""};
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const m = d.getMonth()+1;
+  const dd = d.getDate();
+  const w = ["日","月","火","水","木","金","土"][d.getDay()];
+  return {y:`${y}年`, md:`${m}/${dd}`, day:w};
+}
+function nowTsFull(){
+  const d = new Date();
+  const Y = d.getFullYear();
+  const M = String(d.getMonth()+1).padStart(2,"0");
+  const D = String(d.getDate()).padStart(2,"0");
+  const w = ["日","月","火","水","木","金","土"][d.getDay()];
+  const h = String(d.getHours()).padStart(2,"0");
+  const m = String(d.getMinutes()).padStart(2,"0");
+  const s = String(d.getSeconds()).padStart(2,"0");
+  const ms = String(Math.floor(d.getMilliseconds()/10)).padStart(2,"0");
+  return `${Y}/${M}/${D}(${w}) ${h}:${m}:${s}.${ms}`;
+}
+function nowUsed(){
+  const d = new Date();
+  const Y = d.getFullYear();
+  const M = String(d.getMonth()+1).padStart(2,"0");
+  const D = String(d.getDate()).padStart(2,"0");
+  const w = ["日","月","火","水","木","金","土"][d.getDay()];
+  const h = String(d.getHours()).padStart(2,"0");
+  const m = String(d.getMinutes()).padStart(2,"0");
+  return `${Y}/${M}/${D}(${w}) ${h}:${m}`;
+}
+
+// ===== 一覧画面描画 =====
+function renderList(){
+  const slot = $("listCardSlot");
+  const f = fmtDateJP(state.date);
+  const allUsed = state.seats.every(s=>s.used);
+  slot.innerHTML = `
+    <div class="ticket-card" id="theCard" ${allUsed?'style="opacity:.55;"':""}>
+      <div class="ribbon">スマチケ</div>
+      <div class="poster"><div class="silhouette"></div></div>
+      <div class="info">
+        <div class="year">${f.y}</div>
+        <div class="date">${f.md}<span class="day">(${f.day})</span><span class="time">${state.start} 開演</span></div>
+        <div class="title">${escapeHtml(state.title)}</div>
+        <div class="venue">${escapeHtml(state.venue)}</div>
+      </div>
+      <div class="cta">${allUsed?"使用済みチケット":"チケットはこちら"}</div>
+    </div>
+    <div class="action-icons">
+      <div class="item"><div class="ic">↻</div>チケット更新</div>
+      <div class="item" id="actFaq"><div class="ic">?</div>よくある<br>ご質問</div>
+      <div class="item"><div class="ic">⇆</div>配信変更時の<br>チケット移行</div>
+    </div>
+  `;
+  $("theCard").onclick = ()=>openDetail();
+  const faq = $("actFaq");
+  if(faq) faq.onclick = ()=>{ fillCfg(); $("cfgOverlay").classList.add("show"); };
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+}
+
+// ===== 詳細画面描画 =====
+function renderDetail(){
+  const f = fmtDateJP(state.date);
+  const body = $("detailBody");
+  const ticketsHtml = state.seats.map((s,i)=>`
+    <div class="detail-ticket">
+      <div class="buyer">${escapeHtml(state.buyer)} 様 <span class="idx">${i+1}枚目</span></div>
+      <div class="row">
+        <div class="ticket-icon">
+          <span class="ic">🎫</span>
+          <span class="lb">${s.used?"使用済":"未使用"}</span>
+        </div>
+        <div class="seat">
+          <div class="type">${escapeHtml(state.type)}</div>
+          <div class="blk">${escapeHtml(s.block)}ブロック</div>
+          <div class="blk">${escapeHtml(s.row)}列 ${escapeHtml(s.num)}番</div>
+          <div class="price">${escapeHtml(state.price)}</div>
+        </div>
+      </div>
+      <div class="dist">同行者へ分配する</div>
+      <div class="desc">
+        TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会<br>
+        登壇者：結川あさき(北条時行役)／矢野妃菜喜(吹雪役)／中村悠一(諏訪頼重役)<br>
+        お問合せ：ホットスタッフ・プロモーション 050-5211-6077(平日12:00〜18:00)
+      </div>
+      <div class="meta">
+        チケット番号: ${escapeHtml(s.refno)}<br>
+        イープラス ${escapeHtml(state.orderno)}
+      </div>
+    </div>
+  `).join("");
+  body.innerHTML = `
+    <div class="detail-date">
+      <div class="year">${f.y}</div>
+      <div class="big">
+        <span class="md">${f.md}</span><span class="dw">(${f.day})</span>
+        <span class="tm">${state.open} 開場  ${state.start} 開演</span>
+      </div>
+      <div class="ev-title">${escapeHtml(state.title)}</div>
+      <div class="venue">${escapeHtml(state.venue)}</div>
+    </div>
+    ${ticketsHtml}
+  `;
+}
+
+// ===== 画面遷移 =====
+function openDetail(){
+  renderDetail();
+  $("screenList").classList.add("hidden");
+  $("screenDetail").classList.remove("hidden");
+}
+function backToList(){
+  $("screenDetail").classList.add("hidden");
+  $("screenList").classList.remove("hidden");
+  renderList();
+}
+$("btnBack").onclick = backToList;
+
+// ===== 選択シート =====
+let selection = []; // index配列
+let sheetPhase = "select"; // select / gate / gateActive / done
+let gateInteractive = false;
+let doneShowBanner = true; // done時に「○枚使用しました」バナーを表示中か
+
+function openSheet(){
+  selection = [];
+  sheetPhase = "select";
+  doneShowBanner = true;
+  renderSheet();
+  $("sheet").classList.add("show");
+}
+function closeSheet(){
+  $("sheet").classList.remove("show");
+  renderList();
+}
+$("btnGoEntry").onclick = openSheet;
+$("btnCloseSheet").onclick = closeSheet;
+
+function unusedIndices(){
+  return state.seats.map((s,i)=>s.used?null:i).filter(v=>v!==null);
+}
+
+function renderSheet(){
+  const f = fmtDateJP(state.date);
+  const unused = unusedIndices();
+  // done時はselection分が既にusedになっているため、totalにselectionを足し戻す
+  const total = (sheetPhase === "done") ? unused.length + selection.length : unused.length;
+
+  if(sheetPhase === "select" || sheetPhase === "gate"){
+    $("selCount").innerHTML = `<b>${selection.length}/${total}枚</b> 選択中`;
+  } else if(sheetPhase === "gateActive"){
+    $("selCount").innerHTML = `<b>${selection.length}/${total}枚</b> 選択中`;
+  } else { // done
+    $("selCount").innerHTML = `<b>0/${total}枚</b> 選択中`;
+  }
+
+  // gateActive時はsheet-headerを隠す
+  const sh = document.querySelector("#sheet .sheet-header");
+  if(sh){
+    if(sheetPhase === "gateActive") sh.classList.add("hidden-during-gate");
+    else sh.classList.remove("hidden-during-gate");
+  }
+
+  const evReady = (sheetPhase === "gate");
+  const evCardHtml = `
+    <div class="ev-card ${evReady?"ready":""}" id="evCard">
+      <div class="head">
+        <div class="md-big">${f.md}<span class="dw">(${f.day})</span></div>
+        <div class="times">
+          <div>${state.open} 開場</div>
+          <div>${state.start} 開演</div>
+        </div>
+      </div>
+      <div class="stars">
+        <span class="star" data-star="L">★</span>
+        <span class="star" data-star="R">★</span>
+      </div>
+      <div class="venue">${escapeHtml(state.venue)}</div>
+      <div class="ev-title">${escapeHtml(state.title)}</div>
+    </div>
+  `;
+
+  let mainHtml = "";
+
+  if(sheetPhase === "select" || sheetPhase === "gate" || sheetPhase === "gateActive"){
+    // 警告バナー（gateActive時のみ表示）
+    if(sheetPhase === "gateActive"){
+      mainHtml += `<div class="warn-banner">スライドすると使用済になります。<br>使用済チケットは、入場・再発行不可</div>`;
+    }
+    mainHtml += `<div class="ts-banner" id="tsBanner2">${nowTsFull()}</div>`;
+
+    if(sheetPhase === "gateActive"){
+      // 全選択後の2点同時タップで起動: GATEバーをイベントカードの場所に
+      mainHtml += `
+        <div class="gate-area" id="gateArea">
+          <div class="gate-arrows-l">◀◀</div>
+          <div class="gate-content">GATE</div>
+          <div class="gate-arrows-r">▶▶</div>
+          <div class="gate-reveal-l" id="gateRevealL"></div>
+          <div class="gate-reveal-r" id="gateRevealR"></div>
+          <div class="gate-success-text" id="gateSuccessText"></div>
+        </div>
+      `;
+    } else {
+      mainHtml += evCardHtml;
+    }
+
+    // チケットカード
+    state.seats.forEach((s,i)=>{
+      if(s.used) return;
+      const isSel = selection.includes(i);
+      mainHtml += `
+        <div class="sel-card ${isSel?"selected":""}" data-i="${i}">
+          <div class="buyer">${escapeHtml(state.buyer)} 様</div>
+          <div class="body">
+            <div class="check">✓</div>
+            <div class="seat">
+              <div class="type">${escapeHtml(state.type)}</div>
+              <div class="blk">${escapeHtml(s.block)}ブロック</div>
+              <div class="num">${escapeHtml(s.row)}列${escapeHtml(s.num)}番</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  } else if(sheetPhase === "done"){
+    // 使用済表示
+    $("sheet").querySelector(".ts-banner").remove?.();
+    mainHtml += `<div class="ts-banner">${nowTsFull()}</div>`;
+    // 初期はピンクバナー、4秒後にイベントカードに入れ替わる
+    if(doneShowBanner){
+      mainHtml += `<div class="used-banner-pink">${selection.length}枚使用しました</div>`;
+    } else {
+      mainHtml += evCardHtml;
+    }
+    selection.forEach(i=>{
+      const s = state.seats[i];
+      mainHtml += `
+        <div class="used-card">
+          <div class="buyer">${escapeHtml(state.buyer)} 様</div>
+          <div class="body">
+            <div class="icon"><span class="badge">入場済</span></div>
+            <div class="seat">
+              <div class="type">${escapeHtml(state.type)}</div>
+              <div class="blk">${escapeHtml(s.block)}ブロック</div>
+              <div class="num">${escapeHtml(s.row)}列${escapeHtml(s.num)}番</div>
+            </div>
+            <div class="stamp">使用済</div>
+          </div>
+          <div class="when">使用日時: ${escapeHtml(s.usedAt || "")}</div>
+        </div>
+      `;
+    });
+    // 残りの未使用も表示
+    state.seats.forEach((s,i)=>{
+      if(s.used && !selection.includes(i)){
+        // 既に使用済（過去）
+      }
+    });
+  }
+
+  $("sheetBody").innerHTML = mainHtml;
+
+  // 静的バナーは隠す
+  $("tsBanner").style.display = "none";
+
+  // カードクリックイベント（select/gate共通: タップで選択/解除）
+  if(sheetPhase === "select" || sheetPhase === "gate"){
+    $("sheetBody").querySelectorAll(".sel-card").forEach(el=>{
+      el.onclick = ()=>{
+        const i = parseInt(el.dataset.i);
+        if(selection.includes(i)){
+          selection = selection.filter(v=>v!==i);
+        }else{
+          selection.push(i);
+        }
+        // 1枚以上選択でgateに遷移
+        if(selection.length > 0){
+          sheetPhase = "gate";
+        } else {
+          sheetPhase = "select";
+        }
+        renderSheet();
+      };
+    });
+  }
+
+  // 2点同時タップ判定（gate phase: 緑星）
+  if(sheetPhase === "gate"){
+    initStarMultiTouch();
+  }
+
+  // GATEバーのスワイプ
+  if(sheetPhase === "gateActive"){
+    initGateSlide();
+  }
+}
+
+// 時刻バナー更新（シート表示中のみ）
+setInterval(()=>{
+  const b = document.querySelector("#sheetBody .ts-banner");
+  if(b) b.textContent = nowTsFull();
+}, 50);
+
+// ===== 2点同時タップ判定（緑星2つを同時にタップでGATE発動） =====
+function initStarMultiTouch(){
+  const card = $("evCard");
+  if(!card) return;
+  const stars = card.querySelectorAll(".star");
+  const pressed = new Set();
+  let mouseFallbackTimer = null;
+
+  const press = (which, el)=>{
+    pressed.add(which);
+    el.classList.add("pressed");
+    if(pressed.size >= 2){
+      // 両方タップ → GATE発動
+      stars.forEach(s=>s.classList.remove("pressed"));
+      pressed.clear();
+      activateGate();
+    }
+  };
+  const release = (which, el)=>{
+    pressed.delete(which);
+    el.classList.remove("pressed");
+  };
+
+  stars.forEach(el=>{
+    const which = el.dataset.star;
+    el.addEventListener("touchstart", e=>{e.preventDefault(); press(which,el);}, {passive:false});
+    el.addEventListener("touchend",   e=>{release(which,el);});
+    el.addEventListener("touchcancel",e=>{release(which,el);});
+    // マウス用フォールバック: 1秒以内に両方クリックでOK
+    el.addEventListener("mousedown", e=>{
+      press(which,el);
+      clearTimeout(mouseFallbackTimer);
+      mouseFallbackTimer = setTimeout(()=>{
+        stars.forEach(s=>s.classList.remove("pressed"));
+        pressed.clear();
+      }, 1500);
+    });
+    el.addEventListener("mouseup", e=>release(which,el));
+    el.addEventListener("mouseleave", e=>release(which,el));
+  });
+}
+
+function activateGate(){
+  sheetPhase = "gateActive";
+  renderSheet();
+}
+
+// ===== GATE スワイプ (右方向のみ・進行で色変化) =====
+function initGateSlide(){
+  const area = $("gateArea");
+  const revealL = $("gateRevealL");
+  if(!area || !revealL) return;
+  let dragging=false, startX=0, w=0;
+
+  const getX = (e)=>{
+    if(e.touches && e.touches.length) return e.touches[0].clientX;
+    if(e.changedTouches && e.changedTouches.length) return e.changedTouches[0].clientX;
+    return e.clientX;
+  };
+  const colorFor = (ratio)=>{
+    // 0→0.55: 緑、0.55→0.85: 橙、0.85+: 赤
+    if(ratio < 0.55) return "#7ED321";
+    if(ratio < 0.85) return "#F09030";
+    return "#E94B6E";
+  };
+
+  const start = (e)=>{
+    dragging = true;
+    startX = getX(e);
+    w = area.clientWidth;
+    revealL.style.transition="";
+    area.classList.add("touching");
+  };
+  const move = (e)=>{
+    if(!dragging) return;
+    if(e.cancelable) e.preventDefault();
+    const x = getX(e);
+    let dx = x - startX;
+    if(dx < 0) dx = 0; // 右方向のみ
+    if(dx > w) dx = w;
+    const ratio = dx / w;
+    revealL.style.width = dx + "px";
+    revealL.style.background = colorFor(ratio);
+    if(ratio >= 0.78){
+      dragging = false;
+      revealL.style.transition="width .15s ease, background .15s";
+      revealL.style.width = w + "px";
+      revealL.style.background = "#E94B6E";
+      area.classList.remove("touching");
+      triggerGate();
+    }
+  };
+  const end = ()=>{
+    if(!dragging) return;
+    dragging = false;
+    area.classList.remove("touching");
+    revealL.style.transition="width .2s ease";
+    revealL.style.width = "0px";
+  };
+  area.addEventListener("mousedown",start);
+  area.addEventListener("touchstart",start,{passive:false});
+  document.addEventListener("mousemove",move);
+  document.addEventListener("touchmove",move,{passive:false});
+  document.addEventListener("mouseup",end);
+  document.addEventListener("touchend",end);
+}
+
+function triggerGate(){
+  const area = $("gateArea");
+  const successText = $("gateSuccessText");
+  if(area && successText){
+    successText.textContent = `${selection.length}枚使用しました`;
+    // GATEバーをピンクバナーへモーフ
+    setTimeout(()=>area.classList.add("morphing"), 250);
+  }
+  setTimeout(()=>{
+    const ts = nowUsed();
+    selection.forEach(i=>{
+      state.seats[i].used = true;
+      state.seats[i].usedAt = ts;
+    });
+    save(state);
+    sheetPhase = "done";
+    doneShowBanner = true;
+    renderSheet();
+    // 4秒後にピンクバナーをイベントカードに切り替え
+    setTimeout(()=>{
+      if(sheetPhase === "done"){
+        doneShowBanner = false;
+        renderSheet();
+      }
+    }, 4000);
+  },1200);
+}
+
+// ===== 設定モーダル =====
+function fillCfg(){
+  $("cf-title").value = state.title;
+  $("cf-venue").value = state.venue;
+  $("cf-date").value = state.date;
+  $("cf-open").value = state.open;
+  $("cf-start").value = state.start;
+  $("cf-price").value = state.price;
+  $("cf-buyer").value = state.buyer;
+  $("cf-orderno").value = state.orderno;
+  $("cf-type").value = state.type;
+  $("cf-count").value = state.seats.length;
+  renderSeatInputs();
+}
+
+function syncSeatCount(n){
+  n = Math.max(1, Math.min(10, parseInt(n)||1));
+  if(state.seats.length === n) return;
+  if(state.seats.length < n){
+    // 追加
+    while(state.seats.length < n){
+      const next = state.seats.length + 1;
+      state.seats.push({
+        block:"A", row:"9", num:String(7 - state.seats.length).padStart(1,"0"),
+        used:false, usedAt:null,
+        refno:"DSO-XXXX-"+next
+      });
+    }
+  } else {
+    // 末尾から削除
+    state.seats.length = n;
+  }
+}
+function renderSeatInputs(){
+  const slot = $("seatList");
+  slot.innerHTML = state.seats.map((s,i)=>`
+    <div class="seat-row" data-i="${i}">
+      <input data-k="block" type="text" placeholder="ブロック" value="${escapeHtml(s.block)}" style="flex:1;">
+      <input data-k="row" type="text" placeholder="列" value="${escapeHtml(s.row)}" style="flex:1;">
+      <input data-k="num" type="text" placeholder="番" value="${escapeHtml(s.num)}" style="flex:1;">
+      <button class="del" data-del="${i}" title="削除">✕</button>
+    </div>
+  `).join("");
+  slot.querySelectorAll(".del").forEach(b=>{
+    b.onclick = ()=>{
+      const i = parseInt(b.dataset.del);
+      if(state.seats.length <= 1) return; // 最低1枚は残す
+      state.seats.splice(i,1);
+      $("cf-count").value = state.seats.length;
+      renderSeatInputs();
+    };
+  });
+  slot.querySelectorAll("input").forEach(inp=>{
+    inp.oninput = ()=>{
+      const i = parseInt(inp.closest(".seat-row").dataset.i);
+      state.seats[i][inp.dataset.k] = inp.value;
+    };
+  });
+}
+$("btnOpenCfg").onclick = ()=>{ fillCfg(); $("cfgOverlay").classList.add("show"); };
+$("btnCloseCfg").onclick = ()=>$("cfgOverlay").classList.remove("show");
+$("btnAddSeat").onclick = ()=>{
+  state.seats.push({block:"A",row:"1",num:"1",used:false,usedAt:null,refno:"DSO-XXXX-"+state.seats.length});
+  $("cf-count").value = state.seats.length;
+  renderSeatInputs();
+};
+$("cf-count").oninput = (e)=>{
+  syncSeatCount(e.target.value);
+  renderSeatInputs();
+};
+$("btnSaveCfg").onclick = ()=>{
+  state.title = $("cf-title").value || "(未設定)";
+  state.venue = $("cf-venue").value || "(未設定)";
+  state.date = $("cf-date").value;
+  state.open = $("cf-open").value;
+  state.start = $("cf-start").value;
+  state.price = $("cf-price").value;
+  state.buyer = $("cf-buyer").value || "-";
+  state.orderno = $("cf-orderno").value || "-";
+  state.type = $("cf-type").value || "-";
+  syncSeatCount($("cf-count").value);
+  save(state);
+  $("cfgOverlay").classList.remove("show");
+  renderList();
+};
+$("btnResetUsed").onclick = ()=>{
+  if(!confirm("全座席の使用状態をリセットしますか？")) return;
+  state.seats.forEach(s=>{ s.used=false; s.usedAt=null; });
+  save(state);
+  renderSeatInputs();
+  alert("リセットしました。");
+};
+
+// ===== 初期化 =====
+renderList();
+
+// ===== デバッグ: URLハッシュで画面状態を強制 =====
+(function debugStateFromHash(){
+  const h = location.hash.replace("#","");
+  if(!h) return;
+  if(h === "cfg"){ fillCfg(); $("cfgOverlay").classList.add("show"); }
+  else if(h === "detail"){ openDetail(); }
+  else if(h === "select"){ openDetail(); openSheet(); }
+  else if(h === "gate"){
+    openDetail(); openSheet();
+    selection = state.seats.map((s,i)=>i);
+    sheetPhase = "gate"; renderSheet();
+  }
+  else if(h === "gateActive"){
+    openDetail(); openSheet();
+    selection = state.seats.map((s,i)=>i);
+    sheetPhase = "gateActive"; renderSheet();
+  }
+  else if(h === "done"){
+    openDetail(); openSheet();
+    selection = state.seats.map((s,i)=>i);
+    const ts = nowUsed();
+    selection.forEach(i=>{ state.seats[i].used=true; state.seats[i].usedAt=ts; });
+    sheetPhase = "done"; doneShowBanner = true; renderSheet();
+  }
+  else if(h === "doneFinal"){
+    openDetail(); openSheet();
+    selection = state.seats.map((s,i)=>i);
+    const ts = nowUsed();
+    selection.forEach(i=>{ state.seats[i].used=true; state.seats[i].usedAt=ts; });
+    sheetPhase = "done"; doneShowBanner = false; renderSheet();
+  }
+})();
+</script>
+</body>
+</html>
