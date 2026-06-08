@@ -159,66 +159,92 @@
     box-shadow:0 1px 2px rgba(233,30,99,.3);
   }
   .btn-pink-pill:active{background:var(--pink-dark);}
-  .detail-body{flex:1;padding:14px 14px 80px;overflow-y:auto;background:#fff;}
-  .detail-date{margin-bottom:14px;}
-  .detail-date .year{font-size:12px;color:var(--sub);}
+  .detail-body{flex:1;padding:18px 16px 80px;overflow-y:auto;background:#fff;}
+  .detail-date{margin-bottom:18px;}
+  .detail-date .year{font-size:12px;color:var(--sub);margin-bottom:2px;}
   .detail-date .big{
-    display:flex;align-items:baseline;gap:10px;
-    font-weight:700;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
   }
-  .detail-date .big .md{font-size:30px;color:var(--pink);}
-  .detail-date .big .dw{font-size:14px;color:var(--pink);margin-left:-6px;}
-  .detail-date .big .tm{font-size:14px;color:#222;font-weight:600;}
-  .detail-date .ev-title{margin-top:4px;font-size:14px;font-weight:600;line-height:1.4;}
-  .detail-date .venue{font-size:12px;color:var(--sub);margin-top:2px;}
+  .detail-date .big .mdwrap{
+    display:flex;align-items:baseline;line-height:1;
+  }
+  .detail-date .big .md{
+    font-size:32px;color:var(--pink);font-weight:700;letter-spacing:-.01em;
+  }
+  .detail-date .big .dw{
+    font-size:14px;color:var(--pink);font-weight:700;margin-left:2px;
+  }
+  .detail-date .big .times{
+    text-align:left;font-size:13px;color:#222;font-weight:500;
+    line-height:1.5;padding-top:8px;
+  }
+  .detail-date .ev-title{
+    margin-top:10px;font-size:13.5px;font-weight:500;line-height:1.45;color:#222;
+  }
+  .detail-date .venue{font-size:12px;color:var(--sub);margin-top:4px;}
 
   .detail-ticket{
-    border-top:1px solid var(--line);padding:14px 0;position:relative;
+    border-top:1px solid var(--line);padding:16px 0 18px;position:relative;
   }
   .detail-ticket .buyer{
     display:flex;justify-content:space-between;align-items:center;
-    font-weight:700;font-size:14px;margin-bottom:10px;
+    font-weight:700;font-size:15px;margin-bottom:14px;
+    padding-left:10px;position:relative;
+  }
+  .detail-ticket .buyer::before{
+    content:"";position:absolute;left:0;top:1px;bottom:1px;width:3px;
+    background:var(--pink);border-radius:2px;
   }
   .detail-ticket .buyer .idx{
-    font-size:12px;color:var(--sub);font-weight:500;
+    font-size:11px;color:var(--sub);font-weight:500;
   }
   .detail-ticket .row{
-    display:flex;gap:12px;align-items:flex-start;
+    display:flex;gap:18px;align-items:center;padding:4px 0 6px;
   }
   .ticket-icon{
-    width:64px;height:48px;background:var(--pink);border-radius:6px;
-    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    flex-shrink:0;position:relative;font-size:10px;
+    width:70px;height:88px;flex-shrink:0;position:relative;
+    display:flex;align-items:flex-start;justify-content:center;
   }
-  .ticket-icon::before{
-    content:"";position:absolute;left:-4px;top:50%;width:8px;height:8px;
-    background:#fff;border-radius:50%;transform:translateY(-50%);
+  .ticket-icon .stub{
+    width:64px;height:64px;background:var(--pink);border-radius:50%;
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
   }
-  .ticket-icon::after{
-    content:"";position:absolute;right:-4px;top:50%;width:8px;height:8px;
-    background:#fff;border-radius:50%;transform:translateY(-50%);
-  }
-  .ticket-icon .ic{font-size:22px;}
+  .ticket-icon .stub svg{width:38px;height:24px;display:block;}
   .ticket-icon .lb{
-    position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
-    background:#fff;color:var(--pink);border:1px solid var(--pink);
-    font-size:9px;padding:1px 6px;border-radius:3px;white-space:nowrap;
+    position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    background:#FDEBF1;color:var(--pink);border:1px solid var(--pink);
+    font-size:10px;padding:2px 10px;border-radius:3px;white-space:nowrap;
+    font-weight:700;letter-spacing:.04em;
   }
-  .detail-ticket .seat{flex:1;}
-  .detail-ticket .seat .type{color:var(--pink);font-weight:700;font-size:14px;}
-  .detail-ticket .seat .blk{font-size:13px;margin-top:2px;}
-  .detail-ticket .seat .price{font-size:13px;margin-top:2px;font-weight:600;}
+  .detail-ticket .seat{flex:1;line-height:1.5;}
+  .detail-ticket .seat .type{color:var(--pink);font-weight:700;font-size:13px;margin-bottom:2px;}
+  .detail-ticket .seat .blk{font-size:14px;font-weight:500;color:#222;}
+  .detail-ticket .seat .num{font-size:14px;font-weight:700;color:#222;}
+  .detail-ticket .seat .price{font-size:13px;font-weight:500;color:#222;margin-top:2px;}
   .detail-ticket .dist{
-    margin-top:14px;padding:8px;text-align:center;
+    margin:16px 0 0;padding:12px;text-align:center;
     border:1px solid var(--pink);color:var(--pink);border-radius:4px;
-    font-size:13px;font-weight:600;background:#fff;cursor:pointer;
+    font-size:14px;font-weight:600;background:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:10px;
   }
+  .detail-ticket .dist svg{width:22px;height:16px;flex-shrink:0;}
   .detail-ticket .desc{
-    font-size:11px;color:#444;line-height:1.7;margin-top:12px;
-    background:var(--pink-bg);padding:10px;border-radius:4px;
+    font-size:11px;color:#333;line-height:1.75;margin-top:14px;
+    background:var(--pink-bg);padding:12px 13px;border-radius:4px;
   }
   .detail-ticket .meta{
-    font-size:11px;color:var(--sub);margin-top:8px;line-height:1.7;
+    font-size:11.5px;color:#555;margin-top:10px;line-height:1.8;
+  }
+  .detail-ticket .meta .head{font-weight:700;color:#222;margin-bottom:2px;font-size:12px;}
+  .detail-ticket .backlink{
+    display:flex;align-items:center;justify-content:flex-end;gap:4px;
+    margin-top:10px;color:var(--pink);font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .detail-ticket .backlink .arrow{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:18px;height:18px;border-radius:50%;background:var(--pink);color:#fff;
+    font-size:10px;font-weight:900;
   }
 
   /* ===== 入場（選択シート） ===== */
@@ -814,34 +840,40 @@ function renderDetail(){
       <div class="buyer">${escapeHtml(state.buyer)} 様 <span class="idx">${i+1}枚目</span></div>
       <div class="row">
         <div class="ticket-icon">
-          <span class="ic">🎫</span>
+          <span class="stub"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M2 3 H26 V21 H2 Z M30 3 H36 V21 H30 Z"/><line x1="28" y1="4" x2="28" y2="20" stroke="#fff" stroke-width="1.2" stroke-dasharray="1.5 1.5"/></svg></span>
           <span class="lb">${s.used?"使用済":"未使用"}</span>
         </div>
         <div class="seat">
           <div class="type">${escapeHtml(state.type)}</div>
           <div class="blk">${escapeHtml(s.block)}ブロック</div>
-          <div class="blk">${escapeHtml(s.row)}列 ${escapeHtml(s.num)}番</div>
+          <div class="num">${escapeHtml(s.row)}列 ${escapeHtml(s.num)}番</div>
           <div class="price">${escapeHtml(state.price)}</div>
         </div>
       </div>
-      <div class="dist">同行者へ分配する</div>
+      <div class="dist"><svg viewBox="0 0 26 18" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="5" r="2.4"/><circle cx="13" cy="4" r="2.2"/><circle cx="21" cy="5" r="2.4"/><path d="M1 16c0-3 1.8-5 4-5s4 2 4 5"/><path d="M9 16c0-2.7 1.7-4.5 4-4.5s4 1.8 4 4.5"/><path d="M17 16c0-3 1.8-5 4-5s4 2 4 5"/></svg>同行者へ分配する</div>
       <div class="desc">
         TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会<br>
         登壇者：結川あさき(北条時行役)／矢野妃菜喜(吹雪役)／中村悠一(諏訪頼重役)<br>
-        お問合せ：ホットスタッフ・プロモーション 050-5211-6077(平日12:00〜18:00)
+        お問合せ：ホットスタッフ・プロモーション 050-5211-6077(平日12:00〜18:00)<br>
+        ※登壇者は、予告なく変更となる場合がございます。 ※開場・開演時間は変更となる可能性がございます。 ※雨天決行(天候により一時中断もしくは中止になる場合もございます。)。荒天中止(中止の場合は公式サイト及び公式Xにてお知らせします。)雨天の際、傘のご利用は他のお客様の視界を妨げる要因となるためレインコート等の用具をご使用ください。 ※ご来場時にご購入者の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえご来場ください。 ※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。
       </div>
       <div class="meta">
-        チケット番号: ${escapeHtml(s.refno)}<br>
-        イープラス ${escapeHtml(state.orderno)}
+        <div class="head">TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会</div>
+        ＜窓口固有の取扱状況＞<br>
+        イープラス 050-3185-6483
       </div>
+      <div class="meta">
+        チケット番号: ${escapeHtml(s.refno)}
+      </div>
+      <div class="backlink"><span>チケット裏面情報</span><span class="arrow">▾</span></div>
     </div>
   `).join("");
   body.innerHTML = `
     <div class="detail-date">
       <div class="year">${f.y}</div>
       <div class="big">
-        <span class="md">${f.md}</span><span class="dw">(${f.day})</span>
-        <span class="tm">${state.open} 開場  ${state.start} 開演</span>
+        <span class="mdwrap"><span class="md">${f.md}</span><span class="dw">(${f.day})</span></span>
+        <span class="times">${state.open} 開場<br>${state.start} 開演</span>
       </div>
       <div class="ev-title">${escapeHtml(state.title)}</div>
       <div class="venue">${escapeHtml(state.venue)}</div>
