@@ -186,19 +186,20 @@
   }
   .btn-pink-pill{
     background:var(--pink);color:#fff;border:none;
-    padding:12px 26px 12px 28px;font-size:15px;font-weight:700;
+    padding:12px 24px 12px 28px;font-size:15px;font-weight:700;
     cursor:pointer;position:relative;
-    border-radius:0 26px 26px 0;
-    margin-right:-14px;
+    border-radius:24px;
     box-shadow:0 1px 3px rgba(243,120,168,.35);
   }
   .btn-pink-pill::before{
+    /* 左下に小さく三角ノッチ(吹き出し風) */
     content:"";position:absolute;
-    left:-14px;top:0;bottom:0;width:28px;
-    background:var(--pink);
-    clip-path:polygon(50% 0, 100% 0, 100% 100%, 0 100%);
+    left:-8px;bottom:0;width:0;height:0;
+    border-style:solid;
+    border-width:0 0 14px 14px;
+    border-color:transparent transparent var(--pink) transparent;
+    filter:drop-shadow(0 1px 1px rgba(243,120,168,.25));
   }
-  .btn-pink-pill > *{position:relative;z-index:1;}
   .btn-pink-pill:active{background:var(--pink-dark);}
   .detail-body{flex:1;padding:18px 14px 90px;overflow-y:auto;background:#fff;}
   .detail-date{
@@ -236,7 +237,7 @@
     line-height:1.6;padding-top:12px;
   }
   .detail-date .ev-title{
-    margin-top:12px;font-size:15px;font-weight:500;line-height:1.5;color:#222;
+    margin-top:14px;font-size:16px;font-weight:500;line-height:1.55;color:#222;
   }
   .detail-date .venue{font-size:14px;color:var(--sub);margin-top:5px;}
 
@@ -309,13 +310,13 @@
     padding:8px 18px 14px;position:relative;
   }
   .detail-ticket .collapse{
-    position:absolute;right:14px;bottom:10px;
-    width:32px;height:32px;border-radius:50%;
+    position:absolute;right:14px;bottom:8px;
+    width:40px;height:40px;border-radius:50%;
     background:#5BB7F0;color:#fff;
     display:flex;align-items:center;justify-content:center;
-    font-size:18px;font-weight:900;cursor:pointer;border:none;
-    box-shadow:0 1px 3px rgba(0,0,0,.15);
-    line-height:1;padding:0 0 4px;
+    font-size:22px;font-weight:900;cursor:pointer;border:none;
+    box-shadow:0 2px 4px rgba(91,183,240,.4);
+    line-height:1;padding:0 0 5px;
   }
 
   /* ===== 入場（選択シート） ===== */
@@ -917,11 +918,11 @@ function escapeHtml(s){
 function renderDetail(){
   const f = fmtDateJP(state.date);
   const body = $("detailBody");
-  const distIcon = `<svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
-    <path d="M3 8 L17 8 Q17 5 19 5 Q21 5 21 8 L21 19 L3 19 Z" fill="rgba(243,120,168,.12)"/>
-    <line x1="3" y1="13" x2="21" y2="13" stroke-dasharray="1.5 1.5"/>
-    <path d="M14 4 L26 4 Q26 1.5 28 1.5 Q30 1.5 30 4 L30 14 L14 14" fill="rgba(243,120,168,.18)" transform="translate(0,1)"/>
-    <line x1="14" y1="9" x2="32" y2="9" stroke-dasharray="1.5 1.5" transform="translate(0,1)"/>
+  const distIcon = `<svg viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+    <rect x="2" y="9" width="22" height="14" rx="2" fill="rgba(243,120,168,.18)"/>
+    <line x1="18" y1="10" x2="18" y2="22" stroke-dasharray="1.5 1.5"/>
+    <rect x="14" y="3" width="22" height="14" rx="2" fill="rgba(243,120,168,.25)"/>
+    <line x1="30" y1="4" x2="30" y2="16" stroke-dasharray="1.5 1.5"/>
   </svg>`;
   const ticketsHtml = state.seats.map((s,i)=>`
     <div class="detail-ticket">
