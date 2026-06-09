@@ -6,15 +6,19 @@
 <title>EPLUS スマチケ モック</title>
 <style>
   :root{
-    --pink:#E5478E;
-    --pink-dark:#C5337A;
-    --pink-soft:#F0CCDA;
-    --pink-bg:#FDF1F6;
-    --teal:#2BB5BA;
-    --teal-dark:#1F8E92;
-    --navy:#1A3FA8;
-    --navy-dark:#102A78;
-    --yellow:#FFEB3B;
+    --pink:#F378A8;
+    --pink-deep:#E5478E;
+    --pink-dark:#D14B85;
+    --pink-soft:#F4D2DF;
+    --pink-bg:#FDEEF5;
+    --teal:#3B919D;
+    --teal-dark:#2A6E78;
+    --navy:#00449F;
+    --navy-dark:#003278;
+    --yellow:#FFEB1A;
+    --yellow-warn:#FFEC3F;
+    --gate-cyan:#00A8FF;
+    --gate-green:#8AB974;
     --yellow-soft:#FFFDE7;
     --text:#212121;
     --sub:#757575;
@@ -25,10 +29,11 @@
     --red:#D32F2F;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif;color:var(--text);background:#000;font-size:14px;line-height:1.5;}
+  html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif;color:var(--text);background:#000;font-size:15px;line-height:1.5;}
   body{display:flex;justify-content:center;min-height:100vh;}
+  /* iPhone 15 Pro Max: 430 x 932 CSS px */
   .device{
-    width:100%;max-width:420px;min-height:100vh;
+    width:100%;max-width:430px;min-height:100vh;
     background:#fff;position:relative;overflow:hidden;
     display:flex;flex-direction:column;
   }
@@ -43,8 +48,8 @@
     display:flex;padding:8px 12px 0;gap:14px;justify-content:center;
   }
   .home-header .tabs button{
-    background:none;border:none;color:var(--sub);font-size:13px;
-    padding:8px 4px 10px;cursor:pointer;font-weight:500;
+    background:none;border:none;color:var(--sub);font-size:14px;
+    padding:10px 4px 12px;cursor:pointer;font-weight:500;
     border-bottom:3px solid transparent;
   }
   .home-header .tabs button.active{
@@ -54,15 +59,15 @@
     display:flex;padding:0 16px;border-bottom:1px solid var(--line);background:#fff;
   }
   .home-header .subtabs button{
-    flex:1;background:none;border:none;color:var(--sub);font-size:13px;
-    padding:10px 0;cursor:pointer;
+    flex:1;background:none;border:none;color:var(--sub);font-size:14px;
+    padding:12px 0;cursor:pointer;
     border-bottom:2px solid transparent;margin-bottom:-1px;
   }
   .home-header .subtabs button.active{
     color:var(--pink);border-bottom-color:var(--pink);font-weight:700;
   }
   .home-header .top-icons{
-    background:var(--pink);height:6px;
+    background:var(--pink);height:10px;
   }
   .config-gear{display:none;}
 
@@ -70,8 +75,8 @@
   .list-area{flex:1;padding:14px 12px 80px;background:var(--bg);overflow-y:auto;}
   .pill-label{
     text-align:center;background:var(--pink);color:#fff;
-    border-radius:18px;padding:8px 16px;font-size:13px;font-weight:700;
-    margin:4px auto 14px;display:inline-block;
+    border-radius:22px;padding:10px 22px;font-size:14px;font-weight:700;
+    margin:6px auto 16px;display:inline-block;
   }
   .pill-wrap{text-align:center;}
   .ticket-card{
@@ -81,170 +86,227 @@
     position:relative;
   }
   .ticket-card .ribbon{
-    position:absolute;top:8px;left:8px;z-index:2;
-    background:var(--pink);color:#fff;font-size:11px;font-weight:700;
-    padding:3px 10px;border-radius:3px;letter-spacing:.05em;
+    position:absolute;top:10px;left:10px;z-index:2;
+    background:var(--pink);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 12px;border-radius:3px;letter-spacing:.05em;
   }
   .ticket-card .poster{
-    width:100%;height:140px;background:#222;
-    background-image:linear-gradient(135deg,#3a1a4a 0%,#7a1c5a 50%,#c2185b 100%);
+    width:100%;height:180px;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 35%, #FFB8D8 0%, #E48BB6 18%, transparent 55%),
+      radial-gradient(ellipse 30% 40% at 25% 45%, #F39ECE 0%, transparent 60%),
+      radial-gradient(ellipse 35% 45% at 78% 50%, #DD7AAE 0%, transparent 55%),
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.35) 0, transparent 8%),
+      radial-gradient(circle at 60% 25%, rgba(255,255,255,.4) 0, transparent 6%),
+      radial-gradient(circle at 70% 35%, rgba(255,255,255,.35) 0, transparent 7%),
+      linear-gradient(180deg, #C76BA3 0%, #B45A92 60%, #8A4070 100%);
     background-size:cover;background-position:center;
     position:relative;display:flex;align-items:flex-end;justify-content:center;
-    color:#fff;
+    color:#fff;overflow:hidden;
   }
   .ticket-card .poster::before{
-    content:"";position:absolute;inset:0;
+    /* Stage figures (small silhouettes) */
+    content:"";position:absolute;
+    left:55%;top:35%;width:18%;height:30%;
     background:
-      radial-gradient(circle at 30% 80%,rgba(255,200,255,.4) 0,transparent 30%),
-      radial-gradient(circle at 70% 60%,rgba(180,220,255,.3) 0,transparent 30%);
+      radial-gradient(ellipse 30% 50% at 25% 50%, rgba(0,0,0,.55) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 50% at 75% 50%, rgba(0,0,0,.55) 0%, transparent 70%);
   }
   .ticket-card .poster .silhouette{
-    position:relative;width:100%;height:100%;
-    background-image:
-      radial-gradient(ellipse at 20% 100%,rgba(0,0,0,.6) 0,transparent 25%),
-      radial-gradient(ellipse at 40% 100%,rgba(0,0,0,.7) 0,transparent 22%),
-      radial-gradient(ellipse at 60% 100%,rgba(0,0,0,.6) 0,transparent 24%),
-      radial-gradient(ellipse at 80% 100%,rgba(0,0,0,.7) 0,transparent 23%),
-      radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.7) 0,transparent 26%);
+    position:absolute;left:0;right:0;bottom:0;height:60%;
+    background:
+      /* Raised hand silhouettes (left to right) */
+      radial-gradient(ellipse 1.2% 12% at 5% 92%, #000 0 80%, transparent 82%),
+      radial-gradient(ellipse 1.4% 18% at 10% 95%, #000 0 75%, transparent 78%),
+      radial-gradient(ellipse 1.5% 22% at 15% 90%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 16% at 19% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.6% 24% at 24% 90%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 14% at 28% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.5% 20% at 33% 92%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.4% 18% at 38% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 15% at 43% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.6% 26% at 48% 88%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.4% 18% at 53% 94%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.5% 22% at 58% 90%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 16% at 62% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.4% 20% at 67% 92%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.6% 24% at 72% 89%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 14% at 77% 95%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.5% 20% at 82% 92%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.4% 18% at 87% 94%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.5% 22% at 92% 91%, #000 0 78%, transparent 80%),
+      radial-gradient(ellipse 1.3% 14% at 96% 95%, #000 0 78%, transparent 80%),
+      /* Bottom crowd silhouette mass */
+      linear-gradient(180deg, transparent 60%, rgba(0,0,0,.55) 85%, rgba(0,0,0,.85) 100%);
   }
-  .ticket-card .info{padding:12px 14px;}
-  .ticket-card .year{font-size:12px;color:var(--sub);}
+  .ticket-card .info{padding:14px 16px;}
+  .ticket-card .year{font-size:13px;color:var(--sub);}
   .ticket-card .date{
-    font-size:18px;font-weight:700;color:var(--pink);margin:2px 0 6px;
+    font-size:22px;font-weight:700;color:var(--pink-deep);margin:3px 0 8px;
   }
-  .ticket-card .date .day{font-size:13px;}
-  .ticket-card .date .time{color:#222;margin-left:6px;font-size:14px;}
-  .ticket-card .title{font-size:14px;font-weight:600;line-height:1.4;}
-  .ticket-card .venue{font-size:12px;color:var(--sub);margin-top:4px;}
+  .ticket-card .date .day{font-size:15px;}
+  .ticket-card .date .time{color:#222;margin-left:8px;font-size:15px;}
+  .ticket-card .title{font-size:15px;font-weight:600;line-height:1.45;}
+  .ticket-card .venue{font-size:13px;color:var(--sub);margin-top:5px;}
   .ticket-card .cta{
     background:var(--pink);color:#fff;text-align:center;
-    padding:10px;font-size:13px;font-weight:700;
+    padding:13px;font-size:14px;font-weight:700;
     display:flex;align-items:center;justify-content:center;gap:8px;
   }
-  .ticket-card .cta::after{content:"›";font-size:18px;}
+  .ticket-card .cta::after{content:"›";font-size:20px;}
 
   /* カード下の3アイコン行 */
   .action-icons{
     display:flex;justify-content:space-around;
     background:#fff;border-radius:8px;
     box-shadow:0 1px 3px rgba(0,0,0,.08);
-    padding:10px 4px;margin-bottom:14px;
+    padding:14px 4px 12px;margin-bottom:14px;
   }
   .action-icons .item{
     flex:1;display:flex;flex-direction:column;align-items:center;
-    gap:4px;font-size:10px;color:var(--text);text-align:center;
-    cursor:pointer;line-height:1.3;
+    gap:6px;font-size:11px;color:var(--text);text-align:center;
+    cursor:pointer;line-height:1.35;
   }
   .action-icons .item .ic{
-    width:32px;height:32px;border:1.5px solid var(--pink);
+    width:40px;height:40px;border:1.6px solid var(--pink);
     border-radius:50%;color:var(--pink);
     display:flex;align-items:center;justify-content:center;
-    font-size:14px;background:#fff;
+    font-size:18px;background:#fff;
   }
 
   /* ===== 詳細画面 ===== */
   .detail-header{
-    background:#fff;padding:10px 12px;border-bottom:1px solid var(--line);
+    background:#fff;padding:12px 14px;border-bottom:1px solid var(--line);
     display:flex;align-items:center;justify-content:space-between;
     position:sticky;top:0;z-index:5;
   }
   .detail-header .back{
-    background:none;border:none;font-size:20px;color:var(--sub);
-    padding:4px 8px;cursor:pointer;
+    background:none;border:none;font-size:24px;color:var(--sub);
+    padding:4px 10px;cursor:pointer;line-height:1;
   }
   .btn-pink-pill{
     background:var(--pink);color:#fff;border:none;
-    padding:8px 16px;border-radius:18px;font-size:13px;font-weight:700;
+    padding:11px 22px;border-radius:24px 24px 24px 4px;font-size:14px;font-weight:700;
     cursor:pointer;
-    box-shadow:0 1px 2px rgba(233,30,99,.3);
+    box-shadow:0 1px 3px rgba(243,120,168,.35);
+    position:relative;
   }
   .btn-pink-pill:active{background:var(--pink-dark);}
-  .detail-body{flex:1;padding:18px 16px 80px;overflow-y:auto;background:#fff;}
-  .detail-date{margin-bottom:18px;}
-  .detail-date .year{font-size:12px;color:var(--sub);margin-bottom:2px;}
+  .detail-body{flex:1;padding:18px 14px 90px;overflow-y:auto;background:#fff;}
+  .detail-date{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 18px 16px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+    position:relative;
+    margin-bottom:18px;
+  }
+  .detail-date .kebab{
+    position:absolute;top:14px;right:14px;
+    width:28px;height:28px;border-radius:50%;
+    background:#F3F3F5;border:none;color:#888;
+    font-size:18px;font-weight:900;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    line-height:1;padding:0 0 6px;
+  }
+  .detail-date .year{font-size:13px;color:var(--sub);margin-bottom:3px;}
   .detail-date .big{
-    display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+    display:flex;align-items:flex-start;gap:14px;
   }
   .detail-date .big .mdwrap{
     display:flex;align-items:baseline;line-height:1;
   }
   .detail-date .big .md{
-    font-size:32px;color:var(--pink);font-weight:700;letter-spacing:-.01em;
+    font-size:38px;color:var(--pink-deep);font-weight:700;letter-spacing:-.01em;
   }
   .detail-date .big .dw{
-    font-size:14px;color:var(--pink);font-weight:700;margin-left:2px;
+    font-size:16px;color:var(--pink-deep);font-weight:700;margin-left:2px;
   }
   .detail-date .big .times{
-    text-align:left;font-size:13px;color:#222;font-weight:500;
-    line-height:1.5;padding-top:8px;
+    text-align:left;font-size:14px;color:#222;font-weight:500;
+    line-height:1.55;padding-top:8px;
   }
   .detail-date .ev-title{
-    margin-top:10px;font-size:13.5px;font-weight:500;line-height:1.45;color:#222;
+    margin-top:10px;font-size:14.5px;font-weight:500;line-height:1.5;color:#222;
   }
-  .detail-date .venue{font-size:12px;color:var(--sub);margin-top:4px;}
+  .detail-date .venue{font-size:13px;color:var(--sub);margin-top:4px;}
 
   .detail-ticket{
-    border-top:1px solid var(--line);padding:16px 0 18px;position:relative;
+    position:relative;margin-bottom:16px;
+    border-radius:10px;overflow:hidden;
+    background:var(--pink-bg);
   }
   .detail-ticket .buyer{
+    background:var(--pink);color:#fff;
     display:flex;justify-content:space-between;align-items:center;
-    font-weight:700;font-size:15px;margin-bottom:14px;
-    padding-left:10px;position:relative;
-  }
-  .detail-ticket .buyer::before{
-    content:"";position:absolute;left:0;top:1px;bottom:1px;width:3px;
-    background:var(--pink);border-radius:2px;
+    font-weight:700;font-size:17px;
+    padding:14px 18px;
   }
   .detail-ticket .buyer .idx{
-    font-size:11px;color:var(--sub);font-weight:500;
+    font-size:12px;color:#fff;font-weight:500;opacity:.95;
   }
   .detail-ticket .row{
-    display:flex;gap:18px;align-items:center;padding:4px 0 6px;
+    display:flex;gap:18px;align-items:center;padding:18px 18px 6px;
   }
   .ticket-icon{
-    width:70px;height:88px;flex-shrink:0;position:relative;
+    width:88px;height:104px;flex-shrink:0;position:relative;
     display:flex;align-items:flex-start;justify-content:center;
   }
   .ticket-icon .stub{
-    width:64px;height:64px;background:var(--pink);border-radius:50%;
+    width:80px;height:80px;background:var(--pink-deep);border-radius:50%;
     position:relative;
     display:flex;align-items:center;justify-content:center;
   }
-  .ticket-icon .stub svg{width:38px;height:24px;display:block;}
+  .ticket-icon .stub svg{width:48px;height:30px;display:block;}
   .ticket-icon .lb{
     position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-    background:#FDEBF1;color:var(--pink);border:1px solid var(--pink);
-    font-size:10px;padding:2px 10px;border-radius:3px;white-space:nowrap;
+    background:#FDEBF1;color:var(--pink-deep);border:1px solid var(--pink-deep);
+    font-size:11px;padding:3px 12px;border-radius:3px;white-space:nowrap;
     font-weight:700;letter-spacing:.04em;
   }
-  .detail-ticket .seat{flex:1;line-height:1.5;}
-  .detail-ticket .seat .type{color:var(--pink);font-weight:700;font-size:13px;margin-bottom:2px;}
-  .detail-ticket .seat .blk{font-size:14px;font-weight:500;color:#222;}
-  .detail-ticket .seat .num{font-size:14px;font-weight:700;color:#222;}
-  .detail-ticket .seat .price{font-size:13px;font-weight:500;color:#222;margin-top:2px;}
+  .detail-ticket .seat{flex:1;line-height:1.55;}
+  .detail-ticket .seat .type{color:var(--pink-deep);font-weight:700;font-size:15px;margin-bottom:4px;}
+  .detail-ticket .seat .blk{font-size:15px;font-weight:500;color:#222;}
+  .detail-ticket .seat .num{font-size:16px;font-weight:700;color:#222;}
+  .detail-ticket .seat .price{font-size:14px;font-weight:500;color:#222;margin-top:3px;}
   .detail-ticket .dist{
-    margin:16px 0 0;padding:12px;text-align:center;
-    border:1px solid var(--pink);color:var(--pink);border-radius:4px;
-    font-size:14px;font-weight:600;background:#fff;cursor:pointer;
+    margin:14px 18px 0;padding:12px;text-align:center;
+    color:var(--pink);
+    font-size:15px;font-weight:600;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:10px;
+    background:transparent;
   }
-  .detail-ticket .dist svg{width:22px;height:16px;flex-shrink:0;}
+  .detail-ticket .dist svg{width:30px;height:22px;flex-shrink:0;}
   .detail-ticket .desc{
-    font-size:11px;color:#333;line-height:1.75;margin-top:14px;
-    background:var(--pink-bg);padding:12px 13px;border-radius:4px;
+    font-size:12px;color:#333;line-height:1.85;
+    background:var(--pink-bg);padding:14px 18px 12px;
+    border-top:1px dashed var(--pink-soft);margin-top:8px;
   }
   .detail-ticket .meta{
-    font-size:11.5px;color:#555;margin-top:10px;line-height:1.8;
+    font-size:12.5px;color:#444;line-height:1.85;
+    padding:0 18px;background:var(--pink-bg);
   }
-  .detail-ticket .meta .head{font-weight:700;color:#222;margin-bottom:2px;font-size:12px;}
+  .detail-ticket .meta .head{font-weight:700;color:#222;margin-bottom:2px;font-size:13px;margin-top:8px;}
   .detail-ticket .backlink{
-    display:flex;align-items:center;justify-content:flex-end;gap:4px;
-    margin-top:10px;color:var(--pink);font-size:13px;font-weight:600;cursor:pointer;
+    display:inline-flex;align-items:center;gap:4px;
+    padding:8px 18px 6px;color:#0099E3;font-size:14px;font-weight:600;cursor:pointer;
+    background:var(--pink-bg);
   }
-  .detail-ticket .backlink .arrow{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:18px;height:18px;border-radius:50%;background:var(--pink);color:#fff;
-    font-size:10px;font-weight:900;
+  .detail-ticket .backlink::after{content:"›";font-size:18px;line-height:1;margin-left:2px;font-weight:900;}
+  .detail-ticket .refno{
+    background:var(--pink-bg);
+    color:#0099E3;font-size:13px;font-weight:600;
+    padding:8px 18px 14px;position:relative;
+  }
+  .detail-ticket .collapse{
+    position:absolute;right:14px;bottom:10px;
+    width:32px;height:32px;border-radius:50%;
+    background:#5BB7F0;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:900;cursor:pointer;border:none;
+    box-shadow:0 1px 3px rgba(0,0,0,.15);
+    line-height:1;padding:0 0 4px;
   }
 
   /* ===== 入場（選択シート） ===== */
@@ -255,7 +317,7 @@
   }
   .sheet-overlay.show{display:flex;}
   .sheet{
-    width:100%;max-width:420px;height:100%;background:#fff;
+    width:100%;max-width:430px;height:100%;background:#fff;
     display:flex;flex-direction:column;
     animation:slideUp .3s ease;
   }
@@ -265,48 +327,48 @@
   }
   .sheet-header{
     display:flex;justify-content:space-between;align-items:center;
-    padding:12px 16px;border-bottom:1px solid var(--line);background:#fff;
+    padding:14px 18px;border-bottom:1px solid var(--line);background:#fff;
   }
   .sheet-header{transition:opacity .2s, max-height .2s;}
   .sheet-header.hidden-during-gate{
     opacity:0;max-height:0;padding:0;border:0;overflow:hidden;
   }
   .sheet-header .cnt{
-    font-size:15px;color:#666;font-weight:500;
+    font-size:16px;color:#666;font-weight:500;
   }
-  .sheet-header .cnt b{color:var(--pink);font-weight:700;}
+  .sheet-header .cnt b{color:var(--pink-deep);font-weight:700;}
   .sheet-header .x{
-    background:none;border:none;font-size:22px;color:var(--sub);cursor:pointer;
-    padding:0 4px;
+    background:none;border:none;font-size:26px;color:var(--sub);cursor:pointer;
+    padding:0 6px;line-height:1;
   }
   .ts-banner{
     background:var(--teal);color:#fff;text-align:center;
-    padding:10px;font-size:15px;font-weight:600;
+    padding:12px;font-size:16px;font-weight:600;
     font-family:"SF Mono","Consolas","Menlo",monospace;
     letter-spacing:.04em;
   }
   .sheet-body{flex:1;overflow-y:auto;background:var(--bg);padding:0;}
   .ev-card{
-    background:#fff;margin:10px 12px 0;border-radius:6px;
-    padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);
+    background:#fff;margin:12px 14px 0;border-radius:6px;
+    padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.05);
   }
   .ev-card .head{
-    display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
   }
   .ev-card .md-big{
-    font-size:30px;font-weight:700;line-height:1.1;
+    font-size:36px;font-weight:700;line-height:1.1;color:#222;
   }
-  .ev-card .md-big .dw{font-size:14px;font-weight:700;}
-  .ev-card .times{font-size:13px;text-align:right;padding-top:6px;}
-  .ev-card .times div{margin:1px 0;}
+  .ev-card .md-big .dw{font-size:16px;font-weight:700;}
+  .ev-card .times{font-size:14px;text-align:right;padding-top:8px;}
+  .ev-card .times div{margin:2px 0;}
   .ev-card .stars{
     display:flex;justify-content:space-around;align-items:center;
-    margin:10px 0 6px;padding:0 30px;
+    margin:12px 0 8px;padding:0 32px;
   }
   .ev-card .star{
     display:inline-flex;align-items:center;justify-content:center;
-    width:38px;height:38px;background:#7ED321;border-radius:50%;
-    color:#fff;font-size:22px;font-weight:900;
+    width:44px;height:44px;background:#7ED321;border-radius:50%;
+    color:#fff;font-size:26px;font-weight:900;
     flex-shrink:0;
     box-shadow:0 1px 3px rgba(0,0,0,.15);
     user-select:none;-webkit-user-select:none;touch-action:none;
@@ -324,22 +386,22 @@
     0%,100%{transform:scale(1);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 0 rgba(126,211,33,.5);}
     50%{transform:scale(1.06);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 8px rgba(126,211,33,0);}
   }
-  .ev-card .venue{font-size:12px;color:#333;margin-top:4px;}
-  .ev-card .ev-title{font-size:12px;color:#333;margin-top:2px;line-height:1.4;}
+  .ev-card .venue{font-size:13px;color:#333;margin-top:6px;}
+  .ev-card .ev-title{font-size:13px;color:#333;margin-top:2px;line-height:1.45;}
 
   .sel-card{
-    background:#fff;margin:10px 12px 0;border-radius:6px;
+    background:#fff;margin:12px 14px 0;border-radius:6px;
     padding:0;cursor:pointer;
     transition:background .15s, color .15s;
     box-shadow:0 1px 2px rgba(0,0,0,.05);
     overflow:hidden;
   }
   .sel-card.selected{
-    background:var(--pink);color:#fff;
+    background:var(--pink-deep);color:#fff;
   }
   .sel-card .buyer{
-    font-weight:700;font-size:14px;color:#222;
-    padding:10px 14px 8px;
+    font-weight:700;font-size:15px;color:#222;
+    padding:12px 16px 10px;
     border-bottom:1px dashed var(--pink-soft);
   }
   .sel-card.selected .buyer{
@@ -348,140 +410,151 @@
     border-bottom:1px dashed rgba(255,255,255,.6);
   }
   .sel-card .body{
-    display:flex;align-items:center;gap:18px;
-    padding:14px 16px;
+    display:flex;align-items:center;gap:20px;
+    padding:16px 18px;
   }
   .sel-card .check{
-    width:54px;height:54px;border-radius:50%;border:3px solid #F0CCDA;
+    width:60px;height:60px;border-radius:50%;border:3px solid #F0CCDA;
     background:#fff;color:#F0CCDA;
-    display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;
     flex-shrink:0;
     transition:all .15s;
   }
   .sel-card.selected .check{
-    background:#fff;color:var(--pink);border-color:#fff;
+    background:#fff;color:var(--pink-deep);border-color:#fff;
   }
-  .sel-card .seat .type{color:var(--pink);font-weight:700;font-size:15px;line-height:1.4;}
+  .sel-card .seat .type{color:var(--pink-deep);font-weight:700;font-size:15px;line-height:1.45;}
   .sel-card.selected .seat .type{color:#fff;}
-  .sel-card .seat .blk{font-size:14px;font-weight:600;color:#222;line-height:1.4;}
+  .sel-card .seat .blk{font-size:14px;font-weight:600;color:#222;line-height:1.45;}
   .sel-card.selected .seat .blk{color:#fff;}
-  .sel-card .seat .num{font-size:15px;font-weight:700;color:var(--pink);line-height:1.4;}
+  .sel-card .seat .num{font-size:15px;font-weight:700;color:var(--pink-deep);line-height:1.45;}
   .sel-card.selected .seat .num{color:#fff;}
 
   /* ===== GATE スライド ===== */
   .warn-banner{
-    background:var(--yellow);color:var(--red);text-align:center;
-    padding:10px;font-size:13px;font-weight:700;line-height:1.5;
+    background:var(--yellow-warn);color:var(--red);text-align:center;
+    padding:14px;font-size:15px;font-weight:700;line-height:1.5;
   }
   .gate-area{
-    background:var(--navy);margin:10px 12px 0;border-radius:6px;
-    height:110px;position:relative;overflow:hidden;
-    display:flex;align-items:center;
+    background:var(--gate-green);
+    margin:12px 14px 0;border-radius:6px;
+    height:145px;position:relative;overflow:hidden;
     cursor:grab;touch-action:none;user-select:none;
-    border-left:10px solid #7ED321;
-    border-right:14px solid var(--teal);
-    transition:background .15s;
+    transition:background .2s;
+  }
+  .gate-area::after{
+    /* 右側固定の teal セクション (常時表示) */
+    content:"";position:absolute;top:0;right:0;bottom:0;width:12%;
+    background:var(--teal);z-index:1;
+  }
+  .gate-bar{
+    position:absolute;top:0;left:0;bottom:0;width:88%;
+    background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    z-index:2;
+    transition:transform .2s ease;
+    will-change:transform;
   }
   .gate-area:active{cursor:grabbing;}
   .gate-area.morphing{
     transition:all .3s ease;
-    height:120px;background:var(--pink);border-color:var(--pink);
+    height:150px;background:var(--pink-deep);
   }
-  .gate-reveal-l{
-    position:absolute;top:0;left:0;bottom:0;width:0;
-    background:#7ED321;z-index:2;pointer-events:none;
-    transition:background .1s;
-  }
-  .gate-reveal-r{
-    position:absolute;top:0;right:0;bottom:0;width:0;
-    background:var(--teal);z-index:2;pointer-events:none;
-    transition:background .1s;
+  .gate-area.morphing::after{background:var(--pink-deep);}
+  .gate-area.morphing .gate-bar{
+    transform:translateX(0) !important;
+    background:var(--pink-deep);
   }
   .gate-content{
-    flex:1;display:flex;align-items:center;justify-content:center;
-    color:#7DD3FC;font-size:42px;font-weight:900;letter-spacing:.08em;
+    color:var(--gate-cyan);font-size:52px;font-weight:900;
+    letter-spacing:.06em;
     font-family:Impact,"Arial Black",sans-serif;
-    text-shadow:0 0 12px rgba(125,211,252,.7);
-    position:relative;z-index:1;
+    -webkit-text-stroke:1.8px var(--gate-cyan);
+    text-shadow:0 0 8px rgba(0,148,228,.5);
+    position:relative;z-index:2;line-height:1;
   }
   .gate-arrows-l, .gate-arrows-r{
-    position:absolute;color:var(--yellow);font-size:32px;font-weight:900;
-    animation:arrowPulse 1s ease-in-out infinite;
-    z-index:1;letter-spacing:-4px;
+    position:absolute;display:flex;gap:2px;
+    z-index:3;line-height:1;
     transition:opacity .2s;
+    animation:arrowPulse 1s ease-in-out infinite alternate;
   }
-  .gate-arrows-l{left:22px;}
-  .gate-arrows-r{right:24px;}
+  .gate-arrows-l svg, .gate-arrows-r svg{
+    width:18px;height:24px;display:block;
+    fill:var(--yellow);
+    filter:drop-shadow(0 0 1px rgba(0,0,0,.2));
+  }
+  .gate-arrows-l{left:20px;top:50%;transform:translateY(-50%);}
+  .gate-arrows-r{right:22px;top:50%;transform:translateY(-50%);}
   .gate-area.touching .gate-arrows-l,
   .gate-area.touching .gate-arrows-r{opacity:0;animation:none;}
   @keyframes arrowPulse{
-    0%,100%{opacity:.65;transform:translateX(0);}
-    50%{opacity:1;transform:translateX(-6px);}
+    0%{opacity:.55;}
+    100%{opacity:1;}
   }
   .gate-success-text{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    color:#fff;font-size:22px;font-weight:700;z-index:4;
+    color:#fff;font-size:24px;font-weight:700;z-index:4;
     opacity:0;transition:opacity .25s;
     letter-spacing:.04em;
+    pointer-events:none;
   }
   .gate-area.morphing .gate-content,
   .gate-area.morphing .gate-arrows-l,
-  .gate-area.morphing .gate-arrows-r,
-  .gate-area.morphing .gate-reveal-l,
-  .gate-area.morphing .gate-reveal-r{opacity:0;}
+  .gate-area.morphing .gate-arrows-r{opacity:0;}
   .gate-area.morphing .gate-success-text{opacity:1;}
 
   /* ===== 使用後 ===== */
   .used-banner-pink{
-    background:var(--pink);color:#fff;text-align:center;
-    padding:30px 14px;font-size:20px;font-weight:700;
-    margin:10px 12px 0;border-radius:6px;
+    background:var(--pink-deep);color:#fff;text-align:center;
+    padding:34px 14px;font-size:22px;font-weight:700;
+    margin:12px 14px 0;border-radius:6px;
     animation:fadeIn .4s ease;
     letter-spacing:.02em;
   }
   @keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;}}
   .used-card{
-    background:#F5F5F5;margin:10px 12px 0;border-radius:6px;
+    background:#F5F5F5;margin:12px 14px 0;border-radius:6px;
     position:relative;overflow:hidden;
   }
   .used-card .buyer{
-    background:var(--pink);color:#fff;font-weight:700;font-size:14px;
-    padding:8px 14px;
+    background:var(--pink-deep);color:#fff;font-weight:700;font-size:15px;
+    padding:10px 16px;
   }
   .used-card .body{
-    display:flex;align-items:center;gap:16px;
-    padding:14px 16px;position:relative;
+    display:flex;align-items:center;gap:18px;
+    padding:16px 18px;position:relative;
   }
   .used-card .icon{
-    width:54px;height:46px;background:#fff;border:1px solid #BBB;border-radius:4px;
+    width:62px;height:52px;background:#fff;border:1px solid #BBB;border-radius:4px;
     color:#555;display:flex;align-items:center;justify-content:center;
-    font-size:24px;position:relative;flex-shrink:0;
+    font-size:28px;position:relative;flex-shrink:0;
   }
   .used-card .icon::before{
-    content:"💺";font-size:26px;filter:grayscale(1) brightness(.7);
+    content:"💺";font-size:30px;filter:grayscale(1) brightness(.7);
   }
   .used-card .icon .badge{
-    position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);
+    position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
     background:#fff;border:1px solid #999;color:#666;
-    font-size:9px;padding:1px 5px;border-radius:2px;white-space:nowrap;
+    font-size:10px;padding:1px 6px;border-radius:2px;white-space:nowrap;
     font-weight:600;
   }
   .used-card .seat{flex:1;}
-  .used-card .seat .type{font-size:14px;color:#666;font-weight:700;}
-  .used-card .seat .blk{font-size:13px;color:#666;}
-  .used-card .seat .num{font-size:14px;font-weight:700;color:#666;}
+  .used-card .seat .type{font-size:15px;color:#666;font-weight:700;}
+  .used-card .seat .blk{font-size:14px;color:#666;}
+  .used-card .seat .num{font-size:15px;font-weight:700;color:#666;}
   .used-card .stamp{
-    position:absolute;top:50%;right:14px;transform:translateY(-50%) rotate(-8deg);
+    position:absolute;top:50%;right:16px;transform:translateY(-50%) rotate(-8deg);
     border:3px solid var(--red);color:var(--red);
-    padding:5px 14px 3px;border-radius:3px;
-    font-size:20px;font-weight:900;letter-spacing:.15em;
+    padding:6px 16px 4px;border-radius:3px;
+    font-size:22px;font-weight:900;letter-spacing:.15em;
     font-family:"YuMincho","Yu Mincho","ヒラギノ明朝 ProN","Hiragino Mincho ProN",serif;
     background:rgba(255,255,255,.9);
     line-height:1;
   }
   .used-card .when{
-    font-size:11px;color:#666;
-    padding:0 16px 12px;
+    font-size:12px;color:#666;
+    padding:0 18px 14px;
   }
 
   /* ===== 設定モーダル ===== */
@@ -542,21 +615,21 @@
   /* ===== ボトムタブ ===== */
   .tabbar{
     position:fixed;bottom:0;left:0;right:0;
-    max-width:420px;margin:0 auto;
+    max-width:430px;margin:0 auto;
     background:#fff;display:flex;border-top:1px solid var(--line);
     z-index:6;
   }
   .tabbar button{
-    flex:1;padding:8px 4px 6px;background:none;border:none;
-    font-size:10px;color:var(--sub);cursor:pointer;
+    flex:1;padding:10px 4px 8px;background:none;border:none;
+    font-size:11px;color:var(--sub);cursor:pointer;
     position:relative;
   }
-  .tabbar button .ic{display:block;font-size:18px;margin-bottom:2px;}
+  .tabbar button .ic{display:block;font-size:22px;margin-bottom:3px;}
   .tabbar button.active{color:var(--pink);}
   .tabbar .badge{
-    position:absolute;top:4px;right:24%;
+    position:absolute;top:6px;right:22%;
     background:var(--pink);color:#fff;border-radius:10px;
-    font-size:9px;padding:1px 5px;
+    font-size:10px;padding:1px 6px;
   }
 
   .hidden{display:none !important;}
@@ -819,7 +892,7 @@ function renderList(){
     <div class="action-icons">
       <div class="item"><div class="ic">↻</div>チケット更新</div>
       <div class="item" id="actFaq"><div class="ic">?</div>よくある<br>ご質問</div>
-      <div class="item"><div class="ic">⇆</div>配信変更時の<br>チケット移行</div>
+      <div class="item"><div class="ic">⇆</div>機種変更時の<br>チケット移行</div>
     </div>
   `;
   $("theCard").onclick = ()=>openDetail();
@@ -835,6 +908,12 @@ function escapeHtml(s){
 function renderDetail(){
   const f = fmtDateJP(state.date);
   const body = $("detailBody");
+  const distIcon = `<svg viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M3 8 L17 8 Q17 5 19 5 Q21 5 21 8 L21 19 L3 19 Z" fill="rgba(243,120,168,.12)"/>
+    <line x1="3" y1="13" x2="21" y2="13" stroke-dasharray="1.5 1.5"/>
+    <path d="M14 4 L26 4 Q26 1.5 28 1.5 Q30 1.5 30 4 L30 14 L14 14" fill="rgba(243,120,168,.18)" transform="translate(0,1)"/>
+    <line x1="14" y1="9" x2="32" y2="9" stroke-dasharray="1.5 1.5" transform="translate(0,1)"/>
+  </svg>`;
   const ticketsHtml = state.seats.map((s,i)=>`
     <div class="detail-ticket">
       <div class="buyer">${escapeHtml(state.buyer)} 様 <span class="idx">${i+1}枚目</span></div>
@@ -850,26 +929,28 @@ function renderDetail(){
           <div class="price">${escapeHtml(state.price)}</div>
         </div>
       </div>
-      <div class="dist"><svg viewBox="0 0 26 18" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="5" r="2.4"/><circle cx="13" cy="4" r="2.2"/><circle cx="21" cy="5" r="2.4"/><path d="M1 16c0-3 1.8-5 4-5s4 2 4 5"/><path d="M9 16c0-2.7 1.7-4.5 4-4.5s4 1.8 4 4.5"/><path d="M17 16c0-3 1.8-5 4-5s4 2 4 5"/></svg>同行者へ分配する</div>
+      <div class="dist">${distIcon}同行者へ分配する</div>
       <div class="desc">
         TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会<br>
-        登壇者：結川あさき(北条時行役)／矢野妃菜喜(吹雪役)／中村悠一(諏訪頼重役)<br>
-        お問合せ：ホットスタッフ・プロモーション 050-5211-6077(平日12:00〜18:00)<br>
-        ※登壇者は、予告なく変更となる場合がございます。 ※開場・開演時間は変更となる可能性がございます。 ※雨天決行(天候により一時中断もしくは中止になる場合もございます。)。荒天中止(中止の場合は公式サイト及び公式Xにてお知らせします。)雨天の際、傘のご利用は他のお客様の視界を妨げる要因となるためレインコート等の用具をご使用ください。 ※ご来場時にご購入者の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえご来場ください。 ※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。
+        登壇者:結川あさき(北条時行役)/矢野妃菜喜(雫役)/中村悠一(諏訪頼重役)<br>
+        お問合せ:ホットスタッフ・プロモーション 050-5211-6077(平日12:00〜18:00)<br>
+        ※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行(天候により一時中断もしくは中止になる場合もございます。)、荒天中止(中止の場合は公式サイト及び公式Xにてお知らせします。)※雨天の際、傘の利用は他のお客様の視界を妨げる要因となりますので、レインコート等の雨具をご用意ください。※ご来場時にご購入者様の本人様確認をさせていただく場合がございますので、有効な身分証をご持参のうえお越しください。※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。
       </div>
       <div class="meta">
-        <div class="head">TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会</div>
-        ＜窓口固有の取扱状況＞<br>
+        <div class="head">TVアニメ『逃げ上手の若君』<br>鶴岡八幡宮プレミア上映会</div>
+        ＜営利目的の転売禁止＞<br>
         イープラス 050-3185-6483
       </div>
-      <div class="meta">
+      <div class="backlink">チケット裏面情報</div>
+      <div class="refno">
         チケット番号: ${escapeHtml(s.refno)}
+        <button class="collapse" title="折りたたむ">∧</button>
       </div>
-      <div class="backlink"><span>チケット裏面情報</span><span class="arrow">▾</span></div>
     </div>
   `).join("");
   body.innerHTML = `
     <div class="detail-date">
+      <button class="kebab">⋯</button>
       <div class="year">${f.y}</div>
       <div class="big">
         <span class="mdwrap"><span class="md">${f.md}</span><span class="dw">(${f.day})</span></span>
@@ -970,13 +1051,15 @@ function renderSheet(){
 
     if(sheetPhase === "gateActive"){
       // 全選択後の2点同時タップで起動: GATEバーをイベントカードの場所に
+      const arrowL = `<svg viewBox="0 0 14 22"><polygon points="14,0 0,11 14,22"/></svg>`;
+      const arrowR = `<svg viewBox="0 0 14 22"><polygon points="0,0 14,11 0,22"/></svg>`;
       mainHtml += `
         <div class="gate-area" id="gateArea">
-          <div class="gate-arrows-l">◀◀</div>
-          <div class="gate-content">GATE</div>
-          <div class="gate-arrows-r">▶▶</div>
-          <div class="gate-reveal-l" id="gateRevealL"></div>
-          <div class="gate-reveal-r" id="gateRevealR"></div>
+          <div class="gate-bar" id="gateBar">
+            <div class="gate-arrows-l">${arrowL}${arrowL}</div>
+            <div class="gate-content">GATE</div>
+            <div class="gate-arrows-r">${arrowR}${arrowR}</div>
+          </div>
           <div class="gate-success-text" id="gateSuccessText"></div>
         </div>
       `;
@@ -1128,30 +1211,28 @@ function activateGate(){
   renderSheet();
 }
 
-// ===== GATE スワイプ (右方向のみ・進行で色変化) =====
+// ===== GATE スワイプ (左右どちらもOK・NAVYバーを動かす) =====
 function initGateSlide(){
   const area = $("gateArea");
-  const revealL = $("gateRevealL");
-  if(!area || !revealL) return;
-  let dragging=false, startX=0, w=0;
+  const bar = $("gateBar");
+  if(!area || !bar) return;
+  let dragging=false, startX=0, w=0, maxRight=0, maxLeft=0;
 
   const getX = (e)=>{
     if(e.touches && e.touches.length) return e.touches[0].clientX;
     if(e.changedTouches && e.changedTouches.length) return e.changedTouches[0].clientX;
     return e.clientX;
   };
-  const colorFor = (ratio)=>{
-    // 0→0.55: 緑、0.55→0.85: 橙、0.85+: 赤
-    if(ratio < 0.55) return "#7ED321";
-    if(ratio < 0.85) return "#F09030";
-    return "#E94B6E";
-  };
 
   const start = (e)=>{
     dragging = true;
     startX = getX(e);
     w = area.clientWidth;
-    revealL.style.transition="";
+    // 右にスライドできる最大: バーが完全に右の teal の上に来るまで (= 14% of area)
+    maxRight = w * 0.86;
+    // 左にスライドできる最大: バーが左に完全に隠れるまで (バー幅 = 86% of area)
+    maxLeft = w * 0.86;
+    bar.style.transition="";
     area.classList.add("touching");
   };
   const move = (e)=>{
@@ -1159,16 +1240,15 @@ function initGateSlide(){
     if(e.cancelable) e.preventDefault();
     const x = getX(e);
     let dx = x - startX;
-    if(dx < 0) dx = 0; // 右方向のみ
-    if(dx > w) dx = w;
-    const ratio = dx / w;
-    revealL.style.width = dx + "px";
-    revealL.style.background = colorFor(ratio);
-    if(ratio >= 0.78){
+    if(dx > maxRight) dx = maxRight;
+    if(dx < -maxLeft) dx = -maxLeft;
+    bar.style.transform = `translateX(${dx}px)`;
+    const ratio = Math.abs(dx) / (w * 0.78);
+    if(ratio >= 1){
+      // 完了
       dragging = false;
-      revealL.style.transition="width .15s ease, background .15s";
-      revealL.style.width = w + "px";
-      revealL.style.background = "#E94B6E";
+      bar.style.transition="transform .15s ease";
+      bar.style.transform = `translateX(${dx>0?maxRight:-maxLeft}px)`;
       area.classList.remove("touching");
       triggerGate();
     }
@@ -1177,8 +1257,8 @@ function initGateSlide(){
     if(!dragging) return;
     dragging = false;
     area.classList.remove("touching");
-    revealL.style.transition="width .2s ease";
-    revealL.style.width = "0px";
+    bar.style.transition="transform .25s ease";
+    bar.style.transform = "translateX(0)";
   };
   area.addEventListener("mousedown",start);
   area.addEventListener("touchstart",start,{passive:false});
