@@ -186,11 +186,19 @@
   }
   .btn-pink-pill{
     background:var(--pink);color:#fff;border:none;
-    padding:11px 22px;border-radius:24px 24px 24px 4px;font-size:14px;font-weight:700;
-    cursor:pointer;
+    padding:12px 26px 12px 28px;font-size:15px;font-weight:700;
+    cursor:pointer;position:relative;
+    border-radius:0 26px 26px 0;
+    margin-right:-14px;
     box-shadow:0 1px 3px rgba(243,120,168,.35);
-    position:relative;
   }
+  .btn-pink-pill::before{
+    content:"";position:absolute;
+    left:-14px;top:0;bottom:0;width:28px;
+    background:var(--pink);
+    clip-path:polygon(50% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .btn-pink-pill > *{position:relative;z-index:1;}
   .btn-pink-pill:active{background:var(--pink-dark);}
   .detail-body{flex:1;padding:18px 14px 90px;overflow-y:auto;background:#fff;}
   .detail-date{
@@ -218,19 +226,19 @@
     display:flex;align-items:baseline;line-height:1;
   }
   .detail-date .big .md{
-    font-size:38px;color:var(--pink-deep);font-weight:700;letter-spacing:-.01em;
+    font-size:44px;color:var(--pink-deep);font-weight:700;letter-spacing:-.01em;
   }
   .detail-date .big .dw{
-    font-size:16px;color:var(--pink-deep);font-weight:700;margin-left:2px;
+    font-size:17px;color:var(--pink-deep);font-weight:700;margin-left:2px;
   }
   .detail-date .big .times{
-    text-align:left;font-size:14px;color:#222;font-weight:500;
-    line-height:1.55;padding-top:8px;
+    text-align:left;font-size:15px;color:#222;font-weight:500;
+    line-height:1.6;padding-top:12px;
   }
   .detail-date .ev-title{
-    margin-top:10px;font-size:14.5px;font-weight:500;line-height:1.5;color:#222;
+    margin-top:12px;font-size:15px;font-weight:500;line-height:1.5;color:#222;
   }
-  .detail-date .venue{font-size:13px;color:var(--sub);margin-top:4px;}
+  .detail-date .venue{font-size:14px;color:var(--sub);margin-top:5px;}
 
   .detail-ticket{
     position:relative;margin-bottom:16px;
@@ -238,13 +246,14 @@
     background:var(--pink-bg);
   }
   .detail-ticket .buyer{
-    background:var(--pink);color:#fff;
+    background:var(--pink-deep);color:#fff;
     display:flex;justify-content:space-between;align-items:center;
-    font-weight:700;font-size:17px;
-    padding:14px 18px;
+    font-weight:700;font-size:18px;
+    padding:16px 20px;
+    letter-spacing:.02em;
   }
   .detail-ticket .buyer .idx{
-    font-size:12px;color:#fff;font-weight:500;opacity:.95;
+    font-size:13px;color:#fff;font-weight:500;opacity:.95;
   }
   .detail-ticket .row{
     display:flex;gap:18px;align-items:center;padding:18px 18px 6px;
@@ -271,11 +280,11 @@
   .detail-ticket .seat .num{font-size:16px;font-weight:700;color:#222;}
   .detail-ticket .seat .price{font-size:14px;font-weight:500;color:#222;margin-top:3px;}
   .detail-ticket .dist{
-    margin:14px 18px 0;padding:12px;text-align:center;
-    color:var(--pink);
+    margin:14px 18px 0;padding:13px;text-align:center;
+    border:1.5px solid var(--pink);color:var(--pink);
+    border-radius:4px;background:#fff;
     font-size:15px;font-weight:600;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:10px;
-    background:transparent;
   }
   .detail-ticket .dist svg{width:30px;height:22px;flex-shrink:0;}
   .detail-ticket .desc{
