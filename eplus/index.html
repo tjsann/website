@@ -181,25 +181,26 @@
     position:sticky;top:0;z-index:5;
   }
   .detail-header .back{
-    background:none;border:none;font-size:24px;color:var(--sub);
+    background:none;border:none;color:#0099E3;
     padding:4px 10px;cursor:pointer;line-height:1;
+    display:flex;align-items:center;
   }
+  .detail-header .back svg{width:14px;height:24px;display:block;}
   .btn-pink-pill{
     background:var(--pink-deep);color:#fff;border:none;
-    padding:11px 30px 11px 22px;font-size:15px;font-weight:700;
+    padding:11px 14px 11px 22px;font-size:16px;font-weight:800;
     cursor:pointer;position:relative;
-    border-radius:22px 0 0 22px;
+    border-radius:24px 0 0 24px;
     box-shadow:0 1px 3px rgba(229,71,142,.35);
-    margin-right:14px;
+    margin-right:30px;letter-spacing:.04em;
   }
   .btn-pink-pill::after{
-    /* 右側に右向き三角矢印(タグ形状) */
+    /* 右側に右向き三角矢印(タグ形状) - 実機アセット同様の大きさ */
     content:"";position:absolute;
-    right:-14px;top:0;bottom:0;
-    width:14px;
+    right:-30px;top:0;bottom:0;
+    width:30px;
     background:var(--pink-deep);
     clip-path:polygon(0 0, 100% 50%, 0 100%);
-    filter:drop-shadow(1px 1px 1px rgba(229,71,142,.25));
   }
   .btn-pink-pill:active{background:var(--pink-dark);}
   .detail-body{flex:1;padding:18px 14px 90px;overflow-y:auto;background:#fff;}
@@ -238,7 +239,7 @@
     line-height:1.6;padding-top:14px;
   }
   .detail-date .ev-title{
-    margin-top:4px;font-size:15.5px;font-weight:500;line-height:1.55;color:#222;
+    margin-top:6px;font-size:17px;font-weight:500;line-height:1.5;color:#222;
   }
   .detail-date .venue{font-size:13px;color:var(--sub);margin-top:4px;}
 
@@ -292,9 +293,9 @@
   }
   .detail-ticket .dist svg{width:36px;height:30px;flex-shrink:0;}
   .detail-ticket .desc{
-    font-size:12px;color:#333;line-height:1.85;
+    font-size:12.5px;color:#333;line-height:1.85;
     background:var(--pink-bg);padding:14px 18px 12px;
-    border-top:1px dashed var(--pink-soft);margin-top:8px;
+    margin-top:8px;
   }
   .detail-ticket .meta{
     font-size:12.5px;color:#444;line-height:1.85;
@@ -315,10 +316,10 @@
   .detail-ticket .collapse{
     position:absolute;right:14px;bottom:8px;
     width:40px;height:40px;border-radius:50%;
-    background:#5BB7F0;color:#fff;
+    background:#0099E3;color:#fff;
     display:flex;align-items:center;justify-content:center;
     font-size:22px;font-weight:900;cursor:pointer;border:none;
-    box-shadow:0 2px 4px rgba(91,183,240,.4);
+    box-shadow:0 2px 4px rgba(0,153,227,.35);
     line-height:1;padding:0 0 5px;
   }
 
@@ -732,7 +733,7 @@
   <!-- ============== 詳細画面 ============== -->
   <div id="screenDetail" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
     <div class="detail-header">
-      <button class="back" id="btnBack">‹</button>
+      <button class="back" id="btnBack"><svg viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11,3 3,12 11,21"/></svg></button>
       <button class="btn-pink-pill" id="btnGoEntry">入場画面に進む</button>
     </div>
     <div class="detail-body" id="detailBody"></div>
@@ -921,14 +922,14 @@ function escapeHtml(s){
 function renderDetail(){
   const f = fmtDateJP(state.date);
   const body = $("detailBody");
-  const distIcon = `<svg viewBox="0 0 36 30" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <!-- ticket body -->
-    <rect x="2" y="12" width="22" height="16" rx="1.5"/>
+  const distIcon = `<svg viewBox="0 0 36 32" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ticket body (positioned to right-bottom of viewbox) -->
+    <rect x="12" y="14" width="22" height="16" rx="1.5"/>
     <!-- perforation -->
-    <line x1="17" y1="13" x2="17" y2="27" stroke-dasharray="1.5 1.5"/>
-    <!-- curved arrow going up-right from top of ticket -->
-    <path d="M13 12 Q13 4 22 4 L29 4" stroke-width="2"/>
-    <polyline points="25,1 29,4 25,7" stroke-width="2"/>
+    <line x1="27" y1="15" x2="27" y2="29" stroke-dasharray="1.5 1.5"/>
+    <!-- curved arrow going up-LEFT from top of ticket -->
+    <path d="M23 14 Q23 4 13 4 L5 4"/>
+    <polyline points="8,1 4,4 8,8"/>
   </svg>`;
   const ticketsHtml = state.seats.map((s,i)=>`
     <div class="detail-ticket">
