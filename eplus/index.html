@@ -213,6 +213,11 @@
     font-size:0;color:transparent;padding:0;
     animation:entryButtonShine 2000ms linear infinite;
   }
+  .btn-pink-pill:disabled{
+    cursor:default;
+    animation:none;
+    opacity:.45;
+  }
   @keyframes entryButtonShine{
     0%,9.999%{background-image:url("assets/entry_button_01.png");}
     10%,11.999%{background-image:url("assets/entry_button_02.png");}
@@ -484,7 +489,7 @@
     padding:14px;font-size:15px;font-weight:700;line-height:1.5;
   }
   .gate-area{
-    background:#43ad83;
+    background:#3b919d;
     margin:12px 14px 0;border-radius:6px;
     height:145px;position:relative;overflow:hidden;
     cursor:grab;touch-action:none;user-select:none;
@@ -553,6 +558,22 @@
     animation:fadeIn .4s ease;
     letter-spacing:.02em;
   }
+  .done-stage{
+    position:relative;
+    height:169px;
+  }
+  .done-stage .ev-card,
+  .done-stage .used-banner-pink{
+    position:absolute;
+    left:0;right:0;top:0;
+  }
+  .done-stage .ev-card{opacity:1;}
+  .done-stage .used-banner-pink{
+    z-index:2;
+    opacity:1;
+    transition:opacity .42s ease;
+  }
+  .done-stage.fading .used-banner-pink{opacity:0;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;}}
   .used-card{
     background:#F5F5F5;margin:12px 14px 0;border-radius:6px;
@@ -925,25 +946,12 @@
     position:relative;
   }
   #screenDetail .detail-ticket.used .ticket-icon{
-    background-image:url("ticket_used.png");
-    filter:grayscale(1) opacity(.72);
+    background-image:url("assets/ticket_admitted.svg");
+    filter:none;
     position:relative;
   }
   #screenDetail .detail-ticket.used .ticket-icon::after{
-    content:"入場済";
-    position:absolute;
-    left:10%;
-    right:10%;
-    bottom:0;
-    min-height:22px;
-    border:1px solid #AEB9C7;
-    border-radius:4px;
-    background:#fff;
-    color:#AEB9C7;
-    font-size:12px;
-    font-weight:600;
-    line-height:20px;
-    text-align:center;
+    content:none;
   }
   #screenDetail .detail-ticket.used .dist{
     display:none;
@@ -1046,6 +1054,7 @@
   #sheet .warn-banner{margin:0 20px;padding:9px 10px;min-height:55px;text-align:left;font-size:13px;line-height:1.3;background:#f0f52a}
   #sheet .gate-area{height:155px;margin:10px 8px 0;border-radius:8px 8px 0 0}#sheet .gate-content{width:108px;height:43px}
   #sheet .used-banner-pink{height:155px;margin:10px 8px 0;padding:0;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;background:#cc296b;font-size:16px;font-weight:400}
+  #sheet .done-stage{height:165px}
   #sheet .used-card{margin:7px 8px 0;border-radius:0;background:#dfe0e5}
   #sheet .used-card .buyer{height:40px;padding:7px 12px;background:#db2f91;font-size:17px}
   #sheet .used-card .body{min-height:91px;padding:10px 14px;gap:18px}
@@ -1322,9 +1331,9 @@ function renderDetail(){
     <div class="detail-ticket ${s.used?"used":""}">
       <div class="buyer">${escapeHtml(state.buyer)} 様 <span class="idx">${i+1}枚目</span></div>
       <div class="row">
-        <div class="ticket-icon ${s.used?"used":""}">
+        <div class="ticket-icon ${s.used?"used":""}" aria-label="${s.used?"入場済":"未使用"}">
           <span class="stub"><svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M2 3 H26 V21 H2 Z M30 3 H36 V21 H30 Z"/><line x1="28" y1="4" x2="28" y2="20" stroke="#fff" stroke-width="1.2" stroke-dasharray="1.5 1.5"/></svg></span>
-          <span class="lb">${s.used?"使用済":"未使用"}</span>
+          <span class="lb">${s.used?"入場済":"未使用"}</span>
         </div>
         <div class="seat">
           <div class="type">${escapeHtml(state.type)}</div>
@@ -1366,9 +1375,18 @@ function renderDetail(){
       button.setAttribute("aria-expanded", String(!collapsed));
     });
   });
+  updateEntryButtonState();
 }
 
 // ===== 画面遷移 =====
+function updateEntryButtonState(){
+  const button = $("btnGoEntry");
+  if(!button) return;
+  const hasUnusedTicket = state.seats.some(s=>!s.used);
+  button.disabled = !hasUnusedTicket;
+  button.setAttribute("aria-disabled", String(!hasUnusedTicket));
+}
+
 function openDetail(){
   renderDetail();
   $("screenList").classList.add("hidden");
@@ -1386,10 +1404,14 @@ let selection = []; // index配列
 let sheetPhase = "select"; // select / gate / gateActive / done
 let gateInteractive = false;
 let doneShowBanner = true; // done時に「○枚使用しました」バナーを表示中か
+let doneBannerFading = false;
 function openSheet(){
-  selection = [];
-  sheetPhase = "select";
+  const unused = unusedIndices();
+  if(unused.length === 0) return;
+  selection = unused.length === 1 ? [unused[0]] : [];
+  sheetPhase = selection.length === 1 ? "gate" : "select";
   doneShowBanner = true;
+  doneBannerFading = false;
   renderSheet();
   $("sheet").classList.add("show");
 }
@@ -1493,7 +1515,11 @@ function renderSheet(){
     mainHtml += `<div class="ts-banner">${nowTsFull()}</div>`;
     // 初期はピンクの完了バナー、その後イベントカードに入れ替わる
     if(doneShowBanner){
-      mainHtml += `<div class="used-banner-pink">${selection.length}枚使用しました</div>`;
+      mainHtml += `
+        <div class="done-stage ${doneBannerFading?"fading":""}">
+          ${evCardHtml}
+          <div class="used-banner-pink">${selection.length}枚使用しました</div>
+        </div>`;
     } else {
       mainHtml += evCardHtml;
     }
@@ -1619,18 +1645,16 @@ function initGateSlide(){
   const bar = $("gateBar");
   if(!area || !bar) return;
   let dragging=false, startX=0, w=0, maxRight=0, maxLeft=0;
-  const gateColors = ["#43ad83", "#f4ed19", "#e24452"];
-
-  const mixColor = (from, to, amount)=>{
-    const value = (hex, offset)=>parseInt(hex.slice(offset, offset + 2), 16);
-    const channel = offset=>Math.round(value(from, offset) + (value(to, offset) - value(from, offset)) * amount);
-    return `rgb(${channel(1)}, ${channel(3)}, ${channel(5)})`;
-  };
+  const gateColors = ["#2d7bb7", "#3b919d", "#3a947d", "#8ab974", "#f5ea65", "#e24e4c"];
   const setProgressColor = ratio=>{
     const progress = Math.max(0, Math.min(1, ratio));
-    area.style.background = progress <= .5
-      ? mixColor(gateColors[0], gateColors[1], progress * 2)
-      : mixColor(gateColors[1], gateColors[2], (progress - .5) * 2);
+    const index = progress < .12 ? 0
+      : progress < .28 ? 1
+      : progress < .44 ? 2
+      : progress < .62 ? 3
+      : progress < .8 ? 4
+      : 5;
+    area.style.background = gateColors[index];
   };
 
   const getX = (e)=>{
@@ -1678,7 +1702,7 @@ function initGateSlide(){
     bar.style.transition="transform .25s ease";
     bar.style.transform = "translateX(0)";
     area.style.transition="background .25s ease";
-    setProgressColor(0);
+    area.style.background = "#3b919d";
   };
   area.addEventListener("mousedown",start);
   area.addEventListener("touchstart",start,{passive:false});
@@ -1690,16 +1714,7 @@ function initGateSlide(){
 
 function triggerGate(){
   const area = $("gateArea");
-  const successText = $("gateSuccessText");
-  if(area && successText){
-    successText.textContent = `${selection.length}枚使用しました`;
-    // GATEバーをピンクバナーへモーフ
-    setTimeout(()=>{
-      area.style.removeProperty("background");
-      area.style.removeProperty("transition");
-      area.classList.add("morphing");
-    }, 250);
-  }
+  if(area) area.style.background = "#e24e4c";
   setTimeout(()=>{
     const ts = nowUsed();
     selection.forEach(i=>{
@@ -1707,17 +1722,27 @@ function triggerGate(){
       state.seats[i].usedAt = ts;
     });
     save(state);
+    renderList();
+    renderDetail();
     sheetPhase = "done";
     doneShowBanner = true;
+    doneBannerFading = false;
     renderSheet();
-    // 実機同様、完了表示の後はイベント情報を含む元のレイアウトへ戻す
+    // 完了バナーを保持した後、背面のイベント情報へクロスフェードする。
     setTimeout(()=>{
       if(sheetPhase === "done"){
-        doneShowBanner = false;
+        doneBannerFading = true;
         renderSheet();
+        setTimeout(()=>{
+          if(sheetPhase === "done"){
+            doneShowBanner = false;
+            doneBannerFading = false;
+            renderSheet();
+          }
+        }, 430);
       }
-    }, 1200);
-  },1200);
+    }, 950);
+  },180);
 }
 
 // ===== 設定モーダル =====
@@ -1842,6 +1867,7 @@ renderList();
     selection = state.seats.map((s,i)=>i);
     const ts = nowUsed();
     selection.forEach(i=>{ state.seats[i].used=true; state.seats[i].usedAt=ts; });
+    renderDetail();
     sheetPhase = "done"; doneShowBanner = true; renderSheet();
   }
   else if(h === "doneFinal"){
@@ -1849,6 +1875,7 @@ renderList();
     selection = state.seats.map((s,i)=>i);
     const ts = nowUsed();
     selection.forEach(i=>{ state.seats[i].used=true; state.seats[i].usedAt=ts; });
+    renderDetail();
     sheetPhase = "done"; doneShowBanner = false; renderSheet();
   }
 })();
