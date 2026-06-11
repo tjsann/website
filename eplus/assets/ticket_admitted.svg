@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="235" height="235" viewBox="0 0 235 235">
+  <circle cx="117.5" cy="92" r="86" fill="#aeb9c7"/>
+  <path fill="#fff" d="M55 76h116v13a15 15 0 0 0 0 30v13H55z"/>
+  <path fill="none" stroke="#aeb9c7" stroke-width="3" stroke-dasharray="5 5" d="M143 78v52"/>
+  <rect x="22" y="174" width="191" height="52" rx="11" fill="#fff" stroke="#aeb9c7" stroke-width="4"/>
+  <text x="117.5" y="210" fill="#aeb9c7" font-family="'Noto Sans JP','Yu Gothic UI','Meiryo',sans-serif" font-size="27" font-weight="700" text-anchor="middle">入場済</text>
+</svg>
