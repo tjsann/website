@@ -703,8 +703,9 @@
 
   /* Smart-ticket detail values from the packaged Android layouts. */
   #screenDetail{
-    font-family:"Roboto","Noto Sans JP","Noto Sans CJK JP",sans-serif;
+    font-family:"SF Pro Text","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
     font-synthesis:none;
+    color:#202124;
   }
   #screenDetail .detail-header .back{
     margin-left:12px;
@@ -723,6 +724,7 @@
   #screenDetail .detail-date .year{
     font-size:15px;
     font-weight:400;
+    color:#202124;
   }
   #screenDetail .detail-date .big{
     gap:10px;
@@ -731,25 +733,30 @@
     font-size:30px;
     font-weight:400;
     letter-spacing:0;
+    color:#202124;
   }
   #screenDetail .detail-date .big .dw{
     font-size:12px;
-    font-weight:700;
+    font-weight:600;
     margin-left:3px;
   }
   #screenDetail .detail-date .big .times{
     font-size:14px;
-    font-weight:700;
-    line-height:1.5;
+    font-weight:600;
+    line-height:1.45;
+    color:#202124;
   }
   #screenDetail .detail-date .ev-title{
     font-size:16px;
-    font-weight:700;
-    line-height:1.5;
+    font-weight:600;
+    line-height:1.4;
     margin-top:6px;
+    color:#202124;
   }
   #screenDetail .detail-date .venue{
     font-size:12px;
+    font-weight:400;
+    color:#202124;
     margin-top:2px;
   }
   #screenDetail .detail-date .kebab{
@@ -791,24 +798,26 @@
     height:90px;
   }
   #screenDetail .detail-ticket .seat{
-    line-height:1.5;
+    font-family:"SF Pro Text","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+    line-height:1.45;
+    color:#202124;
   }
   #screenDetail .detail-ticket .seat .type{
-    font-size:15px;
-    font-weight:700;
-    color:#212121;
+    font-size:16px;
+    font-weight:600;
+    color:#202124;
     margin-bottom:0;
   }
   #screenDetail .detail-ticket .seat .blk,
   #screenDetail .detail-ticket .seat .num{
     font-size:14px;
     font-weight:400;
-    color:#212121;
+    color:#202124;
   }
   #screenDetail .detail-ticket .seat .price{
     font-size:14px;
     font-weight:400;
-    color:#212121;
+    color:#202124;
     margin-top:2px;
   }
   #screenDetail .detail-ticket .dist{
@@ -821,11 +830,12 @@
   }
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
+    font-family:"SF Pro Text","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
     font-size:12px;
     font-weight:400;
-    color:#424242;
+    color:#343434;
     letter-spacing:0;
-    line-height:1.4;
+    line-height:1.35;
   }
   #screenDetail .detail-ticket .desc{
     margin-top:8px;
@@ -881,6 +891,84 @@
   #screenDetail .detail-ticket .collapse::before{
     content:none;
   }
+
+  .ios-status{height:54px;flex:0 0 54px;position:relative;display:flex;align-items:center;justify-content:space-between;padding:8px 18px 0;background:#fff;color:#050505;font-size:15px;font-weight:700;z-index:20}
+  .ios-status.pink{background:#e6439a;color:#fff}
+  .ios-status .island{position:absolute;left:50%;top:12px;transform:translateX(-50%);width:164px;height:36px;border-radius:22px;background:#000}
+  .ios-status .island::after{content:"";position:absolute;right:-42px;top:0;width:36px;height:36px;border-radius:50%;background:#050505}
+  .ios-status .right{display:flex;align-items:center;gap:7px}.ios-status .signal{font-size:13px;letter-spacing:-2px}
+  .ios-status .battery{color:#fff;background:#55c86a;border-radius:4px;padding:0 4px;font-size:12px;line-height:18px}
+
+  #screenList{min-height:100vh;background:#fff}
+  #screenList .home-header{position:relative;top:auto;border:0;background:#e6439a}
+  #screenList .home-header .top-icons{display:none}
+  #screenList .home-header .tabs{height:58px;padding:10px 10px 8px;gap:0;background:#e6439a;align-items:center}
+  #screenList .home-header .tabs button{flex:1;height:35px;padding:0 3px;border:0;color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+  #screenList .home-header .tabs button.active{color:#e6439a;background:#fff;border:0;border-radius:20px}
+  #screenList .home-header .subtabs{height:52px;padding:0;background:#fff;border-bottom:1px solid #eee}
+  #screenList .home-header .subtabs button{margin:0;padding:0;border:0;color:#b9b9b9;font-size:12px;background:#f3f3f1}
+  #screenList .home-header .subtabs button.active{color:#111;background:#fff;border:0}
+  #screenList .list-area{padding:10px 8px 132px;background:#fff}
+  #screenList .pill-wrap{height:42px}
+  #screenList .pill-label{display:block;margin:0;padding:6px 10px;border-radius:10px;background:#df3f97;font-size:12px;line-height:20px}
+  #screenList .ticket-card{margin:0 0 12px;border-radius:0 0 9px 9px;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+  #screenList .ticket-card .poster{height:193px;background:#bbb url("video_frames/poster.png") no-repeat center/cover}
+  #screenList .ticket-card .poster::before,#screenList .ticket-card .poster .silhouette{display:none}
+  #screenList .ticket-card .ribbon{top:0;left:10px;padding:0 4px;color:#d9328b;background:#fff;border:2px solid #d9328b;border-top:0;border-radius:0;font-size:14px;line-height:21px;letter-spacing:0}
+  #screenList .ticket-card .info{min-height:126px;padding:10px 11px 8px;background:#f8cce6}
+  #screenList .ticket-card .year{font-size:11px;color:#222}
+  #screenList .ticket-card .date{margin:0 0 1px;color:#111;font-size:27px;font-weight:500;line-height:1.25}
+  #screenList .ticket-card .date .day{color:#d92e86;font-size:13px;font-weight:700}
+  #screenList .ticket-card .date .time{margin-left:8px;font-size:14px;font-weight:700}
+  #screenList .ticket-card .title{font-size:14px;font-weight:700;line-height:1.35}
+  #screenList .ticket-card .venue{margin-top:2px;color:#222;font-size:11px}
+  #screenList .ticket-card .cta{height:40px;padding:0 12px;justify-content:flex-start;background:#df3f97;font-size:14px}
+  #screenList .ticket-card .cta::before{content:"";width:19px;height:15px;border:2px solid #fff;border-radius:2px;transform:rotate(-10deg)}
+  #screenList .ticket-card .cta::after{content:"›";margin-left:auto;font-size:27px;font-weight:300}
+  #screenList .ticket-card.preview-card{margin-top:10px}
+  #screenList .action-icons{position:fixed;left:8px;right:8px;bottom:96px;z-index:12;max-width:414px;margin:0 auto;padding:0;gap:6px;background:transparent;box-shadow:none}
+  #screenList .action-icons .item{min-height:38px;justify-content:center;flex-direction:row;gap:4px;padding:4px 7px;color:#d9328b;background:rgba(255,255,255,.96);border:1px solid #e24a9e;border-radius:22px;box-shadow:0 2px 6px rgba(0,0,0,.18);font-size:10px;line-height:1.15}
+  #screenList .action-icons .item:first-child{background:#ef75b4;color:#fff}
+  #screenList .action-icons .item .ic{width:auto;height:auto;border:0;background:none;color:inherit;font-size:15px}
+  #screenList .tabbar{height:84px;padding:7px 12px 16px;border:0;border-radius:30px 30px 0 0;box-shadow:0 -2px 9px rgba(0,0,0,.12)}
+  #screenList .tabbar button{padding:2px;color:#111;font-size:10px}
+  #screenList .tabbar button .ic{height:28px;margin:0 auto 1px}
+  #screenList .tabbar button .ic svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.8}
+  #screenList .tabbar button.active{color:#111;background:#f4f1f3;border-radius:25px}
+  #screenList .tabbar .badge{top:0;right:15%;background:#f3265b}
+  #screenList .moc-marker{display:none}
+
+  #sheet .sheet{max-width:430px;background:#f1f1f1}
+  #sheet .sheet-header{min-height:55px;padding:9px 24px;border:0}
+  #sheet .sheet-header.hidden-during-gate{min-height:0}
+  #sheet .sheet-header .cnt{font-size:16px;color:#111}#sheet .sheet-header .cnt b{color:#111;font-weight:500}
+  #sheet .sheet-header .x{font-size:0;width:25px;height:25px;position:relative}
+  #sheet .sheet-header .x::before,#sheet .sheet-header .x::after{content:"";position:absolute;left:12px;top:2px;width:1px;height:24px;background:#8c8c8c}
+  #sheet .sheet-header .x::before{transform:rotate(45deg)}#sheet .sheet-header .x::after{transform:rotate(-45deg)}
+  #sheet .ts-banner{height:31px;padding:3px 5px;background:#31a6aa;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:0;line-height:25px}
+  #sheet .sheet-body{background:#f1f1f1}
+  #sheet .ev-card{margin:10px 8px 0;padding:17px 12px 9px;border-radius:8px 8px 0 0;box-shadow:none}
+  #sheet .ev-card .head{justify-content:center;gap:36px}#sheet .ev-card .md-big{font-size:34px;font-weight:500}
+  #sheet .ev-card .md-big .dw{font-size:14px;font-weight:500}#sheet .ev-card .times{padding-top:0;font-size:12px;font-weight:600;line-height:1.35}
+  #sheet .ev-card .stars{margin:5px 0 7px;padding:0 60px}#sheet .ev-card .star{width:35px;height:35px}
+  #sheet .ev-card .venue{margin-top:0;font-size:11px;font-weight:700}#sheet .ev-card .ev-title{font-size:10px;line-height:1.35}
+  #sheet .sel-card{margin:7px 8px 0;border-radius:0;box-shadow:none}#sheet .sel-card:last-child{border-radius:0 0 2px 2px}
+  #sheet .sel-card .buyer{height:41px;padding:7px 12px;font-size:17px;border-bottom:1px dashed #777}
+  #sheet .sel-card .body{min-height:109px;gap:20px;padding:12px 14px}#sheet .sel-card .check{width:62px;height:62px}
+  #sheet .sel-card .seat .type{font-size:16px}#sheet .sel-card .seat .blk{font-size:14px}#sheet .sel-card .seat .num{font-size:16px}
+  #sheet .sel-card.selected{background:#db2f91}
+  #sheet .warn-banner{margin:0 20px;padding:9px 10px;min-height:55px;text-align:left;font-size:13px;line-height:1.3;background:#f0f52a}
+  #sheet .gate-area{height:155px;margin:10px 8px 0;border-radius:8px 8px 0 0}#sheet .gate-content{width:108px;height:43px}
+  #sheet .gate-arrows-l,#sheet .gate-arrows-r{display:none}
+  #sheet .used-banner-pink{height:155px;margin:10px 8px 0;padding:0;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;background:#cc296b;font-size:16px;font-weight:400}
+  #sheet .used-card{margin:7px 8px 0;border-radius:0;background:#dfe0e5}
+  #sheet .used-card .buyer{height:40px;padding:7px 12px;background:#db2f91;font-size:17px}
+  #sheet .used-card .body{min-height:91px;padding:10px 14px;gap:18px}
+  #sheet .used-card .icon{width:56px;height:56px;border:0;border-radius:50%;background:#aeb8c6}
+  #sheet .used-card .icon::before{content:"";width:35px;height:21px;background:#fff;border-radius:2px;transform:rotate(-6deg);clip-path:polygon(0 0,42% 0,46% 10%,50% 0,100% 0,100% 100%,50% 100%,46% 90%,42% 100%,0 100%)}
+  #sheet .used-card .seat .type{color:#111;font-size:15px}#sheet .used-card .seat .blk{color:#111;font-size:14px}#sheet .used-card .seat .num{color:#111;font-size:15px}
+  #sheet .used-card .when{padding:0 12px 8px;color:#111;font-size:11px}
+  #sheet .used-card .stamp{right:12px;font-family:inherit;font-size:19px;padding:5px 10px 3px}
 </style>
 </head>
 <body>
@@ -891,6 +979,10 @@
 
   <!-- ============== 一覧画面 ============== -->
   <div id="screenList">
+    <div class="ios-status pink">
+      <span>18:07</span><span class="island"></span>
+      <span class="right"><span class="signal">▮▮▮</span><span>⌁</span><span class="battery">69</span></span>
+    </div>
     <div class="home-header">
       <div class="top-icons"></div>
       <div class="tabs">
@@ -912,11 +1004,11 @@
     </div>
 
     <div class="tabbar">
-      <button><span class="ic">⌂</span>ホーム</button>
-      <button><span class="ic">📰</span>ニュース</button>
-      <button><span class="ic">★</span>お気に入り</button>
-      <button><span class="ic">🔔</span>通知<span class="badge">7</span></button>
-      <button class="active"><span class="ic">🎫</span>チケット</button>
+      <button><span class="ic"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9h-6v-6H9v6H3z"/></svg></span>ホーム</button>
+      <button><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM7 8h10M7 12h10M7 16h6"/></svg></span>ニュース</button>
+      <button><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 20s-8-4.5-8-10a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 10-8 10z"/><path d="M18 4v5M15.5 6.5h5"/></svg></span>お気に入り</button>
+      <button><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 17h12l-1.5-2v-4.5a4.5 4.5 0 0 0-9 0V15zM10 20h4"/></svg></span>通知<span class="badge">72</span></button>
+      <button class="active"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4z"/><path d="M14 7v10"/></svg></span>チケット<span class="badge">3</span></button>
     </div>
 
     <div class="moc-marker">MOC</div>
@@ -924,6 +1016,10 @@
 
   <!-- ============== 詳細画面 ============== -->
   <div id="screenDetail" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
+    <div class="ios-status">
+      <span>1:26</span><span class="island"></span>
+      <span class="right"><span class="signal">▮▮▮</span><span>⌁</span><span class="battery">80</span></span>
+    </div>
     <div class="detail-header">
       <button class="back" id="btnBack"><svg viewBox="0 0 8 14" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.7824 12.7765 1.7935 6.9998 7.7824 1.2232C8.0724.9435 8.0725.4898 7.7824.2099 7.4922-.07 7.0218-.07 6.7317.2099L.2175 6.4932A.708.708 0 0 0 0 6.9998c0 .1888.0793.3735.2175.5068l6.5142 6.2833c.1451.1399.3353.2101.5254.2101s.3802-.0702.5253-.2101c.2901-.2798.2901-.7335 0-1.0134Z"/></svg></button>
       <button class="btn-pink-pill" id="btnGoEntry">入場画面に進む</button>
@@ -936,6 +1032,10 @@
 <!-- ============== 選択シート/ GATE / 結果 ============== -->
 <div class="sheet-overlay" id="sheet">
   <div class="sheet">
+    <div class="ios-status">
+      <span>18:07</span><span class="island"></span>
+      <span class="right"><span class="signal">▮▮▮</span><span>⌁</span><span class="battery">69</span></span>
+    </div>
     <div class="sheet-header">
       <span class="cnt" id="selCount">0/0枚 選択中</span>
       <button class="x" id="btnCloseSheet">×</button>
@@ -1097,8 +1197,8 @@ function renderList(){
   const slot = $("listCardSlot");
   const f = fmtDateJP(state.date);
   const allUsed = state.seats.every(s=>s.used);
-  slot.innerHTML = `
-    <div class="ticket-card" id="theCard" ${allUsed?'style="opacity:.55;"':""}>
+  const cardHtml = (id, preview=false) => `
+    <div class="ticket-card ${preview?"preview-card":""}" id="${id}" ${allUsed?'style="opacity:.55;"':""}>
       <div class="ribbon">スマチケ</div>
       <div class="poster"><div class="silhouette"></div></div>
       <div class="info">
@@ -1108,14 +1208,18 @@ function renderList(){
         <div class="venue">${escapeHtml(state.venue)}</div>
       </div>
       <div class="cta">${allUsed?"使用済みチケット":"チケットはこちら"}</div>
-    </div>
+    </div>`;
+  slot.innerHTML = `
+    ${cardHtml("theCard")}
+    ${cardHtml("theCardPreview", true)}
     <div class="action-icons">
       <div class="item"><div class="ic">↻</div>チケット更新</div>
-      <div class="item" id="actFaq"><div class="ic">?</div>よくある<br>ご質問</div>
-      <div class="item"><div class="ic">⇆</div>機種変更時の<br>チケット移行</div>
+      <div class="item" id="actFaq"><div class="ic">ⓘ</div>よくある質問</div>
+      <div class="item"><div class="ic">▲</div>機種変更時の<br>チケット移行</div>
     </div>
   `;
   $("theCard").onclick = ()=>openDetail();
+  $("theCardPreview").onclick = ()=>openDetail();
   const faq = $("actFaq");
   if(faq) faq.onclick = ()=>{ fillCfg(); $("cfgOverlay").classList.add("show"); };
 }
