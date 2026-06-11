@@ -290,12 +290,12 @@
   }
   .detail-ticket .dist svg{width:26px;height:22px;flex-shrink:0;}
   .detail-ticket .desc{
-    font-size:12.5px;color:#333;line-height:1.85;
+    font-size:11px;color:#333;line-height:1.7;
     background:var(--pink-bg);padding:14px 18px 12px;
     margin-top:8px;
   }
   .detail-ticket .meta{
-    font-size:12.5px;color:#444;line-height:1.85;
+    font-size:11px;color:#444;line-height:1.7;
     padding:0 18px;background:var(--pink-bg);
   }
   .detail-ticket .meta .head{font-weight:700;color:#222;margin-bottom:2px;font-size:13px;margin-top:8px;}
@@ -698,7 +698,7 @@
 <div class="device">
 
   <!-- 設定歯車（全画面共通） -->
-  <button class="config-gear" id="btnOpenCfg" title="モック設定">⚁E</button>
+  <button class="config-gear" id="btnOpenCfg" title="モック設定">⚙</button>
 
   <!-- ============== 一覧画面 ============== -->
   <div id="screenList">
@@ -725,7 +725,7 @@
     <div class="tabbar">
       <button><span class="ic">⌂</span>ホーム</button>
       <button><span class="ic">📰</span>ニュース</button>
-      <button><span class="ic">☁E</span>お気に入り</button>
+      <button><span class="ic">★</span>お気に入り</button>
       <button><span class="ic">🔔</span>通知<span class="badge">7</span></button>
       <button class="active"><span class="ic">🎫</span>チケット</button>
     </div>
@@ -758,7 +758,7 @@
 
 <!-- GATE 完了オーバーレイ -->
 <div class="gate-result-overlay" id="gateResult">
-  <div class="ic">✁E</div>
+  <div class="ic">✓</div>
   <h2 id="gateResultText">使用処理中...</h2>
   <p id="gateResultSub">少々お待ちください</p>
 </div>
@@ -766,7 +766,7 @@
 <!-- 設定モーダル -->
 <div class="cfg-overlay" id="cfgOverlay">
   <div class="cfg">
-    <h3>モック設定button class="x" id="btnCloseCfg">×</button></h3>
+    <h3>モック設定<button class="x" id="btnCloseCfg">×</button></h3>
     <div class="cfg-body">
       <div class="cfg-section">
         <h4>公演情報</h4>
@@ -866,7 +866,8 @@ function load(){
 }
 function save(d){ localStorage.setItem(KEY, JSON.stringify(d)); }
 let state = load();
-// ページロード時は使用状態をクリーンにリセット（公演情報は維持）state.seats.forEach(s=>{ s.used = false; s.usedAt = null; });
+// ページロード時は使用状態をクリーンにリセット（公演情報は維持）
+state.seats.forEach(s=>{ s.used = false; s.usedAt = null; });
 save(state);
 
 // ===== 日付フォーマット=====
@@ -1026,17 +1027,19 @@ function unusedIndices(){
 function renderSheet(){
   const f = fmtDateJP(state.date);
   const unused = unusedIndices();
-  // done時はselection分が既にusedになっているため、totalにselectionを足し戻す  const total = (sheetPhase === "done") ? unused.length + selection.length : unused.length;
+  // done時はselection分が既にusedになっているため、totalにselectionを足し戻す
+  const total = (sheetPhase === "done") ? unused.length + selection.length : unused.length;
 
   if(sheetPhase === "select" || sheetPhase === "gate"){
     $("selCount").innerHTML = `<b>${selection.length}/${total}枚</b> 選択中`;
   } else if(sheetPhase === "gateActive"){
     $("selCount").innerHTML = `<b>${selection.length}/${total}枚</b> 選択中`;
   } else { // done
-    $("selCount").innerHTML = `<b>0/${total}枚/b> 選択中`;
+    $("selCount").innerHTML = `<b>0/${total}枚</b> 選択中`;
   }
 
-  // gateActive時はsheet-headerを隠す  const sh = document.querySelector("#sheet .sheet-header");
+  // gateActive時はsheet-headerを隠す
+  const sh = document.querySelector("#sheet .sheet-header");
   if(sh){
     if(sheetPhase === "gateActive") sh.classList.add("hidden-during-gate");
     else sh.classList.remove("hidden-during-gate");
@@ -1053,8 +1056,8 @@ function renderSheet(){
         </div>
       </div>
       <div class="stars">
-        <span class="star" data-star="L">☁E</span>
-        <span class="star" data-star="R">☁E</span>
+        <span class="star" data-star="L">★</span>
+        <span class="star" data-star="R">★</span>
       </div>
       <div class="venue">${escapeHtml(state.venue)}</div>
       <div class="ev-title">${escapeHtml(state.title)}</div>
@@ -1096,7 +1099,7 @@ function renderSheet(){
         <div class="sel-card ${isSel?"selected":""}" data-i="${i}">
           <div class="buyer">${escapeHtml(state.buyer)} 様</div>
           <div class="body">
-            <div class="check">✁E</div>
+            <div class="check">✓</div>
             <div class="seat">
               <div class="type">${escapeHtml(state.type)}</div>
               <div class="blk">${escapeHtml(s.block)}ブロック</div>
@@ -1144,7 +1147,8 @@ function renderSheet(){
 
   $("sheetBody").innerHTML = mainHtml;
 
-  // 静的バナーは隠す  $("tsBanner").style.display = "none";
+  // 静的バナーは隠す
+  $("tsBanner").style.display = "none";
 
   // カードクリックイベント（select/gate共通: タップで選択/解除）
   if(sheetPhase === "select" || sheetPhase === "gate"){
@@ -1196,7 +1200,8 @@ function initStarMultiTouch(){
     pressed.add(which);
     el.classList.add("pressed");
     if(pressed.size >= 2){
-      // 両方タップ → GATE発動      stars.forEach(s=>s.classList.remove("pressed"));
+      // 両方タップ → GATE発動
+      stars.forEach(s=>s.classList.remove("pressed"));
       pressed.clear();
       activateGate();
     }
@@ -1355,9 +1360,9 @@ function renderSeatInputs(){
   slot.innerHTML = state.seats.map((s,i)=>`
     <div class="seat-row" data-i="${i}">
       <input data-k="block" type="text" placeholder="ブロック" value="${escapeHtml(s.block)}" style="flex:1;">
-      <input data-k="row" type="text" placeholder="列 value="${escapeHtml(s.row)}" style="flex:1;">
+      <input data-k="row" type="text" placeholder="列" value="${escapeHtml(s.row)}" style="flex:1;">
       <input data-k="num" type="text" placeholder="番" value="${escapeHtml(s.num)}" style="flex:1;">
-      <button class="del" data-del="${i}" title="削除">✁E</button>
+      <button class="del" data-del="${i}" title="削除">✕</button>
     </div>
   `).join("");
   slot.querySelectorAll(".del").forEach(b=>{
