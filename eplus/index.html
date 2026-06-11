@@ -207,10 +207,27 @@
   }
   .detail-header .back svg{width:8px;height:14px;display:block;}
   .btn-pink-pill{
-    background:var(--btn-goto) no-repeat center/contain;
+    background:url("assets/entry_button_01.png") no-repeat center/contain;
     border:none;cursor:pointer;
     width:148px;height:31px;
     font-size:0;color:transparent;padding:0;
+    animation:entryButtonShine 2000ms linear infinite;
+  }
+  @keyframes entryButtonShine{
+    0%,9.999%{background-image:url("assets/entry_button_01.png");}
+    10%,11.999%{background-image:url("assets/entry_button_02.png");}
+    12%,13.999%{background-image:url("assets/entry_button_03.png");}
+    14%,15.999%{background-image:url("assets/entry_button_04.png");}
+    16%,17.999%{background-image:url("assets/entry_button_05.png");}
+    18%,19.999%{background-image:url("assets/entry_button_06.png");}
+    20%,21.999%{background-image:url("assets/entry_button_07.png");}
+    22%,23.999%{background-image:url("assets/entry_button_08.png");}
+    24%,25.999%{background-image:url("assets/entry_button_09.png");}
+    26%,27.999%{background-image:url("assets/entry_button_10.png");}
+    28%,29.999%{background-image:url("assets/entry_button_11.png");}
+    30%,31.999%{background-image:url("assets/entry_button_12.png");}
+    32%,33.999%{background-image:url("assets/entry_button_13.png");}
+    34%,100%{background-image:url("assets/entry_button_14.png");}
   }
   .detail-body{flex:1;padding:18px 14px 90px;overflow-y:auto;background:#fff;}
   .detail-date{
@@ -280,7 +297,10 @@
   .detail-ticket .seat{flex:1;line-height:1.5;}
   .detail-ticket .seat .type{color:#222;font-weight:700;font-size:15px;margin-bottom:4px;}
   .detail-ticket .seat .blk{font-size:15px;font-weight:400;color:#222;}
-  .detail-ticket .seat .num{font-size:15px;font-weight:400;color:#222;}
+  .detail-ticket .seat .num{
+    display:flex;align-items:baseline;gap:10px;
+    font-size:15px;font-weight:400;color:#222;
+  }
   .detail-ticket .seat .price{font-size:14px;font-weight:400;color:#222;margin-top:3px;}
   .detail-ticket .dist{
     margin:10px 18px 2px;height:32px;
@@ -291,7 +311,7 @@
   .detail-ticket .dist svg{display:none;}
   .detail-ticket .desc{
     font-size:12px;color:#333;line-height:1.75;
-    background:var(--pink-bg);padding:14px 18px 12px;
+    background:var(--pink-bg);padding:14px 8px 12px;
     margin-top:8px;
   }
   .detail-ticket.collapsed .desc{
@@ -401,15 +421,10 @@
   }
   .ev-card.ready .star{
     cursor:pointer;
-    animation:starPulse 1.4s ease-in-out infinite;
   }
   .ev-card .star.pressed{
     transform:scale(.85);
     filter:brightness(.8) drop-shadow(0 0 4px rgba(126,211,33,.45));
-  }
-  @keyframes starPulse{
-    0%,100%{transform:scale(1);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 0 rgba(126,211,33,.5);}
-    50%{transform:scale(1.06);box-shadow:0 1px 3px rgba(0,0,0,.15),0 0 0 8px rgba(126,211,33,0);}
   }
   .ev-card .venue{font-size:13px;color:#333;margin-top:6px;}
   .ev-card .ev-title{font-size:13px;color:#333;margin-top:2px;line-height:1.45;}
@@ -469,7 +484,7 @@
     padding:14px;font-size:15px;font-weight:700;line-height:1.5;
   }
   .gate-area{
-    background:linear-gradient(90deg,var(--yellow) 0 50%,var(--teal) 50% 100%);
+    background:#43ad83;
     margin:12px 14px 0;border-radius:6px;
     height:145px;position:relative;overflow:hidden;
     cursor:grab;touch-action:none;user-select:none;
@@ -501,24 +516,20 @@
     background-repeat:no-repeat;background-position:center;background-size:contain;
     position:relative;z-index:2;line-height:1;
   }
-  .gate-arrows-l, .gate-arrows-r{
-    position:absolute;display:flex;gap:2px;
-    z-index:3;line-height:1;
-    transition:opacity .2s;
-    animation:arrowPulse 1s ease-in-out infinite alternate;
+  .gate-flash{
+    position:absolute;inset:0;
+    z-index:3;pointer-events:none;
+    background:url("assets/gate_arrows_01.png") no-repeat center/100% 100%;
+    animation:gateArrowBlink 600ms linear infinite;
   }
-  .gate-arrows-l svg, .gate-arrows-r svg{
-    width:18px;height:24px;display:block;
-    fill:var(--yellow);
-    filter:drop-shadow(0 0 1px rgba(0,0,0,.2));
-  }
-  .gate-arrows-l{left:20px;top:50%;transform:translateY(-50%);}
-  .gate-arrows-r{right:22px;top:50%;transform:translateY(-50%);}
-  .gate-area.touching .gate-arrows-l,
-  .gate-area.touching .gate-arrows-r{opacity:0;animation:none;}
-  @keyframes arrowPulse{
-    0%{opacity:.55;}
-    100%{opacity:1;}
+  .gate-area.touching .gate-flash{opacity:0;animation:none;}
+  @keyframes gateArrowBlink{
+    0%,16.665%{background-image:url("assets/gate_arrows_01.png");}
+    16.666%,33.332%{background-image:url("assets/gate_arrows_02.png");}
+    33.333%,49.999%{background-image:url("assets/gate_arrows_03.png");}
+    50%,66.665%{background-image:url("assets/gate_arrows_04.png");}
+    66.666%,83.332%{background-image:url("assets/gate_arrows_05.png");}
+    83.333%,100%{background-image:url("assets/gate_arrows_06.png");}
   }
   .gate-success-text{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -528,9 +539,11 @@
     pointer-events:none;
   }
   .gate-area.morphing .gate-content,
-  .gate-area.morphing .gate-arrows-l,
-  .gate-area.morphing .gate-arrows-r{opacity:0;}
+  .gate-area.morphing .gate-flash{opacity:0;}
   .gate-area.morphing .gate-success-text{opacity:1;}
+  @media (prefers-reduced-motion:reduce){
+    .btn-pink-pill,.gate-flash{animation:none;}
+  }
 
   /* ===== 使用済 ===== */
   .used-banner-pink{
@@ -847,7 +860,7 @@
   }
   #screenDetail .detail-ticket .desc{
     margin-top:8px;
-    padding:11px 10px 8px;
+    padding:11px 7px 8px;
     background-color:#F3D3E2;
     background-image:repeating-linear-gradient(
       to right,
@@ -1026,8 +1039,6 @@
   #sheet .sel-card.selected{background:#db2f91}
   #sheet .warn-banner{margin:0 20px;padding:9px 10px;min-height:55px;text-align:left;font-size:13px;line-height:1.3;background:#f0f52a}
   #sheet .gate-area{height:155px;margin:10px 8px 0;border-radius:8px 8px 0 0}#sheet .gate-content{width:108px;height:43px}
-  #sheet .gate-arrows-l{left:22px}
-  #sheet .gate-arrows-r{right:22px}
   #sheet .used-banner-pink{height:155px;margin:10px 8px 0;padding:0;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;background:#cc296b;font-size:16px;font-weight:400}
   #sheet .used-card{margin:7px 8px 0;border-radius:0;background:#dfe0e5}
   #sheet .used-card .buyer{height:40px;padding:7px 12px;background:#db2f91;font-size:17px}
@@ -1307,7 +1318,7 @@ function renderDetail(){
         <div class="seat">
           <div class="type">${escapeHtml(state.type)}</div>
           <div class="blk">${escapeHtml(s.block)}ブロック</div>
-          <div class="num">${escapeHtml(s.row)}列${escapeHtml(s.num)}番</div>
+          <div class="num"><span>${escapeHtml(s.row)}列</span><span>${escapeHtml(s.num)}番</span></div>
           <div class="price">${escapeHtml(state.price)}</div>
         </div>
         <div class="used-stamp" aria-label="使用済"></div>
@@ -1434,14 +1445,11 @@ function renderSheet(){
 
     if(sheetPhase === "gateActive"){
       // 全選択後の2点同時タップで起動: GATEバーをイベントカードの場所に
-      const arrowL = `<svg viewBox="0 0 14 22"><polygon points="14,0 0,11 14,22"/></svg>`;
-      const arrowR = `<svg viewBox="0 0 14 22"><polygon points="0,0 14,11 0,22"/></svg>`;
       mainHtml += `
         <div class="gate-area" id="gateArea">
           <div class="gate-bar" id="gateBar">
-            <div class="gate-arrows-l">${arrowL}${arrowL}</div>
+            <div class="gate-flash" aria-hidden="true"></div>
             <div class="gate-content">GATE</div>
-            <div class="gate-arrows-r">${arrowR}${arrowR}</div>
           </div>
           <div class="gate-success-text" id="gateSuccessText"></div>
         </div>
@@ -1472,7 +1480,7 @@ function renderSheet(){
     // 使用済表示
     $("sheet").querySelector(".ts-banner").remove?.();
     mainHtml += `<div class="ts-banner">${nowTsFull()}</div>`;
-    // 初期はピンクバナー、4秒後にイベントカードに入れ替わる
+    // 初期はピンクの完了バナー、その後イベントカードに入れ替わる
     if(doneShowBanner){
       mainHtml += `<div class="used-banner-pink">${selection.length}枚使用しました</div>`;
     } else {
@@ -1600,6 +1608,19 @@ function initGateSlide(){
   const bar = $("gateBar");
   if(!area || !bar) return;
   let dragging=false, startX=0, w=0, maxRight=0, maxLeft=0;
+  const gateColors = ["#43ad83", "#f4ed19", "#e24452"];
+
+  const mixColor = (from, to, amount)=>{
+    const value = (hex, offset)=>parseInt(hex.slice(offset, offset + 2), 16);
+    const channel = offset=>Math.round(value(from, offset) + (value(to, offset) - value(from, offset)) * amount);
+    return `rgb(${channel(1)}, ${channel(3)}, ${channel(5)})`;
+  };
+  const setProgressColor = ratio=>{
+    const progress = Math.max(0, Math.min(1, ratio));
+    area.style.background = progress <= .5
+      ? mixColor(gateColors[0], gateColors[1], progress * 2)
+      : mixColor(gateColors[1], gateColors[2], (progress - .5) * 2);
+  };
 
   const getX = (e)=>{
     if(e.touches && e.touches.length) return e.touches[0].clientX;
@@ -1615,6 +1636,8 @@ function initGateSlide(){
     maxRight = w;
     maxLeft = w;
     bar.style.transition="";
+    area.style.transition="none";
+    setProgressColor(0);
     area.classList.add("touching");
   };
   const move = (e)=>{
@@ -1625,12 +1648,14 @@ function initGateSlide(){
     if(dx > maxRight) dx = maxRight;
     if(dx < -maxLeft) dx = -maxLeft;
     bar.style.transform = `translateX(${dx}px)`;
-    const ratio = Math.abs(dx) / (w * 0.78);
+    const ratio = Math.min(1, Math.abs(dx) / (w * 0.78));
+    setProgressColor(ratio);
     if(ratio >= 1){
       // 完了
       dragging = false;
       bar.style.transition="transform .15s ease";
       bar.style.transform = `translateX(${dx>0?maxRight:-maxLeft}px)`;
+      setProgressColor(1);
       area.classList.remove("touching");
       triggerGate();
     }
@@ -1641,6 +1666,8 @@ function initGateSlide(){
     area.classList.remove("touching");
     bar.style.transition="transform .25s ease";
     bar.style.transform = "translateX(0)";
+    area.style.transition="background .25s ease";
+    setProgressColor(0);
   };
   area.addEventListener("mousedown",start);
   area.addEventListener("touchstart",start,{passive:false});
@@ -1656,7 +1683,11 @@ function triggerGate(){
   if(area && successText){
     successText.textContent = `${selection.length}枚使用しました`;
     // GATEバーをピンクバナーへモーフ
-    setTimeout(()=>area.classList.add("morphing"), 250);
+    setTimeout(()=>{
+      area.style.removeProperty("background");
+      area.style.removeProperty("transition");
+      area.classList.add("morphing");
+    }, 250);
   }
   setTimeout(()=>{
     const ts = nowUsed();
@@ -1668,13 +1699,13 @@ function triggerGate(){
     sheetPhase = "done";
     doneShowBanner = true;
     renderSheet();
-    // 4秒後にピンクバナーをイベントカードに切り替え
+    // 実機同様、完了表示の後はイベント情報を含む元のレイアウトへ戻す
     setTimeout(()=>{
       if(sheetPhase === "done"){
         doneShowBanner = false;
         renderSheet();
       }
-    }, 4000);
+    }, 1200);
   },1200);
 }
 
