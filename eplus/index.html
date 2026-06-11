@@ -201,11 +201,11 @@
     position:sticky;top:0;z-index:5;
   }
   .detail-header .back{
-    background:none;border:none;color:#34C759;
+    background:none;border:none;color:#2FA8B3;
     padding:4px 10px;cursor:pointer;line-height:1;
     display:flex;align-items:center;
   }
-  .detail-header .back svg{width:14px;height:24px;display:block;}
+  .detail-header .back svg{width:8px;height:14px;display:block;}
   .btn-pink-pill{
     background:var(--btn-goto) no-repeat center/contain;
     border:none;cursor:pointer;
@@ -699,8 +699,11 @@
 
   /* Smart-ticket detail values from the packaged Android layouts. */
   #screenDetail{
-    font-family:"Noto Sans JP","Roboto","Noto Sans CJK JP",sans-serif;
+    font-family:"Roboto","Noto Sans JP","Noto Sans CJK JP",sans-serif;
     font-synthesis:none;
+  }
+  #screenDetail .detail-header .back{
+    margin-left:12px;
   }
   #screenDetail .detail-body{
     padding:10px 10px 90px;
@@ -745,6 +748,17 @@
     font-size:12px;
     margin-top:2px;
   }
+  #screenDetail .detail-date .kebab{
+    top:12px;
+    right:12px;
+    width:30px;
+    height:30px;
+    padding:0;
+    border-radius:0;
+    background:transparent url("jp.eplus.android.all/res/drawable-xxxhdpi-v4/edsdk_ic_smart_ticket_menu.png") no-repeat center/30px 30px;
+    color:transparent;
+    font-size:0;
+  }
   #screenDetail .detail-ticket{
     margin-left:0;
     margin-right:0;
@@ -778,23 +792,36 @@
   #screenDetail .detail-ticket .seat .type{
     font-size:15px;
     font-weight:700;
+    color:#212121;
     margin-bottom:0;
   }
   #screenDetail .detail-ticket .seat .blk,
   #screenDetail .detail-ticket .seat .num{
-    font-size:15px;
+    font-size:14px;
     font-weight:400;
+    color:#212121;
   }
   #screenDetail .detail-ticket .seat .price{
     font-size:14px;
     font-weight:400;
+    color:#212121;
     margin-top:2px;
+  }
+  #screenDetail .detail-ticket .dist{
+    width:159px;
+    height:30px;
+    margin:4px 12px 2px;
+    background-image:url("jp.eplus.android.all/res/drawable-xxxhdpi-v4/edsdk_ic_distribution_button.png");
+    background-position:left center;
+    background-size:159px 30px;
   }
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
     font-size:12px;
     font-weight:400;
-    line-height:1.75;
+    color:#424242;
+    letter-spacing:0;
+    line-height:1.4;
   }
   #screenDetail .detail-ticket .desc{
     margin-top:8px;
@@ -815,18 +842,40 @@
   }
   #screenDetail .detail-ticket .backlink,
   #screenDetail .detail-ticket .refno{
-    font-size:14px;
+    color:#007FFF;
     font-weight:400;
     background:#F3D3E2;
   }
   #screenDetail .detail-ticket .backlink{
+    font-size:12px;
     padding:6px 10px 4px;
     display:flex;
     width:100%;
   }
+  #screenDetail .detail-ticket .backlink::after{
+    content:"";
+    width:5px;
+    height:9px;
+    flex:0 0 5px;
+    margin-left:2px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14'%3E%3Cpath fill='%23007FFF' d='M.2176 12.7765 6.2065 6.9998.2176 1.2232C-.0724.9435-.0725.4898.2176.2099.5078-.07.9782-.07 1.2683.2099l6.5142 6.2833C7.9207 6.6267 8 6.8112 8 6.9998c0 .1888-.0793.3735-.2175.5068l-6.5142 6.2833C1.1232 13.9298.933 14 .7429 14s-.3802-.0702-.5253-.2101c-.2901-.2798-.2901-.7335 0-1.0134Z'/%3E%3C/svg%3E") no-repeat center/5px 9px;
+  }
   #screenDetail .detail-ticket .refno{
+    font-size:14px;
     padding:8px 10px 12px;
     border-top:1px solid rgba(117,117,117,.18);
+  }
+  #screenDetail .detail-ticket .collapse{
+    right:10px;
+    bottom:10px;
+    width:21px;
+    height:21px;
+    border-radius:0;
+    background:transparent url("jp.eplus.android.all/res/drawable-xxhdpi-v4/edsdk_v3_icon_arrow_up.png") no-repeat center/21px 21px;
+    box-shadow:none;
+  }
+  #screenDetail .detail-ticket .collapse::before{
+    content:none;
   }
 </style>
 </head>
@@ -872,7 +921,7 @@
   <!-- ============== 詳細画面 ============== -->
   <div id="screenDetail" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
     <div class="detail-header">
-      <button class="back" id="btnBack"><svg viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11,3 3,12 11,21"/></svg></button>
+      <button class="back" id="btnBack"><svg viewBox="0 0 8 14" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.7824 12.7765 1.7935 6.9998 7.7824 1.2232C8.0724.9435 8.0725.4898 7.7824.2099 7.4922-.07 7.0218-.07 6.7317.2099L.2175 6.4932A.708.708 0 0 0 0 6.9998c0 .1888.0793.3735.2175.5068l6.5142 6.2833c.1451.1399.3353.2101.5254.2101s.3802-.0702.5253-.2101c.2901-.2798.2901-.7335 0-1.0134Z"/></svg></button>
       <button class="btn-pink-pill" id="btnGoEntry">入場画面に進む</button>
     </div>
     <div class="detail-body" id="detailBody"></div>
