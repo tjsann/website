@@ -696,6 +696,138 @@
     margin:20px 0 4px;font-size:22px;letter-spacing:.08em;
   }
   .gate-result-overlay p{margin:0;font-size:14px;opacity:.85;}
+
+  /* Smart-ticket detail values from the packaged Android layouts. */
+  #screenDetail{
+    font-family:"Noto Sans JP","Roboto","Noto Sans CJK JP",sans-serif;
+    font-synthesis:none;
+  }
+  #screenDetail .detail-body{
+    padding:10px 10px 90px;
+  }
+  #screenDetail .detail-date{
+    margin:0 0 10px;
+    padding:10px;
+    background:#F8F8F8;
+    border:1px solid #EEEEEE;
+    border-radius:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  #screenDetail .detail-date .year{
+    font-size:15px;
+    font-weight:400;
+  }
+  #screenDetail .detail-date .big{
+    gap:10px;
+  }
+  #screenDetail .detail-date .big .md{
+    font-size:30px;
+    font-weight:400;
+    letter-spacing:0;
+  }
+  #screenDetail .detail-date .big .dw{
+    font-size:12px;
+    font-weight:700;
+    margin-left:3px;
+  }
+  #screenDetail .detail-date .big .times{
+    font-size:14px;
+    font-weight:700;
+    line-height:1.5;
+  }
+  #screenDetail .detail-date .ev-title{
+    font-size:16px;
+    font-weight:700;
+    line-height:1.5;
+    margin-top:6px;
+  }
+  #screenDetail .detail-date .venue{
+    font-size:12px;
+    margin-top:2px;
+  }
+  #screenDetail .detail-ticket{
+    margin-left:0;
+    margin-right:0;
+    border-radius:8px;
+    background:#FBECF3;
+  }
+  #screenDetail .detail-ticket .buyer{
+    min-height:40px;
+    padding:8px 10px;
+    background:#E85299;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0;
+  }
+  #screenDetail .detail-ticket .buyer .idx{
+    font-size:12px;
+    font-weight:400;
+  }
+  #screenDetail .detail-ticket .row{
+    gap:14px;
+    padding:10px 8px;
+    align-items:flex-start;
+  }
+  #screenDetail .ticket-icon{
+    width:90px;
+    height:90px;
+  }
+  #screenDetail .detail-ticket .seat{
+    line-height:1.5;
+  }
+  #screenDetail .detail-ticket .seat .type{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:0;
+  }
+  #screenDetail .detail-ticket .seat .blk,
+  #screenDetail .detail-ticket .seat .num{
+    font-size:15px;
+    font-weight:400;
+  }
+  #screenDetail .detail-ticket .seat .price{
+    font-size:14px;
+    font-weight:400;
+    margin-top:2px;
+  }
+  #screenDetail .detail-ticket .desc,
+  #screenDetail .detail-ticket .meta{
+    font-size:12px;
+    font-weight:400;
+    line-height:1.75;
+  }
+  #screenDetail .detail-ticket .desc{
+    margin-top:8px;
+    padding:11px 10px 8px;
+    background-color:#F3D3E2;
+    background-image:repeating-linear-gradient(
+      to right,
+      #777 0 2px,
+      transparent 2px 4px
+    );
+    background-repeat:repeat-x;
+    background-position:left top;
+    background-size:auto 1px;
+  }
+  #screenDetail .detail-ticket .meta{
+    padding:0 10px;
+    background:#F3D3E2;
+  }
+  #screenDetail .detail-ticket .backlink,
+  #screenDetail .detail-ticket .refno{
+    font-size:14px;
+    font-weight:400;
+    background:#F3D3E2;
+  }
+  #screenDetail .detail-ticket .backlink{
+    padding:6px 10px 4px;
+    display:flex;
+    width:100%;
+  }
+  #screenDetail .detail-ticket .refno{
+    padding:8px 10px 12px;
+    border-top:1px solid rgba(117,117,117,.18);
+  }
 </style>
 </head>
 <body>
