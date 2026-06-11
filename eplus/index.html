@@ -697,6 +697,10 @@
   }
   .gate-result-overlay p{margin:0;font-size:14px;opacity:.85;}
 
+  :root{
+    --icon-ticket-menu:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAMAAAAOusbgAAABC1BMVEXu7u7u7u7u7u7x8fHv7+/x8fHu7u7v7+/x8fHu7u7v7+/u7u7x8fH29vbu7u729vbx8fH////v7+/w8PDv7+/////w8PDu7u7u7u7y8vLv7+/u7u7u7u7v7+/u7u7z8/Pv7+/u7u7v7+/v7+/v7+/u7u7v7+/v7+8AAAD////u7u7u7u7v7+/////u7u7v7+/u7u7v7+/x8fGr1dk+rbdGsLpauMDm6+uy2NwwqLN9xcvm6+xmvMTj6uo/rrh4w8lEsLpwwMfF3+Hs7e7Y5udovcSz2dxcucHu7u7r7e2Mys93wskvqLOt1tpDr7mJyc/b5+g3q7YyqbQ6rLeMytBRtL2s1dkzqrTD3uFyfMggAAAAM3RSTlO5mcRYyzji+0n1rcY3G0sdNQG7Y/0EVOe4FP6aa0CYKfl73/qsxaKyAAfSi+8ILeylwhJlNTW8AAADN0lEQVRo3s2bZ3eiQBSGx40ajF0UFTUoisY66qb3npus6fX//5J1TUQ0BkSZuft8fOHwnMOhTLmXrNml2ZIK5ZRWU2k+T9WalioXpFbT9mWIrbOVbEmNwxTiaimrMBKnxXYSTEm2xbTT4qpUKcIMFCtS1UFxZLUBM9NYjTgkzsXAJrGcA2JBgznQhAXFATfMiTuwgLibkWFu5Ex3TnFUpLAQVIzOIw53YGE6YfviEAUHoCGb4kRdBkeQ6wk74qAfHMMfnF2seMFBvMqsYg8FR6Ge2cSCDxzGJ8wiXloGx1leshYLDLx9s2Al9viACT6PuVihwAiqmImDXmCGN/izOOEHhvgTP4rrwJT6T+KQzFYsh6aLwxQYQ8PTxNEOMKcTnSIWgQPid3GX8hDT7jdxBriQmRQHZD5iOTAhdgMn3ONiAbghjIk1fuJfRnEOOJIziGM8xbGROAJciehiF1+xayiuNviKG9UvsQSckb7EFd7iyqc4XeQtLqYHYhG4Iw7Ebf7i9kCc5C9O/hMrgIDSF2cxxNm+eAVDXOqLVQyxukaacQxxvElagEKLSDhiiRTMTzg9OX4/3L+cjA9uXh8fX28OJvPL/cP345NTa3GBlM0O7+3u9AZcPIzl23ef8d32WPxw8Rnv7O5ZicuEmB3+0xuyeW2IP56G8dOHIb7e1E8/shITYjYXv+2NeBnFWxujeGNrlL8YTr+1mqWTmsnRK8OV1s/0+Lch7r3p8dm6Ib6yENeI2ffj2Wg41+N7Y3yvx+fG+NnqC0IojpiSvP1b/ebArc6bihk+XHnTWw1HzF4navpwMfyAqKavE8NPZo1oOD8JjaRwxCnznwQ7yla/RVYU8AYCaEMftMEe2vB2rYQ1oEebwqBN2tCmqXgTc7SlCLTFF7TlJrwFNrQlRd6LqKv4y8ZoC+V4WwM8N0O0/2P7B23DC2+LD21TE28bF23jGm+rHq04Aa8cA68ABa/kBq3ICK+sCq+QDK90Dq9YEK88Eq8gFK8EFq/oF6/MGa+wG7GUHa94H69dAbFBA7ElBbEJZzB/dtlpO3I51XaE2GiF2FqmN9Ot8G+mG2sfJP5h+6CfzNc++BcBFhwMogb5kgAAAABJRU5ErkJggg==');
+  }
+
   /* Smart-ticket detail values from the packaged Android layouts. */
   #screenDetail{
     font-family:"Roboto","Noto Sans JP","Noto Sans CJK JP",sans-serif;
@@ -755,7 +759,7 @@
     height:30px;
     padding:0;
     border-radius:0;
-    background:transparent url("jp.eplus.android.all/res/drawable-xxxhdpi-v4/edsdk_ic_smart_ticket_menu.png") no-repeat center/30px 30px;
+    background:transparent var(--icon-ticket-menu) no-repeat center/30px 30px;
     color:transparent;
     font-size:0;
   }
@@ -811,7 +815,7 @@
     width:159px;
     height:30px;
     margin:4px 12px 2px;
-    background-image:url("jp.eplus.android.all/res/drawable-xxxhdpi-v4/edsdk_ic_distribution_button.png");
+    background-image:var(--btn-dist);
     background-position:left center;
     background-size:159px 30px;
   }
@@ -871,7 +875,7 @@
     width:21px;
     height:21px;
     border-radius:0;
-    background:transparent url("jp.eplus.android.all/res/drawable-xxhdpi-v4/edsdk_v3_icon_arrow_up.png") no-repeat center/21px 21px;
+    background:transparent var(--icon-arrow-up) no-repeat center/21px 21px;
     box-shadow:none;
   }
   #screenDetail .detail-ticket .collapse::before{
