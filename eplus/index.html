@@ -440,10 +440,12 @@
     background-repeat:no-repeat;background-position:center;background-size:contain;
     color:transparent;font-size:0;
     user-select:none;-webkit-user-select:none;touch-action:none;
-    transition:transform .15s, filter .15s;
+    opacity:.82;                /* 実機の選択フェーズは星がやや淡い。0.78〜0.9で微調整可 */
+    transition:transform .15s, filter .15s, opacity .15s;
   }
   .ev-card.ready .star{
     cursor:pointer;
+    opacity:1;                  /* 2点タップ可能な状態では鮮やかな緑に戻す */
   }
   .ev-card .star.pressed{
     transform:scale(.85);
@@ -1358,7 +1360,7 @@
   #sheet .used-card{margin:7px 8px 0;border-radius:0;background:#dfe0e5}
   #sheet .used-card .buyer{height:40px;padding:7px 12px;background:#db2f91;font-size:17px}
   #sheet .used-card .body{min-height:91px;padding:10px 14px;gap:18px}
-  #sheet .used-card .icon{width:56px;height:56px}
+  #sheet .used-card .icon{width:60px;height:60px}  /* 使用済アイコンがやや小さかったため拡大(56→60)。実機に合わせ56〜62で微調整可 */
   #sheet .used-card .seat .type{color:#111;font-size:15px}#sheet .used-card .seat .blk{color:#111;font-size:14px}#sheet .used-card .seat .num{color:#111;font-size:15px}
   #sheet .used-card .when{padding:0 12px 8px;color:#111;font-size:11px}
   #sheet .used-card .stamp{right:10px;width:72px;height:43px}
@@ -2146,12 +2148,18 @@ function triggerGate(){
     setTimeout(()=>{
       if(sheetPhase === "done"){
         doneBannerFading = true;
-        renderSheet();
+        // renderSheet()でinnerHTMLを作り直すと .done-stage が再生成され、
+        //  ・opacity 1→0 のトランジションが発火しない(=最後に突然消える)
+        //  ・used-banner-pink の animation:fadeIn が再生される(=再度表示される)
+        // ため、既存要素に直接 .fading を付けて opacity をトランジションさせる。
+        const stage = document.querySelector("#sheetBody .done-stage");
+        if(stage) stage.classList.add("fading");
+        else renderSheet();
         setTimeout(()=>{
           if(sheetPhase === "done"){
             doneShowBanner = false;
             doneBannerFading = false;
-            renderSheet();
+            renderSheet();   // バナーは既に opacity:0 のため、ここでのDOM除去は見た目に出ない
           }
         }, 430);
       }
