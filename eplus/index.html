@@ -1049,22 +1049,22 @@
 
   /* iOS smart-ticket detail alignment (reference: 1290px @ 3x capture). */
   #screenDetail .detail-header{
-    height:57px;
-    min-height:57px;
+    height:53px;
+    min-height:53px;
   }
   #screenDetail .detail-header .back svg{
-    width:9px;
-    height:16px;
+    width:8px;
+    height:14px;
   }
   #screenDetail .btn-pink-pill{
-    width:174px;
-    height:30px;
+    width:167px;
+    height:27px;
   }
   #screenDetail .detail-body{
     padding:8px 10px 90px;
   }
   #screenDetail .detail-date{
-    min-height:119px;
+    min-height:109px;
     box-sizing:border-box;
     margin-bottom:8px;
     padding:10px 10px 0;
@@ -1075,7 +1075,7 @@
   #screenDetail .detail-date .year{
     margin-bottom:1px;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    font-size:18px;
+    font-size:16px;
     font-weight:400;
     line-height:1.05;
   }
@@ -1085,33 +1085,37 @@
   #screenDetail .detail-date .big .md{
     position:relative;
     top:-7px;
-    font-size:33px;
+    font-size:30px;
     font-weight:400;
     letter-spacing:-.025em;
   }
   #screenDetail .detail-date .big .dw{
-    font-size:14px;
+    font-size:13px;
   }
   #screenDetail .detail-date .big .times{
     position:relative;
     top:-4px;
-    font-size:18px;
-    line-height:1;
+    font-size:16px;
+    line-height:1.08;
+    letter-spacing:-.015em;
   }
   #screenDetail .detail-date .ev-title{
     margin-top:0;
-    font-size:18px;
-    line-height:1;
+    font-size:16px;
+    line-height:1.15;
+    letter-spacing:-.018em;
+    font-feature-settings:"palt" 1;
   }
   #screenDetail .detail-date .venue{
     margin-top:2px;
-    font-size:14px;
-    line-height:1;
+    font-size:13px;
+    line-height:1.1;
+    letter-spacing:-.01em;
   }
   #screenDetail .detail-date .kebab{
-    width:34px;
-    height:34px;
-    background-size:34px 34px;
+    width:30px;
+    height:30px;
+    background-size:30px 30px;
   }
   #screenDetail .detail-ticket{
     background:#fff2f8;
@@ -1120,10 +1124,14 @@
   #screenDetail .detail-ticket .buyer{
     min-height:35px;
     padding:6px 10px;
-    font-size:18px;
+    font-size:17px;
+    line-height:23px;
+    letter-spacing:-.005em;
+    font-feature-settings:"palt" 1;
   }
   #screenDetail .detail-ticket .buyer .idx{
-    font-size:14px;
+    font-size:13px;
+    letter-spacing:0;
   }
   #screenDetail .detail-ticket .row{
     gap:12px;
@@ -1131,28 +1139,30 @@
     padding-bottom:2px;
   }
   #screenDetail .ticket-icon{
-    width:72px;
-    height:81px;
+    width:64px;
+    height:72px;
   }
   #screenDetail .detail-ticket .seat .num{
     gap:3px;
   }
   #screenDetail .detail-ticket .seat{
     line-height:1.25;
+    letter-spacing:-.01em;
+    font-feature-settings:"palt" 1;
   }
   #screenDetail .detail-ticket .seat .type{
-    font-size:18px;
+    font-size:17px;
   }
   #screenDetail .detail-ticket .seat .blk,
   #screenDetail .detail-ticket .seat .num,
   #screenDetail .detail-ticket .seat .price{
-    font-size:16px;
+    font-size:15px;
   }
   #screenDetail .detail-ticket .dist{
-    width:143px;
-    height:28px;
+    width:130px;
+    height:25px;
     margin:2px 12px 2px;
-    background-size:143px 28px;
+    background-size:130px 25px;
   }
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta,
@@ -1166,8 +1176,10 @@
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
     font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
-    font-size:14px;
+    font-size:13px;
     line-height:1.35;
+    letter-spacing:-.012em;
+    font-feature-settings:"palt" 1;
   }
   #screenDetail .detail-ticket .desc{
     min-height:0;
@@ -1177,8 +1189,8 @@
   }
   #screenDetail .detail-ticket.collapsed .desc{
     display:block;
-    height:58px;
-    min-height:58px;
+    height:50px;
+    min-height:50px;
     overflow:hidden;
     -webkit-line-clamp:unset;
     line-clamp:unset;
@@ -1186,12 +1198,12 @@
   #screenDetail .detail-ticket .collapse{
     right:10px;
     bottom:9px;
-    width:22px;
-    height:22px;
+    width:20px;
+    height:20px;
     box-sizing:border-box;
     border:0;
     border-radius:50%;
-    background:transparent var(--icon-arrow-up) no-repeat center/22px 22px;
+    background:transparent var(--icon-arrow-up) no-repeat center/20px 20px;
     box-shadow:none;
     transform:none;
   }
@@ -1201,8 +1213,8 @@
   #screenDetail .detail-ticket.collapsed .collapse{
     right:10px;
     bottom:9px;
-    width:22px;
-    height:22px;
+    width:20px;
+    height:20px;
     box-sizing:border-box;
     border:2px solid #2f84ff;
     border-radius:50%;
