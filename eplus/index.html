@@ -49,6 +49,20 @@
   @font-face{font-family:'SF Pro Text';font-weight:600;font-style:normal;font-display:swap;src:url('assets/sf_pro_text_semibold.ttf') format('truetype');}
   @font-face{font-family:'SF Pro Text';font-weight:700 900;font-style:normal;font-display:swap;src:url('assets/sf_pro_text_bold.ttf') format('truetype');}
   @font-face{font-family:'SF Pro Text Thin';font-weight:100;font-style:normal;font-display:swap;src:url('assets/sf_pro_text_thin.ttf') format('truetype');}
+  @font-face{
+    font-family:'Eplus Zen Kaku Gothic';
+    font-weight:500;
+    font-style:normal;
+    font-display:swap;
+    src:url('assets/ZenKakuGothicAntique-Medium.ttf') format('truetype');
+  }
+  @font-face{
+    font-family:'Eplus Google Sans';
+    font-weight:500;
+    font-style:normal;
+    font-display:swap;
+    src:url('assets/GoogleSans-Medium-latin.woff2') format('woff2');
+  }
   /* 日本語は SF Pro Text にグリフが無いためフォールバック。実機(Hiragino系)に最も近い Noto Sans JP を Yu Gothic より優先 */
   html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--text);background:#000;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
   body{display:flex;justify-content:center;min-height:100vh;}
@@ -1066,54 +1080,60 @@
     min-height:109px;
     box-sizing:border-box;
     margin-bottom:8px;
-    padding:10px 10px 0;
+    padding:10px 8px 9px;
     background:#fafafa;
     border-color:#f7f7f7;
     box-shadow:0 1px 3px rgba(0,0,0,.08);
   }
   #screenDetail .detail-date .year{
-    margin-bottom:1px;
+    margin-bottom:3px;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    font-size:16px;
+    font-size:14px;
     font-weight:400;
     line-height:1.05;
   }
   #screenDetail .detail-date .big{
-    gap:9px;
+    gap:6px;
   }
   #screenDetail .detail-date .big .md{
     position:relative;
-    top:-7px;
-    font-family:"SF Pro Text Thin","Helvetica Neue",sans-serif;
-    font-size:31px;
-    font-weight:100;
+    top:0;
+    font-family:"Eplus Google Sans","Google Sans","Helvetica Neue",sans-serif;
+    font-size:30px;
+    font-weight:500;
     letter-spacing:0;
     font-variant-numeric:proportional-nums;
     font-kerning:normal;
-    font-synthesis:none;
+    font-synthesis:weight;
+    -webkit-text-stroke:0;
   }
   #screenDetail .detail-date .big .dw{
-    font-size:13px;
+    font-size:10px;
   }
   #screenDetail .detail-date .big .times{
     position:relative;
-    top:-4px;
-    font-size:16px;
-    line-height:1.08;
-    letter-spacing:-.015em;
+    top:0;
+    font-size:14.5px;
+    font-weight:600;
+    line-height:1.2;
+    letter-spacing:0;
   }
   #screenDetail .detail-date .ev-title{
-    margin-top:0;
-    font-size:17px;
-    line-height:1.18;
-    letter-spacing:-.065em;
+    max-width:317px;
+    margin-top:3px;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","SF Pro Text","Helvetica Neue",sans-serif;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-.035em;
     font-feature-settings:"palt" 1;
   }
   #screenDetail .detail-date .venue{
-    margin-top:2px;
-    font-size:13px;
-    line-height:1.1;
-    letter-spacing:-.01em;
+    margin-top:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","SF Pro Text","Helvetica Neue",sans-serif;
+    font-size:10.5px;
+    line-height:1.2;
+    letter-spacing:-.03em;
   }
   #screenDetail .detail-date .kebab{
     width:30px;
@@ -1267,7 +1287,17 @@
   #screenList .ticket-card .ribbon{top:0;left:10px;padding:0 4px;color:#d9328b;background:#fff;border:2px solid #d9328b;border-top:0;border-radius:0;font-size:14px;line-height:21px;letter-spacing:0}
   #screenList .ticket-card .info{min-height:126px;padding:10px 11px 8px;background:#f8cce6}
   #screenList .ticket-card .year{font-size:11px;color:#222}
-  #screenList .ticket-card .date{margin:0 0 1px;color:#111;font-size:27px;font-weight:500;line-height:1.25}
+  #screenList .ticket-card .date{
+    margin:0 0 1px;
+    color:#111;
+    font-family:"Eplus Google Sans","Google Sans","Helvetica Neue",sans-serif;
+    font-size:27px;
+    font-weight:500;
+    line-height:1.25;
+    letter-spacing:0;
+    font-variant-numeric:proportional-nums;
+    font-kerning:normal;
+  }
   #screenList .ticket-card .date .day{color:#d92e86;font-size:13px;font-weight:700}
   #screenList .ticket-card .date .time{margin-left:8px;font-size:14px;font-weight:700}
   #screenList .ticket-card .title{font-size:14px;font-weight:700;line-height:1.35}
@@ -1298,7 +1328,15 @@
   #sheet .ts-banner{height:31px;padding:3px 5px;background:#31a6aa;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:0;line-height:25px}
   #sheet .sheet-body{background:#f1f1f1}
   #sheet .ev-card{margin:10px 8px 0;padding:17px 12px 9px;border-radius:8px 8px 0 0;box-shadow:none}
-  #sheet .ev-card .head{justify-content:center;gap:36px}#sheet .ev-card .md-big{font-size:34px;font-weight:500}
+  #sheet .ev-card .head{justify-content:center;gap:36px}
+  #sheet .ev-card .md-big{
+    font-family:"Eplus Google Sans","Google Sans","Helvetica Neue",sans-serif;
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:0;
+    font-variant-numeric:proportional-nums;
+    font-kerning:normal;
+  }
   #sheet .ev-card .md-big .dw{font-size:14px;font-weight:500}#sheet .ev-card .times{padding-top:0;font-size:12px;font-weight:600;line-height:1.35}
   #sheet .ev-card .stars{margin:5px 0 7px;padding:0 60px}#sheet .ev-card .star{width:35px;height:35px}
   #sheet .ev-card .venue{margin-top:0;font-size:12px;font-weight:700}#sheet .ev-card .ev-title{font-size:11px;line-height:1.35}
