@@ -209,7 +209,7 @@
   .btn-pink-pill{
     background:url("assets/entry_button_01.png") no-repeat center/contain;
     border:none;cursor:pointer;
-    width:148px;height:31px;
+    width:167px;height:27px;
     font-size:0;color:transparent;padding:0;
     position:relative;
     overflow:hidden;
@@ -1047,7 +1047,7 @@
     min-height:109px;
     box-sizing:border-box;
     margin-bottom:8px;
-    padding:10px 10px 6px;
+    padding:10px 10px 0;
     background:#fafafa;
     border-color:#f7f7f7;
     box-shadow:0 1px 3px rgba(0,0,0,.08);
@@ -1055,7 +1055,7 @@
   #screenDetail .detail-date .year{
     margin-bottom:1px;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    font-size:15px;
+    font-size:16px;
     font-weight:400;
     line-height:1.05;
   }
@@ -1065,31 +1065,37 @@
   #screenDetail .detail-date .big .md{
     position:relative;
     top:-7px;
-    font-size:27px;
+    font-size:30px;
     font-weight:400;
     letter-spacing:-.025em;
   }
   #screenDetail .detail-date .big .times{
     position:relative;
     top:-4px;
-    font-size:14px;
-    line-height:1.3;
+    font-size:16px;
+    line-height:1;
   }
   #screenDetail .detail-date .ev-title{
     margin-top:0;
-    font-size:14px;
-    line-height:1.2;
+    font-size:16px;
+    line-height:1;
   }
   #screenDetail .detail-date .venue{
     margin-top:2px;
-    line-height:1.15;
+    font-size:12px;
+    line-height:1;
   }
   #screenDetail .detail-ticket{
     background:#fff2f8;
+    margin-bottom:10px;
   }
   #screenDetail .detail-ticket .buyer{
     min-height:35px;
     padding:6px 10px;
+    font-size:16px;
+  }
+  #screenDetail .detail-ticket .buyer .idx{
+    font-size:13px;
   }
   #screenDetail .detail-ticket .row{
     gap:12px;
@@ -1104,15 +1110,15 @@
     gap:3px;
   }
   #screenDetail .detail-ticket .seat{
-    line-height:1.4;
+    line-height:1.25;
   }
   #screenDetail .detail-ticket .seat .type{
-    font-size:15px;
+    font-size:16px;
   }
   #screenDetail .detail-ticket .seat .blk,
   #screenDetail .detail-ticket .seat .num,
   #screenDetail .detail-ticket .seat .price{
-    font-size:13px;
+    font-size:15px;
   }
   #screenDetail .detail-ticket .dist{
     width:130px;
@@ -1130,24 +1136,38 @@
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
     font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
-    font-size:10px;
-    line-height:1.3;
+    font-size:13px;
+    line-height:1.35;
   }
   #screenDetail .detail-ticket .desc{
     min-height:0;
-    margin-top:10px;
-    padding:5px 38px 4px 10px;
+    margin-top:2px;
+    padding:1px 38px 0 10px;
     box-sizing:border-box;
   }
   #screenDetail .detail-ticket.collapsed .desc{
     display:block;
-    height:48px;
-    min-height:48px;
+    height:50px;
+    min-height:50px;
     overflow:hidden;
     -webkit-line-clamp:unset;
     line-clamp:unset;
   }
-  #screenDetail .detail-ticket .collapse,
+  #screenDetail .detail-ticket .collapse{
+    right:10px;
+    bottom:9px;
+    width:20px;
+    height:20px;
+    box-sizing:border-box;
+    border:0;
+    border-radius:50%;
+    background:transparent var(--icon-arrow-up) no-repeat center/20px 20px;
+    box-shadow:none;
+    transform:none;
+  }
+  #screenDetail .detail-ticket .collapse::before{
+    content:none;
+  }
   #screenDetail .detail-ticket.collapsed .collapse{
     right:10px;
     bottom:9px;
@@ -1160,7 +1180,7 @@
     box-shadow:none;
     transform:none;
   }
-  #screenDetail .detail-ticket .collapse::before{
+  #screenDetail .detail-ticket.collapsed .collapse::before{
     content:"";
     display:block;
     width:7px;
@@ -1169,9 +1189,6 @@
     border-right:2px solid #2f84ff;
     border-bottom:2px solid #2f84ff;
     background:none;
-    transform:translateY(2px) rotate(225deg);
-  }
-  #screenDetail .detail-ticket.collapsed .collapse::before{
     transform:translateY(-2px) rotate(45deg);
   }
   #screenDetail .detail-ticket.used .desc,
@@ -1607,8 +1624,8 @@ let pendingGateTouchX = null;
 function openSheet(){
   const unused = unusedIndices();
   selection = unused.length === 1 ? [unused[0]] : [];
-  sheetPhase = selection.length === 1 ? "gate" : "select";
-  doneShowBanner = true;
+  sheetPhase = unused.length === 0 ? "done" : (selection.length === 1 ? "gate" : "select");
+  doneShowBanner = unused.length !== 0;
   doneBannerFading = false;
   renderSheet();
   $("sheet").classList.add("show");
@@ -1728,7 +1745,6 @@ function renderSheet(){
     });
   } else if(sheetPhase === "done"){
     // 使用済表示
-    $("sheet").querySelector(".ts-banner").remove?.();
     mainHtml += `<div class="ts-banner">${nowTsFull()}</div>`;
     // 初期はピンクの完了バナー、その後イベントカードに入れ替わる
     if(doneShowBanner){
@@ -1890,7 +1906,7 @@ function initGateSlide(){
     if(dx > maxRight) dx = maxRight;
     if(dx < -maxLeft) dx = -maxLeft;
     bar.style.transform = `translateX(${dx}px)`;
-    const ratio = Math.min(1, Math.abs(dx) / (w * 0.78));
+    const ratio = Math.min(1, Math.abs(dx) / (w * 0.70));
     setProgressColor(ratio);
     if(ratio >= 1){
       // 完了
