@@ -907,6 +907,13 @@
   #screenDetail .detail-ticket .expandable-layout{
     background:#FDEDF5;
   }
+  #screenDetail .detail-ticket .description-panel{
+    position:relative;
+    background:#FDEDF5;
+  }
+  #screenDetail .detail-ticket .fixed-ticket-info{
+    background:#FDEDF5;
+  }
   #screenDetail .detail-ticket.collapsed .desc{
     display:-webkit-box;
     overflow:hidden;
@@ -918,6 +925,9 @@
     box-sizing:border-box;
   }
   #screenDetail .detail-ticket.collapsed .expandable-layout{
+    display:none;
+  }
+  #screenDetail .detail-ticket.collapsed .fixed-ticket-info{
     display:none;
   }
   #screenDetail .detail-ticket .meta{
@@ -1002,6 +1012,8 @@
     display:none;
   }
   #screenDetail .detail-ticket.used .desc,
+  #screenDetail .detail-ticket.used .description-panel,
+  #screenDetail .detail-ticket.used .fixed-ticket-info,
   #screenDetail .detail-ticket.used .expandable-layout,
   #screenDetail .detail-ticket.used .meta,
   #screenDetail .detail-ticket.used .backlink,
@@ -1037,14 +1049,22 @@
 
   /* iOS smart-ticket detail alignment (reference: 1290px @ 3x capture). */
   #screenDetail .detail-header{
-    height:53px;
-    min-height:53px;
+    height:57px;
+    min-height:57px;
+  }
+  #screenDetail .detail-header .back svg{
+    width:9px;
+    height:16px;
+  }
+  #screenDetail .btn-pink-pill{
+    width:174px;
+    height:30px;
   }
   #screenDetail .detail-body{
     padding:8px 10px 90px;
   }
   #screenDetail .detail-date{
-    min-height:109px;
+    min-height:119px;
     box-sizing:border-box;
     margin-bottom:8px;
     padding:10px 10px 0;
@@ -1055,7 +1075,7 @@
   #screenDetail .detail-date .year{
     margin-bottom:1px;
     font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    font-size:16px;
+    font-size:18px;
     font-weight:400;
     line-height:1.05;
   }
@@ -1065,25 +1085,33 @@
   #screenDetail .detail-date .big .md{
     position:relative;
     top:-7px;
-    font-size:30px;
+    font-size:33px;
     font-weight:400;
     letter-spacing:-.025em;
+  }
+  #screenDetail .detail-date .big .dw{
+    font-size:14px;
   }
   #screenDetail .detail-date .big .times{
     position:relative;
     top:-4px;
-    font-size:16px;
+    font-size:18px;
     line-height:1;
   }
   #screenDetail .detail-date .ev-title{
     margin-top:0;
-    font-size:16px;
+    font-size:18px;
     line-height:1;
   }
   #screenDetail .detail-date .venue{
     margin-top:2px;
-    font-size:12px;
+    font-size:14px;
     line-height:1;
+  }
+  #screenDetail .detail-date .kebab{
+    width:34px;
+    height:34px;
+    background-size:34px 34px;
   }
   #screenDetail .detail-ticket{
     background:#fff2f8;
@@ -1092,10 +1120,10 @@
   #screenDetail .detail-ticket .buyer{
     min-height:35px;
     padding:6px 10px;
-    font-size:16px;
+    font-size:18px;
   }
   #screenDetail .detail-ticket .buyer .idx{
-    font-size:13px;
+    font-size:14px;
   }
   #screenDetail .detail-ticket .row{
     gap:12px;
@@ -1103,8 +1131,8 @@
     padding-bottom:2px;
   }
   #screenDetail .ticket-icon{
-    width:64px;
-    height:72px;
+    width:72px;
+    height:81px;
   }
   #screenDetail .detail-ticket .seat .num{
     gap:3px;
@@ -1113,21 +1141,23 @@
     line-height:1.25;
   }
   #screenDetail .detail-ticket .seat .type{
-    font-size:16px;
+    font-size:18px;
   }
   #screenDetail .detail-ticket .seat .blk,
   #screenDetail .detail-ticket .seat .num,
   #screenDetail .detail-ticket .seat .price{
-    font-size:15px;
+    font-size:16px;
   }
   #screenDetail .detail-ticket .dist{
-    width:130px;
-    height:25px;
+    width:143px;
+    height:28px;
     margin:2px 12px 2px;
-    background-size:130px 25px;
+    background-size:143px 28px;
   }
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta,
+  #screenDetail .detail-ticket .description-panel,
+  #screenDetail .detail-ticket .fixed-ticket-info,
   #screenDetail .detail-ticket .expandable-layout,
   #screenDetail .detail-ticket .backlink,
   #screenDetail .detail-ticket .refno{
@@ -1136,7 +1166,7 @@
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
     font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
-    font-size:13px;
+    font-size:14px;
     line-height:1.35;
   }
   #screenDetail .detail-ticket .desc{
@@ -1147,8 +1177,8 @@
   }
   #screenDetail .detail-ticket.collapsed .desc{
     display:block;
-    height:50px;
-    min-height:50px;
+    height:58px;
+    min-height:58px;
     overflow:hidden;
     -webkit-line-clamp:unset;
     line-clamp:unset;
@@ -1156,12 +1186,12 @@
   #screenDetail .detail-ticket .collapse{
     right:10px;
     bottom:9px;
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
     box-sizing:border-box;
     border:0;
     border-radius:50%;
-    background:transparent var(--icon-arrow-up) no-repeat center/20px 20px;
+    background:transparent var(--icon-arrow-up) no-repeat center/22px 22px;
     box-shadow:none;
     transform:none;
   }
@@ -1171,8 +1201,8 @@
   #screenDetail .detail-ticket.collapsed .collapse{
     right:10px;
     bottom:9px;
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
     box-sizing:border-box;
     border:2px solid #2f84ff;
     border-radius:50%;
@@ -1183,8 +1213,8 @@
   #screenDetail .detail-ticket.collapsed .collapse::before{
     content:"";
     display:block;
-    width:7px;
-    height:7px;
+    width:8px;
+    height:8px;
     box-sizing:border-box;
     border-right:2px solid #2f84ff;
     border-bottom:2px solid #2f84ff;
@@ -1192,6 +1222,8 @@
     transform:translateY(-2px) rotate(45deg);
   }
   #screenDetail .detail-ticket.used .desc,
+  #screenDetail .detail-ticket.used .description-panel,
+  #screenDetail .detail-ticket.used .fixed-ticket-info,
   #screenDetail .detail-ticket.used .expandable-layout,
   #screenDetail .detail-ticket.used .meta,
   #screenDetail .detail-ticket.used .backlink,
@@ -1557,9 +1589,14 @@ function renderDetail(){
         <div class="used-stamp" aria-label="使用済"></div>
       </div>
       <div class="dist">${distIcon}同行者へ分配する</div>
-      <div class="desc">${escapeHtml(descriptionSummary).replace(/\n/g,"<br>")}</div>
-      <div class="expandable-layout">
-        ${descriptionExpanded ? `<div class="meta description2">${escapeHtml(descriptionExpanded).replace(/\n/g,"<br>")}</div>` : ""}
+      <div class="description-panel">
+        <div class="desc">${escapeHtml(descriptionSummary).replace(/\n/g,"<br>")}</div>
+        <div class="expandable-layout">
+          ${descriptionExpanded ? `<div class="meta description2">${escapeHtml(descriptionExpanded).replace(/\n/g,"<br>")}</div>` : ""}
+        </div>
+        <button class="collapse" title="折りたたむ" aria-expanded="true">∧</button>
+      </div>
+      <div class="fixed-ticket-info">
         <div class="meta">${escapeHtml(state.shopInfo||"").replace(/\n/g,"<br>")}</div>
         <div class="backlink">チケット裏面情報</div>
         <div class="refno">
@@ -1567,7 +1604,6 @@ function renderDetail(){
           <div class="used-at">使用日時: ${escapeHtml(s.usedAt || "")}</div>
         </div>
       </div>
-      <button class="collapse" title="折りたたむ" aria-expanded="true">∧</button>
     </div>
   `).join("");
   body.innerHTML = `
