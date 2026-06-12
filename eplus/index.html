@@ -1614,6 +1614,35 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 }
 
+// ── 実機(e+)仕様の固定桁ハード改行 ──────────────────────────
+// e+ の券面 description は「全角約38桁」で固定改行された状態（\n入り）で配信される。
+// 実APIからは生の \n が取得できないため、同じルールでモック側に \n を再生成する。
+// 単語・文の区切りを無視し、桁数だけで機械的に折る（実機同様「座席」が座|席に割れる）。
+// この \n を <br> 化したうえで、CSSの表示幅(=そのまま)が残りを自動再折り返しし、
+// 実機の「フル行＋短い尻尾」パターンを内容非依存で再現する。
+// 折り返し上限（半角単位: 全角=2, 半角=1）。実機実測で 75（≒全角37.5桁）が最良一致。
+// e+はプロポーショナル幅で折るため等幅カウントでは行により±1文字ずれる。実機に合わせ74〜76で微調整可。
+const DESC_WRAP_HANKAKU = 75;
+function charWidthHankaku(ch){
+  const c = ch.codePointAt(0);
+  // 半角(=1): ASCII印字可能 + 半角カナ。それ以外は全角(=2)
+  if ((c >= 0x20 && c <= 0x7E) || (c >= 0xFF61 && c <= 0xFF9F)) return 1;
+  return 2;
+}
+function wrapByHankaku(text, limit){
+  const out = [];
+  for (const seg of String(text).split(/\r?\n/)) {   // 既存の改行は保持
+    let cur = "", w = 0;
+    for (const ch of seg) {              // for..of でサロゲートペアも1文字単位
+      const cw = charWidthHankaku(ch);
+      if (w + cw > limit && cur !== "") { out.push(cur); cur = ch; w = cw; }
+      else { cur += ch; w += cw; }
+    }
+    out.push(cur);
+  }
+  return out.join("\n");
+}
+
 // ===== 詳細画面描画 =====
 function renderDetail(){
   const f = fmtDateJP(state.date);
@@ -1627,7 +1656,9 @@ function renderDetail(){
     <path d="M23 14 Q23 4 13 4 L5 4"/>
     <polyline points="8,1 4,4 8,8"/>
   </svg>`;
-  const descriptionLines = String(state.description || "").split(/\r?\n/);
+  // 実機どおり半角75単位(≒全角38桁)で固定改行を再生成してから流し込む（CSS幅はそのまま）
+  const wrappedDescription = wrapByHankaku(String(state.description || ""), DESC_WRAP_HANKAKU);
+  const descriptionLines = wrappedDescription.split(/\r?\n/);
   const descriptionSummary = descriptionLines.slice(0, 3).join("\n");
   const descriptionExpanded = descriptionLines.slice(3).join("\n");
   const ticketsHtml = state.seats.map((s,i)=>`
