@@ -49,7 +49,7 @@
   @font-face{font-family:'SF Pro Text';font-weight:600;font-style:normal;font-display:swap;src:url('assets/sf_pro_text_semibold.ttf') format('truetype');}
   @font-face{font-family:'SF Pro Text';font-weight:700 900;font-style:normal;font-display:swap;src:url('assets/sf_pro_text_bold.ttf') format('truetype');}
   /* 日本語は SF Pro Text にグリフが無いためフォールバック。実機(Hiragino系)に最も近い Noto Sans JP を Yu Gothic より優先 */
-  html,body{margin:0;padding:0;font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--text);background:#000;font-size:15px;line-height:1.5;}
+  html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",sans-serif;color:var(--text);background:#000;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
   body{display:flex;justify-content:center;min-height:100vh;}
   /* iPhone 15 Pro Max: 430 x 932 CSS px */
   .device{
@@ -592,8 +592,8 @@
   }
   .used-card .icon{
     width:62px;height:62px;border:0;border-radius:0;
-    background:transparent url("assets/edsdk_v3_icon_ticket_unused.png") no-repeat center/contain;
-    filter:grayscale(1) opacity(.72);
+    background:transparent url("assets/edsdk_v3_icon_ticket_gatepass_bundle.png") no-repeat center/contain;
+    filter:none;
     display:flex;align-items:center;justify-content:center;
     position:relative;flex-shrink:0;
   }
@@ -601,9 +601,9 @@
     content:none;
   }
   .used-card .icon .badge{
-    position:absolute;left:9%;right:9%;bottom:0;
+    position:absolute;left:12%;right:12%;bottom:0;
     background:#fff;border:1px solid #aeb8c6;color:#aeb8c6;
-    min-height:15px;font-size:8px;line-height:12px;padding:1px 0;border-radius:3px;white-space:nowrap;
+    min-height:17px;font-size:8px;line-height:13px;padding:1px 0;border-radius:3px;white-space:nowrap;
     font-weight:600;
     text-align:center;
   }
@@ -761,50 +761,52 @@
   #screenDetail .detail-date{
     margin:0 0 10px;
     padding:10px;
+    font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
     background:#F8F8F8;
     border:1px solid #EEEEEE;
     border-radius:10px;
     box-shadow:0 1px 3px rgba(0,0,0,.06);
   }
   #screenDetail .detail-date .year{
-    font-size:15px;
-    font-weight:400;
-    color:#202124;
-    line-height:1.2;
+    font-size:16px;
+    font-weight:700;
+    color:#212121;
+    line-height:1;
   }
   #screenDetail .detail-date .big{
     gap:10px;
   }
   #screenDetail .detail-date .big .md{
-    font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    font-size:31px;
+    font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+    font-size:30px;
     font-weight:400;
-    letter-spacing:-.025em;
+    line-height:1;
+    letter-spacing:0;
     font-variant-numeric:proportional-nums;
-    color:#202124;
+    color:#212121;
   }
   #screenDetail .detail-date .big .dw{
     font-size:12px;
-    font-weight:600;
+    font-weight:700;
     margin-left:3px;
   }
   #screenDetail .detail-date .big .times{
-    font-size:14px;
-    font-weight:600;
-    line-height:1.45;
-    color:#202124;
+    font-size:16px;
+    font-weight:700;
+    line-height:1.35;
+    color:#212121;
   }
   #screenDetail .detail-date .ev-title{
-    font-size:15px;
-    font-weight:600;
-    line-height:1.2;
-    margin-top:6px;
-    color:#202124;
+    font-size:16px;
+    font-weight:700;
+    line-height:1.25;
+    margin-top:10px;
+    color:#212121;
   }
   #screenDetail .detail-date .venue{
     font-size:12px;
     font-weight:400;
-    color:#202124;
+    color:#212121;
     margin-top:2px;
     line-height:1.2;
   }
@@ -823,7 +825,7 @@
     margin-left:0;
     margin-right:0;
     border-radius:8px;
-    background:#FBECF3;
+    background:#FDEDF5;
   }
   #screenDetail .detail-ticket .buyer{
     min-height:40px;
@@ -879,19 +881,20 @@
   }
   #screenDetail .detail-ticket .desc,
   #screenDetail .detail-ticket .meta{
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
     font-size:12px;
     font-weight:400;
-    color:#343434;
+    color:#424242;
     letter-spacing:0;
-    line-height:1.4;
+    line-height:1.5;
     text-align:left;
     overflow-wrap:anywhere;
   }
   #screenDetail .detail-ticket .desc{
-    margin-top:8px;
-    padding:10px 10px 8px;
-    background-color:#F3D3E2;
+    min-height:calc(3 * 1.5em);
+    margin-top:10px;
+    padding:10px 40px 0 10px;
+    background-color:#FDEDF5;
     background-image:repeating-linear-gradient(
       to right,
       #777 0 2px,
@@ -901,15 +904,31 @@
     background-position:left top;
     background-size:auto 1px;
   }
+  #screenDetail .detail-ticket .expandable-layout{
+    background:#FDEDF5;
+  }
+  #screenDetail .detail-ticket.collapsed .desc{
+    display:-webkit-box;
+    overflow:hidden;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    line-clamp:3;
+    height:calc(3 * 1.5em + 10px);
+    min-height:0;
+    box-sizing:border-box;
+  }
+  #screenDetail .detail-ticket.collapsed .expandable-layout{
+    display:none;
+  }
   #screenDetail .detail-ticket .meta{
-    padding:0 10px;
-    background:#F3D3E2;
+    padding:0 40px 0 10px;
+    background:#FDEDF5;
   }
   #screenDetail .detail-ticket .backlink,
   #screenDetail .detail-ticket .refno{
     color:#007FFF;
     font-weight:400;
-    background:#F3D3E2;
+    background:#FDEDF5;
   }
   #screenDetail .detail-ticket .backlink{
     font-size:12px;
@@ -927,18 +946,22 @@
   }
   #screenDetail .detail-ticket .refno{
     font-size:14px;
-    padding:8px 10px 12px;
-    border-top:1px solid rgba(117,117,117,.18);
+    padding:10px 40px 12px 10px;
+    border-top:1px solid #CFCFCF;
   }
   #screenDetail .detail-ticket .collapse{
     right:10px;
     bottom:10px;
-    width:21px;
-    height:21px;
+    width:20px;
+    height:20px;
     border-radius:0;
-    background:transparent var(--icon-arrow-up) no-repeat center/21px 21px;
+    background:transparent var(--icon-arrow-up) no-repeat center/20px 20px;
     box-shadow:none;
     transition:transform .2s ease;
+  }
+  #screenDetail .detail-ticket.collapsed .collapse{
+    transform:none;
+    background-image:url("assets/edsdk_v3_icon_arrow_down.png");
   }
   #screenDetail .detail-ticket .collapse::before{
     content:none;
@@ -953,15 +976,15 @@
     position:relative;
   }
   #screenDetail .detail-ticket.used .ticket-icon{
-    background-image:url("assets/edsdk_v3_icon_ticket_unused.png");
-    filter:grayscale(1) opacity(.72);
+    background-image:url("assets/edsdk_v3_icon_ticket_gatepass_bundle.png");
+    filter:none;
     position:relative;
   }
   #screenDetail .detail-ticket.used .ticket-icon::after{
     content:"入場済";
     position:absolute;
-    left:9%;
-    right:9%;
+    left:12%;
+    right:12%;
     bottom:0;
     min-height:19px;
     box-sizing:border-box;
@@ -979,6 +1002,7 @@
     display:none;
   }
   #screenDetail .detail-ticket.used .desc,
+  #screenDetail .detail-ticket.used .expandable-layout,
   #screenDetail .detail-ticket.used .meta,
   #screenDetail .detail-ticket.used .backlink,
   #screenDetail .detail-ticket.used .refno{
@@ -1349,6 +1373,9 @@ function renderDetail(){
     <path d="M23 14 Q23 4 13 4 L5 4"/>
     <polyline points="8,1 4,4 8,8"/>
   </svg>`;
+  const descriptionLines = String(state.description || "").split(/\r?\n/);
+  const descriptionSummary = descriptionLines.slice(0, 3).join("\n");
+  const descriptionExpanded = descriptionLines.slice(3).join("\n");
   const ticketsHtml = state.seats.map((s,i)=>`
     <div class="detail-ticket ${s.used?"used":""}">
       <div class="buyer">${escapeHtml(state.buyer)} 様 <span class="idx">${i+1}枚目</span></div>
@@ -1366,14 +1393,17 @@ function renderDetail(){
         <div class="used-stamp" aria-label="使用済"></div>
       </div>
       <div class="dist">${distIcon}同行者へ分配する</div>
-      <div class="desc">${escapeHtml(state.description||"").replace(/\n/g,"<br>")}</div>
-      <div class="meta">${escapeHtml(state.shopInfo||"").replace(/\n/g,"<br>")}</div>
-      <div class="backlink">チケット裏面情報</div>
-      <div class="refno">
-        チケット番号: ${escapeHtml(state.orderno)}
-        <div class="used-at">使用日時: ${escapeHtml(s.usedAt || "")}</div>
-        <button class="collapse" title="折りたたむ" aria-expanded="true">∧</button>
+      <div class="desc">${escapeHtml(descriptionSummary).replace(/\n/g,"<br>")}</div>
+      <div class="expandable-layout">
+        ${descriptionExpanded ? `<div class="meta description2">${escapeHtml(descriptionExpanded).replace(/\n/g,"<br>")}</div>` : ""}
+        <div class="meta">${escapeHtml(state.shopInfo||"").replace(/\n/g,"<br>")}</div>
+        <div class="backlink">チケット裏面情報</div>
+        <div class="refno">
+          チケット番号: ${escapeHtml(state.orderno)}
+          <div class="used-at">使用日時: ${escapeHtml(s.usedAt || "")}</div>
+        </div>
       </div>
+      <button class="collapse" title="折りたたむ" aria-expanded="true">∧</button>
     </div>
   `).join("");
   body.innerHTML = `
