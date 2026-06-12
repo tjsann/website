@@ -927,9 +927,6 @@
   #screenDetail .detail-ticket.collapsed .expandable-layout{
     display:none;
   }
-  #screenDetail .detail-ticket.collapsed .fixed-ticket-info{
-    display:none;
-  }
   #screenDetail .detail-ticket .meta{
     padding:0 40px 0 10px;
     background:#FDEDF5;
@@ -1049,16 +1046,17 @@
 
   /* iOS smart-ticket detail alignment (reference: 1290px @ 3x capture). */
   #screenDetail .detail-header{
-    height:53px;
-    min-height:53px;
+    height:68px;
+    min-height:68px;
+    padding-right:12px;
   }
   #screenDetail .detail-header .back svg{
     width:8px;
     height:14px;
   }
   #screenDetail .btn-pink-pill{
-    width:167px;
-    height:27px;
+    width:170px;
+    height:36px;
   }
   #screenDetail .detail-body{
     padding:8px 10px 90px;
@@ -1632,6 +1630,7 @@ function renderDetail(){
     ${ticketsHtml}
   `;
   body.querySelectorAll(".detail-ticket .collapse").forEach(button=>{
+    button.closest(".detail-ticket").appendChild(button);
     button.addEventListener("click", ()=>{
       const ticket = button.closest(".detail-ticket");
       const collapsed = ticket.classList.toggle("collapsed");
