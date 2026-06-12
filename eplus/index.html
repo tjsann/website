@@ -1203,11 +1203,15 @@
     line-height:1.38;
     letter-spacing:-.03em;
     font-feature-settings:"palt" 1;
+    /* 実機(iOS)同様に英数字トークンを途中で割らず、行末に余白を残す */
+    overflow-wrap:normal;
+    word-break:normal;
+    line-break:strict;
   }
   #screenDetail .detail-ticket .desc{
     min-height:0;
     margin-top:2px;
-    padding:8px 10px 0;
+    padding:8px 40px 0 10px;
     box-sizing:border-box;
   }
   #screenDetail .detail-ticket.collapsed .desc{
@@ -1953,6 +1957,7 @@ function initGateSlide(){
   const bar = $("gateBar");
   if(!area || !bar) return;
   let dragging=false, startX=0, w=0, maxRight=0, maxLeft=0;
+  let lastX=0, lastT=0, velocity=0;
   const touchStarts = new Map();
   const gateColors = ["#2d7bb7", "#3b919d", "#3a947d", "#8ab974", "#f5ea65", "#e24e4c"];
   const setProgressColor = ratio=>{
@@ -1982,6 +1987,9 @@ function initGateSlide(){
     if(e.cancelable) e.preventDefault();
     dragging = true;
     startX = getX(e);
+    lastX = startX;
+    lastT = (e.timeStamp || performance.now());
+    velocity = 0;
     touchStarts.clear();
     if(e.touches){
       Array.from(e.touches).forEach(touch=>{
@@ -2015,9 +2023,28 @@ function initGateSlide(){
     if(dx > maxRight) dx = maxRight;
     if(dx < -maxLeft) dx = -maxLeft;
     bar.style.transform = `translateX(${dx}px)`;
-    const ratio = Math.min(1, Math.abs(dx) / (w * 0.70));
+    // 直近の移動速度(px/ms)を算出してフリックを判定する
+    const curX = startX + dx;
+    const now = (e.timeStamp || performance.now());
+    const dt = now - lastT;
+    if(dt > 0){
+      const v = (curX - lastX) / dt;
+      // 緩やかに平滑化しつつ最新速度を優先
+      velocity = velocity * 0.3 + v * 0.7;
+    }
+    lastX = curX;
+    lastT = now;
+    // 感度アップ: 必要移動量を 0.70 → 0.55 に短縮
+    const ratio = Math.min(1, Math.abs(dx) / (w * 0.55));
     setProgressColor(ratio);
-    if(ratio >= 1){
+    // 二点を抑えたままの素早いフリックでも開く: 速度が一定以上かつ
+    // 進行方向と速度の向きが一致し、最低限の移動量があれば完了
+    const FLICK_V = 0.85;          // px/ms 以上で「フリック」とみなす
+    const FLICK_MIN_RATIO = 0.18;  // 最低この割合は動かす
+    const flick = Math.abs(velocity) >= FLICK_V
+      && Math.sign(velocity) === Math.sign(dx)
+      && ratio >= FLICK_MIN_RATIO;
+    if(ratio >= 1 || flick){
       // 完了
       dragging = false;
       bar.style.transition="transform .15s ease";
