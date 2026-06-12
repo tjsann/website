@@ -1119,7 +1119,7 @@
     letter-spacing:0;
   }
   #screenDetail .detail-date .ev-title{
-    max-width:348px;
+    max-width:384px;            /* <br>で47単位に固定。再折り返し防止に親幅(約386px)近くまで拡張 */
     margin-top:3px;
     font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","SF Pro Text","Helvetica Neue",sans-serif;
     font-size:16px;
@@ -1623,6 +1623,9 @@ function escapeHtml(s){
 // 折り返し上限（半角単位: 全角=2, 半角=1）。実機実測で 75（≒全角37.5桁）が最良一致。
 // e+はプロポーショナル幅で折るため等幅カウントでは行により±1文字ずれる。実機に合わせ74〜76で微調整可。
 const DESC_WRAP_HANKAKU = 75;
+// 公演タイトル(.ev-title)の固定改行。実機3公演で limit=47(半角単位≒全角23.5桁)が完全一致。
+// font-size:16px のまま <br> で改行位置を固定し、CSS幅では再折り返しさせない(max-width拡張)。
+const TITLE_WRAP_HANKAKU = 47;
 function charWidthHankaku(ch){
   const c = ch.codePointAt(0);
   // 半角(=1): ASCII印字可能 + 半角カナ。それ以外は全角(=2)
@@ -1703,7 +1706,7 @@ function renderDetail(){
         <span class="mdwrap"><span class="md">${f.md}</span><span class="dw">(${f.day})</span></span>
         <span class="times">${state.open} 開場<br>${state.start} 開演</span>
       </div>
-      <div class="ev-title">${escapeHtml(state.title)}</div>
+      <div class="ev-title">${escapeHtml(wrapByHankaku(String(state.title||""), TITLE_WRAP_HANKAKU)).replace(/\n/g,"<br>")}</div>
       <div class="venue">${escapeHtml(state.venue)}</div>
     </div>
     ${ticketsHtml}
