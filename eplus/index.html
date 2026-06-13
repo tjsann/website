@@ -807,7 +807,7 @@
     margin-left:3px;
   }
   #screenDetail .detail-date .big .times{
-    font-size:16px;
+    font-size:18px;             /* 実機に合わせ拡大(16→18)。微調整可 */
     font-weight:700;
     line-height:1.35;
     color:#212121;
@@ -843,6 +843,10 @@
     border-radius:8px;
     background:#FDEDF5;
   }
+  /* チケットとチケットの間は点線 */
+  #screenDetail .detail-ticket:not(:last-child){
+    border-bottom:2px dotted #cfcfcf;
+  }
   #screenDetail .detail-ticket .buyer{
     min-height:40px;
     padding:8px 10px;
@@ -850,6 +854,7 @@
     font-size:17px;
     font-weight:700;
     letter-spacing:0;
+    border-bottom:1px solid #fff;   /* 所有者名の下の白線 */
   }
   #screenDetail .detail-ticket .buyer .idx{
     font-size:12px;
