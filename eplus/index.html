@@ -579,15 +579,14 @@
   }
   .done-stage{
     position:relative;
-    height:169px;
   }
-  .done-stage .ev-card,
+  .done-stage .ev-card{
+    position:relative;   /* 通常フローでdone-stageの高さをev-cardに一致させる(バナー消滅時の隙間防止) */
+    opacity:1;
+  }
   .done-stage .used-banner-pink{
     position:absolute;
-    left:0;right:0;top:0;
-  }
-  .done-stage .ev-card{opacity:1;}
-  .done-stage .used-banner-pink{
+    inset:0;             /* ev-card領域をちょうど覆う */
     z-index:2;
     opacity:1;
     transition:opacity .42s ease;
@@ -1342,7 +1341,7 @@
     font-variant-numeric:proportional-nums;
     font-kerning:normal;
   }
-  #sheet .ev-card .md-big .dw{font-size:14px;font-weight:500}#sheet .ev-card .times{padding-top:0;font-size:14px;font-weight:600;line-height:1.35}  /* 開場/開演がやや小さかったため拡大(12→14)。微調整可 */
+  #sheet .ev-card .md-big .dw{font-size:14px;font-weight:500}#sheet .ev-card .times{padding-top:0;font-size:16px;font-weight:600;line-height:1.35}  /* 実機frame_10実測(グリフ≈19px device→CSS約16px)。微調整可 */
   #sheet .ev-card .stars{margin:5px 0 7px;padding:0 60px}#sheet .ev-card .star{width:35px;height:35px}
   #sheet .ev-card .venue{margin-top:0;font-size:12px;font-weight:700}#sheet .ev-card .ev-title{font-size:11px;line-height:1.35}
   #sheet .sel-card{margin:0 8px;border-radius:0;box-shadow:none}#sheet .sel-card:last-child{border-radius:0 0 2px 2px}
@@ -1360,12 +1359,14 @@
   #sheet .sel-card.selected{background:#E5298C}
   #sheet .warn-banner{margin:0 20px;padding:9px 10px;min-height:55px;text-align:left;font-size:13px;line-height:1.3;background:#E3F321}
   #sheet .gate-area{height:155px;margin:10px 8px 0;border-radius:8px 8px 0 0}#sheet .gate-content{width:108px;height:43px}
-  #sheet .used-banner-pink{height:155px;margin:10px 8px 0;padding:0;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;background:#cc296b;font-size:16px;font-weight:400}
-  #sheet .done-stage{height:165px}
+  #sheet .used-banner-pink{margin:0;padding:0;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;background:#cc296b;font-size:16px;font-weight:400}
+  #sheet .done-stage{margin:10px 8px 0}#sheet .done-stage .ev-card{margin:0}
   #sheet .used-card{margin:0 8px;border-radius:0;background:#dfe0e5}#sheet .used-card:last-child{border-radius:0 0 8px 8px}
+  /* 使用済カード2枚目以降の上部に点線(ご要望)。※実機frame_10ではピンク帯が区切りで点線は無い */
+  #sheet .used-card + .used-card{border-top:1px dashed #161616}
   #sheet .used-card .buyer{height:40px;padding:7px 12px;background:#E5298C;font-size:17px}
   #sheet .used-card .body{min-height:91px;padding:10px 14px;gap:18px}
-  #sheet .used-card .icon{width:60px;height:60px}  /* 使用済アイコンがやや小さかったため拡大(56→60)。実機に合わせ56〜62で微調整可 */
+  #sheet .used-card .icon{width:66px;height:66px}  /* 実機frame_10実測(円≈90px device→CSS約66px)。微調整可 */
   #sheet .used-card .seat .type{color:#111;font-size:15px}#sheet .used-card .seat .blk{color:#111;font-size:14px}#sheet .used-card .seat .num{color:#111;font-size:15px}
   #sheet .used-card .when{padding:0 12px 8px;color:#111;font-size:11px}
   #sheet .used-card .stamp{right:10px;width:72px;height:43px}
