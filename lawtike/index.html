@@ -83,13 +83,13 @@ body {
 /* Unity Header/Title Text: NotoSansJP-Regular size 32, color #DAECF8 (extracted from libil2cpp). */
 .header-title {
   color: #DAECF8;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  margin-left: 6px;
+  margin-left: 8px;
 }
-.header-icons { display: flex; gap: 16px; pointer-events: auto; }
-.header-icons svg { fill: white; width: 20px; height: 20px; }
+.header-icons { display: flex; gap: 18px; pointer-events: auto; }
+.header-icons svg { fill: white; width: 25px; height: 25px; }
 
 /* ===== HERO ===== */
 .hero {
@@ -211,15 +211,15 @@ body {
   border-radius: 50%;
   overflow: hidden;
   display: none;
-  width: 64px; height: 64px;
+  width: 68px; height: 68px;
   background: transparent;
 }
 .wavy-wrap.white-fill {
   background: white;
 }
-.wavy-left  { top: 116px; left: 83px; }
-.wavy-right { top: 116px; left: 235px; }
-.wavy-wrap canvas { display: block; }
+.wavy-left  { top: 151px; left: 94px; }
+.wavy-right { top: 151px; left: 258px; }
+.wavy-wrap canvas { display: block; width: 68px; height: 68px; }
 
 /* Blue gradient overlay for slide animation */
 .hero-slide-bg {
@@ -244,30 +244,30 @@ body {
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
      文字列を全角(ＩＤＯＬＹ　ＰＲＩＤＥ)にすると実機と一致する。全角自体が広いので字間は最小。 */
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  font-size: 20px; font-weight: 700; letter-spacing: 1px;
+  font-size: 22px; font-weight: 800; letter-spacing: 1.6px;
   z-index: 5; pointer-events: none;
 }
 /* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
 .event-date, .event-time {
   position: absolute; left: 8px;
-  color: white; font-size: 17px; font-weight: 700; line-height: 19px;
+  color: white; font-size: 18.5px; font-weight: 700; line-height: 20px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
 }
 /* カレンダー(日付)はもう少し下へ。時計＋開場開演時間は下端寄せのまま（ヒーロー最下部）。 */
 .event-date { bottom: 32px; }
-.event-time { bottom: 8px; }
+.event-time { bottom: 10px; }
 /* 実機アセット Texture2D/entry_icon_date.png・entry_icon_time.png（白, 元36×36, 透明余白あり）。青ヒーロー上に白でそのまま。
    実機の字形は約15px。元画像に透明余白があるため18px指定で字形≈15pxに合わせる。 */
 .event-date img, .event-time img { width: 18px; height: 18px; display: block; flex-shrink: 0; transform: translateY(1px); }
 
 /* ===== WARNING BANNER ===== */
 .warning-banner {
-  background: #f03030; color: white;
-  font-size: 14.3px; line-height: 1.55; font-weight: 700;
+  background: #ff0000; color: white;
+  font-size: 14.5px; line-height: 1.35; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  padding: 10px 16px;
+  padding: 7px 10px 8px;
   display: none; flex-shrink: 0;
 }
 
@@ -278,10 +278,10 @@ body {
 
 .ticket-header {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 11px;
+  margin-bottom: 10px;
 }
 /* 実機計測: 「お手持ちのチケット」「合計X枚」の字高 ≈19px → font-size 20px（旧24pxは大きすぎ）。 */
-.ticket-header span { font-size: 20px; color: #171513; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.15; }
+.ticket-header span { font-size: 23px; color: #171513; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 500; line-height: 1.12; }
 
 /* Ticket card with shadow matching reference image */
 .ticket-card {
@@ -309,7 +309,7 @@ body {
    Implementation matches Unity behavior — the dashed-line/notch separator only sits between
    info and footer, so the entire upper area (seat + main) is one continuous blue region. */
 .ticket-card.selected .ticket-type,
-.ticket-card.selected .ticket-main { background: #087fbd; }
+.ticket-card.selected .ticket-main { background: #0083c4; }
 .ticket-card.selected .ticket-footer { background: white !important; }
 .ticket-footer { border-top: 1px solid #e5e5e5; }
 
@@ -356,11 +356,11 @@ body {
    → align-self:flex-start で行の上側へ。整理番号の行に視覚的に合うよう少しだけ下げる。 */
 .avatar-circle {
   width: 38px; height: 38px;
-  border: 2px solid #005186; border-radius: 50%;
+  border: 1px solid #005186; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; color: #005186; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  white-space: nowrap; line-height: 1; letter-spacing: -0.6px;
+  white-space: nowrap; line-height: 1; letter-spacing: -0.5px; transform: translateY(-1px);
   flex-shrink: 0; background: white;
   /* 実機: アバター中心は整理番号の中心より少し下(小川の行付近)。上寄せ＋margin-topで調整。 */
   align-self: flex-start;
@@ -372,7 +372,7 @@ body {
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
 /* 実機比率(整理番号:席種:氏名 ≈ 1.0:0.8:0.57, code 40:32:24 と一致)に合わせ整理番号を22pxに。 */
 .ticket-number {
-  font-size: 22px; font-weight: 800; color: #323232; margin-bottom: 3px;
+  font-size: 22px; font-weight: 900; color: #323232; margin-bottom: 3px;
   letter-spacing: -0.5px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
 }
@@ -397,7 +397,7 @@ body {
 
 /* 選択時：青ゾーン背景を表示 */
 .ticket-card.selected .checkbox-zone {
-  background: #087fbd;
+  background: #0083c4;
 }
 
 /* チェックボックス本体：未選択時は白背景＋グレー枠 */
@@ -414,18 +414,22 @@ body {
 
 /* Selected: keep white interior, lighter border (matches screenshot — checkbox stays a thin square with pink check). */
 .ticket-card.selected .checkbox {
-  border-color: rgba(0,93,148,0.62);
-  background: #0b659b;
+  border-color: #00699d;
+  background: #0077b4;
 }
 
 /* Checked state — only the pink ✓ glyph appears via .checkbox.checked::after; background stays per selected/default rules above. */
 /* Unity ticket_icon_check sprite color: rgba(255,64,129,1.0) = #FF4081 (pink). */
 .checkbox.checked::after {
-  content: '✓';
-  color: #FF4081;
-  font-size: 21px;
-  font-weight: 900;
-  line-height: 1;
+  content: '';
+  width: 14px;
+  height: 8px;
+  border-left: 4px solid #FF4081;
+  border-bottom: 4px solid #FF4081;
+  border-radius: 1px;
+  transform: rotate(-45deg) translate(1px, -1px);
+  transform-origin: center;
+  display: block;
 }
 .checkbox.hidden { display: none; }
 
@@ -441,17 +445,17 @@ body {
 .ticket-card::after {
   content: '';
   position: absolute;
-  left: 84%;
+  left: 84.4%;
   width: 12px; height: 12px;
   border-radius: 50%;
-  background: #e5e5e5;
+  background: #e6e6e6;
   transform: translateX(-50%);
   z-index: 6;
   pointer-events: none;
 }
 /* 円中心をエッジに置く(top/bottom=-6) → 半円(深さ6px)。内側に薄い inset 影で凹みを表現。 */
-.ticket-card::before { top: -6px;    box-shadow: 0 1.5px 2.5px rgba(0,0,0,0.24); }
-.ticket-card::after  { bottom: -6px; box-shadow: 0 -1.5px 2.5px rgba(0,0,0,0.24); }
+.ticket-card::before { top: -6px;    box-shadow: none; }
+.ticket-card::after  { bottom: -6px; box-shadow: none; }
 
 /* 区切り線は不要との指定 → border-top を削除。 */
 .ticket-footer {
@@ -550,8 +554,8 @@ body {
   <div class="ripple-ring r3"></div>
 </div>
     <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
-    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="72" height="72"></canvas></div>
-    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="72" height="72"></canvas></div>
+    <div class="wavy-wrap wavy-left"  id="wavyLeft"><canvas  id="cvLeft"  width="68" height="68"></canvas></div>
+    <div class="wavy-wrap wavy-right" id="wavyRight"><canvas id="cvRight" width="68" height="68"></canvas></div>
     <div class="slide-overlay" id="slideOverlay">
       <div class="slide-track" id="slideTrack">
         <div class="slide-thumb" id="slideThumb"></div>
@@ -651,14 +655,14 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
 
   /* Chevron geometry derived from 実機 marker (circle ⌀≈194px in screenshot, ×0.33 → 64px canvas):
        row spacing ≈ 8px, half-period ≈ 9px, peak-to-baseline ≈ 4px, stroke ≈ 2.5px. */
-  const sH  = 8;
-  const zW  = 9;
-  const amp = 4;
+  const sH  = 7.2;
+  const zW  = 8.2;
+  const amp = 3.8;
   const xOff = (offset * 9) % (zW * 2);
 
   /* 実機サンプル: marker chevron color = rgba(255,64,129) = #FF4081 (same Unity pink as the check glyph). */
   ctx.strokeStyle = whiteFill ? 'rgba(20,28,130,0.80)' : (strokeColor || '#FF4081');
-  ctx.lineWidth   = whiteFill ? 2.6 : 2.5;
+  ctx.lineWidth   = whiteFill ? 2.4 : 2.35;
   ctx.lineJoin    = 'miter';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
@@ -699,7 +703,7 @@ function onTicketTap(){
   const overlay = document.getElementById('slideOverlay');
 
   if(isSelected){
-    document.getElementById('ticketMain').style.background = '#087fbd';
+    document.getElementById('ticketMain').style.background = '#0086c8';
     document.getElementById('ticketCard').classList.add('selected');
     chk.classList.add('checked');
     warn.style.display  = 'block';
