@@ -1332,7 +1332,7 @@
   #sheet .ts-banner{height:31px;padding:3px 5px;background:#2AAAAB;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:0;line-height:25px}
   #sheet .sheet-body{background:#f1f1f1}
   #sheet .ev-card{margin:10px 8px 0;padding:17px 12px 9px;border-radius:8px 8px 0 0;box-shadow:none;border-bottom:1px dashed #161616}
-  #sheet .ev-card .head{justify-content:center;gap:36px}
+  #sheet .ev-card .head{justify-content:center;gap:36px;align-items:flex-end}  /* 実機frame_04: 日付と時間は下端揃え(下寄せ) */
   #sheet .ev-card .md-big{
     font-family:"Eplus Google Sans","Google Sans","Helvetica Neue",sans-serif;
     font-size:34px;
@@ -1348,7 +1348,7 @@
   /* 画面3(選択シート)のカード間は黒の破線(実機frame_04: ~#161616, dash≒gap≒4px相当) */
   #sheet .sel-card:not(:last-child){border-bottom:1px dashed #161616}
   #sheet .sel-card.selected:not(:last-child){border-bottom-color:rgba(255,255,255,.75)}  /* 選択時はピンク地に白破線 */
-  #sheet .sel-card .buyer{height:41px;padding:7px 12px;font-size:17px;border-bottom:none;position:relative}
+  #sheet .sel-card .buyer{height:41px;padding:7px 12px;font-size:19px;letter-spacing:-.02em;border-bottom:none;position:relative}  /* 実機frame_04実測: 字高24px→CSS約19-20px・わずかに字詰め */
   /* 所有者名の下の線: 実機は破線でなく実線・左右インセット。選択前=薄グレー / 選択後=白 */
   #sheet .sel-card .buyer::after{content:"";position:absolute;left:12px;right:12px;bottom:0;border-bottom:1px solid #D4D4D4}
   #sheet .sel-card.selected .buyer::after{border-bottom-color:#fff}
