@@ -88,13 +88,13 @@ body {
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   margin-left: 8px;
 }
-.header-icons { display: flex; gap: 19px; pointer-events: auto; }
-.header-icons svg { fill: white; width: 26px; height: 26px; }
+.header-icons { display: flex; gap: 17px; pointer-events: auto; }
+.header-icons svg { fill: white; width: 24px; height: 24px; }
 
 /* ===== HERO ===== */
 .hero {
   width: 100%;
-  height: 272px;
+  height: 270px;
   /* Real app hero rendering reconstructed from Unity:
      Layer 1: solid color #039FDC (HeaderBG/Background m_Color, extracted from libil2cpp).
      Layer 2: entry_bg_gradation sprite tinted #000066 (HeaderBG/Background/Gradation m_Color),
@@ -244,13 +244,13 @@ body {
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
      文字列を全角(ＩＤＯＬＹ　ＰＲＩＤＥ)にすると実機と一致する。全角自体が広いので字間は最小。 */
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  font-size: 22px; font-weight: 800; letter-spacing: 1.6px;
+  font-size: 22px; font-weight: 700; letter-spacing: 1.1px;
   z-index: 5; pointer-events: none;
 }
 /* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
 .event-date, .event-time {
   position: absolute; left: 8px;
-  color: white; font-size: 18.5px; font-weight: 700; line-height: 20px;
+  color: white; font-size: 18px; font-weight: 500; line-height: 20px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
@@ -272,16 +272,16 @@ body {
 }
 
 /* ===== TICKET AREA ===== */
-.ticket-section { padding: 30px 11px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
+.ticket-section { padding: 33px 11px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
   overflow-y: auto;
 }
 
 .ticket-header {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 /* 実機計測: 「お手持ちのチケット」「合計X枚」の字高 ≈19px → font-size 20px（旧24pxは大きすぎ）。 */
-.ticket-header span { font-size: 23px; color: #171513; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.12; }
+.ticket-header span { font-size: 22px; color: #171513; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.1; }
 
 /* Ticket card with shadow matching reference image */
 .ticket-card {
@@ -304,8 +304,8 @@ body {
   background: white;
   z-index: 1;
   box-shadow:
-    0 3px 6px rgba(0,0,0,0.22),
-    0 0 1px rgba(0,0,0,0.08);
+    0 4px 7px rgba(0,0,0,0.21),
+    0 2px 3px rgba(0,0,0,0.10);
 }
 .ticket-inner::before {
   content: '';
@@ -319,9 +319,9 @@ body {
   z-index: 8;
   background:
     radial-gradient(ellipse at 58% 0%,
-      rgba(0,0,0,0.15) 0%,
-      rgba(0,0,0,0.09) 28%,
-      rgba(0,0,0,0.035) 48%,
+      rgba(0,0,0,0.08) 0%,
+      rgba(0,0,0,0.045) 28%,
+      rgba(0,0,0,0.018) 48%,
       rgba(0,0,0,0) 70%);
 }
 .ticket-inner::after {
@@ -341,9 +341,9 @@ body {
    Color rgba(255,64,129, 0.502) → opacity 0.5. */
 .nyujozumi-stamp {
   position: absolute;
-  top: 4px;
-  right: 3px;
-  width: 50%;
+  top: 2px;
+  right: 1px;
+  width: 51.5%;
   height: auto;
   pointer-events: none;
   display: none;
@@ -480,13 +480,16 @@ body {
    そのため外側影・境界線は無し、insetで内側弧のみ薄く影を付ける。 */
 .ticket-card::before {
   top: -6px;
+  clip-path: inset(50% 0 0 0);
   box-shadow: none;
 }
 .ticket-card::after {
   bottom: -6px;
+  z-index: 9;
+  clip-path: inset(0 0 50% 0);
   box-shadow:
-    inset 1px 2px 2px rgba(0,0,0,0.16),
-    inset 2px 3px 3px rgba(0,0,0,0.06);
+    inset 1px 2px 1.5px rgba(0,0,0,0.09),
+    inset 2px 3px 2px rgba(0,0,0,0.03);
 }
 .bottom-notch-shadow {
   display: none;
@@ -504,12 +507,11 @@ body {
   content: '';
   position: absolute;
   bottom: -2px;
-  height: 3px;
+  height: 2px;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.16) 0,
-    rgba(0,0,0,0.09) 1px,
-    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.13) 0,
+    rgba(0,0,0,0.06) 1px,
     rgba(0,0,0,0.00) 100%
   );
   box-shadow: none;
@@ -519,10 +521,10 @@ body {
 }
 .ticket-footer::before {
   left: 0;
-  right: calc(15.6% + 8px);
+  right: calc(15.6% + 9px);
 }
 .ticket-footer::after {
-  left: calc(84.4% + 8px);
+  left: calc(84.4% + 9px);
   right: 0;
 }
 
@@ -531,11 +533,11 @@ body {
   content: '';
   position: absolute;
   top: -1px;
-  height: 3px;
+  height: 2px;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.18) 0,
-    rgba(0,0,0,0.10) 1px,
+    rgba(0,0,0,0.09) 0,
+    rgba(0,0,0,0.035) 1px,
     rgba(0,0,0,0.00) 100%
   );
   pointer-events: none;
@@ -543,26 +545,26 @@ body {
 }
 .ticket-type::before {
   left: -67px;
-  right: calc(15.6% + 10px);
+  right: calc(15.6% + 9px);
 }
 .ticket-type::after {
-  left: calc(84.4% + 10px - 67px);
+  left: calc(84.4% + 9px - 67px);
   right: -14px;
 }
 
 /* 実機比率: footer「ご来場までに…」≈ 17px（整理番号×0.77）。文字色は実機実測 #323232（旧#555は薄すぎ）。 */
-.ticket-footer span { font-size: 18px; color: #323232; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.15; }
+.ticket-footer span { font-size: 18px; color: #323232; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.1; }
 .ticket-card.selected .ticket-footer span { color: #323232; }
-.ticket-footer svg { fill: #8e8e8e; width: 26px; height: 26px; }
+.ticket-footer svg { fill: #8e8e8e; width: 24px; height: 24px; transform: translateY(1px); opacity: 0.92; }
 .ticket-card.selected .ticket-footer svg { fill: #999; }
 
 .ticket-card.entered .ticket-inner {
-  background: #f2f2f2;
+  background: #f4f4f4;
 }
 .ticket-card.entered .ticket-type,
 .ticket-card.entered .ticket-main,
 .ticket-card.entered .ticket-footer {
-  background: #f2f2f2;
+  background: #f4f4f4;
 }
 .ticket-card.entered .ticket-main {
   padding-bottom: 13px;
@@ -584,7 +586,7 @@ body {
   background: #DAECF8;
   border-top: none;
   /* 実機は矢印が画面端から約11px。横paddingを20px→10pxに詰める。 */
-  padding: 12px 10px calc(env(safe-area-inset-bottom, 0px) + 12px);
+  padding: 12px 9px calc(env(safe-area-inset-bottom, 0px) + 12px);
   flex-shrink: 0;
 }
 .bottom-nav {
@@ -601,8 +603,10 @@ body {
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-size: 15.5px;
   font-weight: 400;
+  line-height: 1;
   cursor: pointer;
   user-select: none;
+  transform: translateY(1px);
 }
 /* 実機アセット Texture2D/footer_arrow.png（元48×48）を #0074BD に着色して使用。
    旧テキスト矢印(← →)は字形が横長で実機より長く見えたため差し替え。左向きはCSSで反転。 */
@@ -610,7 +614,7 @@ body {
   display: flex; align-items: center; line-height: 1;
 }
 .nav-back .nav-icon img, .nav-next .nav-icon img {
-  width: 23px; height: 23px; display: block;
+  width: 24px; height: 24px; display: block;
 }
 .nav-back .nav-icon img { transform: scaleX(-1); }
 </style>
