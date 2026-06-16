@@ -94,7 +94,7 @@ body {
 /* ===== HERO ===== */
 .hero {
   width: 100%;
-  height: 282px;
+  height: 270px;
   /* Real app hero rendering reconstructed from Unity:
      Layer 1: solid color #039FDC (HeaderBG/Background m_Color, extracted from libil2cpp).
      Layer 2: entry_bg_gradation sprite tinted #000066 (HeaderBG/Background/Gradation m_Color),
@@ -250,17 +250,17 @@ body {
 /* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
 .event-date, .event-time {
   position: absolute; left: 8px;
-  color: white; font-size: 18px; font-weight: 700;
+  color: white; font-size: 17px; font-weight: 700; line-height: 19px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
 }
 /* カレンダー(日付)はもう少し下へ。時計＋開場開演時間は下端寄せのまま（ヒーロー最下部）。 */
-.event-date { bottom: 35px; }
-.event-time { bottom: 6px; }
+.event-date { bottom: 32px; }
+.event-time { bottom: 8px; }
 /* 実機アセット Texture2D/entry_icon_date.png・entry_icon_time.png（白, 元36×36, 透明余白あり）。青ヒーロー上に白でそのまま。
    実機の字形は約15px。元画像に透明余白があるため18px指定で字形≈15pxに合わせる。 */
-.event-date img, .event-time img { width: 18px; height: 18px; display: block; flex-shrink: 0; }
+.event-date img, .event-time img { width: 18px; height: 18px; display: block; flex-shrink: 0; transform: translateY(1px); }
 
 /* ===== WARNING BANNER ===== */
 .warning-banner {
@@ -272,7 +272,7 @@ body {
 }
 
 /* ===== TICKET AREA ===== */
-.ticket-section { padding: 31px 11px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
+.ticket-section { padding: 21px 11px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
   overflow-y: auto;
 }
 
@@ -311,6 +311,7 @@ body {
 .ticket-card.selected .ticket-type,
 .ticket-card.selected .ticket-main { background: #087fbd; }
 .ticket-card.selected .ticket-footer { background: white !important; }
+.ticket-footer { border-top: 1px solid #e5e5e5; }
 
 /* 入場済 stamp — Unity Entered (pid=1885):
    size=340x112 at pos (-13,-13) anchor(1,1) pivot(1,1), rotation=identity (sprite art is pre-skewed).
@@ -329,7 +330,7 @@ body {
 }
 
 .ticket-main {
-  padding: 1px 0 15px 17px;
+  padding: 0 0 15px 17px;
   display: flex; align-items: center; gap: 12px;
   cursor: pointer; user-select: none;
   transition: background 0.3s;
@@ -342,7 +343,7 @@ body {
   font-size: 18px;
   color: #323232;
   text-align: left;
-  padding: 11px 14px 0 67px;
+  padding: 11px 14px 10px 67px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-weight: 400;
   transition: color 0.3s;
@@ -363,7 +364,7 @@ body {
   flex-shrink: 0; background: white;
   /* 実機: アバター中心は整理番号の中心より少し下(小川の行付近)。上寄せ＋margin-topで調整。 */
   align-self: flex-start;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 /* Real app: avatar circle does NOT change appearance when selected — stays white center, dark blue border, dark blue text. */
 
@@ -449,8 +450,8 @@ body {
   pointer-events: none;
 }
 /* 円中心をエッジに置く(top/bottom=-6) → 半円(深さ6px)。内側に薄い inset 影で凹みを表現。 */
-.ticket-card::before { top: -6px;    box-shadow: inset 0 -1.5px 2px rgba(0,0,0,0.20); }
-.ticket-card::after  { bottom: -6px; box-shadow: inset 0 1.5px 2px rgba(0,0,0,0.20); }
+.ticket-card::before { top: -6px;    box-shadow: 0 1.5px 2.5px rgba(0,0,0,0.24); }
+.ticket-card::after  { bottom: -6px; box-shadow: 0 -1.5px 2.5px rgba(0,0,0,0.24); }
 
 /* 区切り線は不要との指定 → border-top を削除。 */
 .ticket-footer {
