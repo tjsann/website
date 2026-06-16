@@ -304,8 +304,42 @@ body {
   background: white;
   z-index: 1;
   box-shadow:
-    0 2px 4px rgba(0,0,0,0.17),
-    0 0 1px rgba(0,0,0,0.08);
+    0 1px 3px rgba(0,0,0,0.13),
+    0 0 1px rgba(0,0,0,0.06);
+}
+.ticket-inner::before {
+  content: '';
+  position: absolute;
+  left: 84.4%;
+  top: 0;
+  width: 16px;
+  height: 7px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 8;
+  background:
+    radial-gradient(ellipse at 58% 0%,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.13) 28%,
+      rgba(0,0,0,0.05) 48%,
+      rgba(0,0,0,0) 70%);
+}
+.ticket-inner::after {
+  content: '';
+  position: absolute;
+  left: 84.4%;
+  bottom: 0;
+  width: 16px;
+  height: 7px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 8;
+  background:
+    radial-gradient(ellipse at 58% 100%,
+      rgba(0,0,0,0.24) 0%,
+      rgba(0,0,0,0.16) 28%,
+      rgba(0,0,0,0.06) 48%,
+      rgba(0,0,0,0) 70%);
 }
 /* Selected state: Zashu(seat) + main row both turn blue. Footer stays white.
    Implementation matches Unity behavior — the dashed-line/notch separator only sits between
@@ -460,14 +494,11 @@ body {
    そのため外側影・境界線は無し、insetで内側弧のみ薄く影を付ける。 */
 .ticket-card::before {
   top: -6px;
-  box-shadow:
-    inset 0 -2px 3px -1px rgba(0,0,0,0.24),
-    inset 0 -1px 1px rgba(255,255,255,0.22);
+  box-shadow: none;
 }
 .ticket-card::after {
   bottom: -6px;
-  box-shadow:
-    inset 0 1px 2px -1px rgba(0,0,0,0.18);
+  box-shadow: none;
 }
 
 /* 区切り線は不要との指定 → border-top を削除。 */
@@ -481,20 +512,49 @@ body {
 .ticket-footer::after {
   content: '';
   position: absolute;
-  bottom: -1px;
-  height: 1px;
-  background: rgba(0,0,0,0.20);
-  box-shadow: 0 2px 3px rgba(0,0,0,0.22);
+  bottom: -4px;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.22) 0,
+    rgba(0,0,0,0.16) 1px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.00) 100%
+  );
   pointer-events: none;
   z-index: 7;
 }
 .ticket-footer::before {
   left: 0;
-  right: calc(15.6% + 7px);
+  right: calc(15.6% + 10px);
 }
 .ticket-footer::after {
-  left: calc(84.4% + 7px);
+  left: calc(84.4% + 10px);
   right: 0;
+}
+
+.ticket-type::before,
+.ticket-type::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  height: 3px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.18) 0,
+    rgba(0,0,0,0.10) 1px,
+    rgba(0,0,0,0.00) 100%
+  );
+  pointer-events: none;
+  z-index: 7;
+}
+.ticket-type::before {
+  left: -67px;
+  right: calc(15.6% + 10px);
+}
+.ticket-type::after {
+  left: calc(84.4% + 10px - 67px);
+  right: -14px;
 }
 
 /* 実機比率: footer「ご来場までに…」≈ 17px（整理番号×0.77）。文字色は実機実測 #323232（旧#555は薄すぎ）。 */
