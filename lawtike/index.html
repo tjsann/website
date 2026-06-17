@@ -401,8 +401,12 @@ body {
 .ticket-card.selected .ticket-main .ticket-number { color: white; }
 /* Unity Name/PhoneNum/Price Text: all NotoSansJP-Regular size 24, color #323232 (extracted from libil2cpp). */
 /* 実機比率: 氏名/電話/金額 ≈ 整理番号×0.57 → 13px（旧15は大きすぎ）。 */
-.ticket-detail { font-size: 13px; color: #323232; line-height: 1.4; letter-spacing: -0.2px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
+.ticket-detail { font-size: 14px; color: #323232; line-height: 1.34; letter-spacing: -0.2px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
+.entry-time {
+  font-size: 14px;
+  line-height: 1.34;
+}
 
 /* 右端のチェックボックス領域 - デフォルトは透明、選択時に青 */
 .checkbox-zone {
@@ -869,7 +873,7 @@ function doCheckIn(){
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
   const ts  = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  detail.innerHTML += '<br>入場時間：' + ts;
+  detail.innerHTML += '<br><span class="entry-time">入場時間：' + ts + '</span>';
 
   // Revert hero and card
   document.getElementById('hero').classList.remove('selected-hero');
