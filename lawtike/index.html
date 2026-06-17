@@ -381,11 +381,11 @@ body {
 /* 実機: 「１Ｆ 全自由 ＜チケットのみ＞」は中央寄せではなく、整理番号・氏名と同じ左端(情報列, 約67px)に左寄せ。 */
 .ticket-type {
   font-size: 18px;
-  line-height: 1.25;
+  line-height: 1.18;
   color: #323232;
   text-align: left;
   padding: 0;
-  margin: 0;
+  margin: 0 0 2px 0;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-weight: 400;
   transition: color 0.3s;
@@ -396,7 +396,7 @@ body {
 }
 .ticket-type.secondary {
   padding: 0;
-  margin-top: -3px;
+  margin-top: 0;
   margin-bottom: 2px;
 }
 .ticket-type.secondary:empty {
@@ -430,7 +430,7 @@ body {
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
 /* 実機比率(整理番号:席種:氏名 ≈ 1.0:0.8:0.57, code 40:32:24 と一致)に合わせ整理番号を22pxに。 */
 .ticket-number {
-  font-size: 22px; font-weight: 700; color: #323232; margin-bottom: 1px;
+  font-size: 22px; font-weight: 700; color: #323232; margin: 0 0 1px 0;
   letter-spacing: -0.5px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
 }
@@ -569,6 +569,10 @@ body {
 .bottom-nav-outer {
   background: #DAECF8;
   border-top: none;
+  /* 実機同様、フッター水色部分の上端に影を付ける。 */
+  box-shadow: 0 -7px 13px rgba(0,0,0,0.24);
+  position: relative;
+  z-index: 30;
   /* 実機は矢印が画面端から約11px。横paddingを20px→10pxに詰める。 */
   padding: 12px 9px calc(env(safe-area-inset-bottom, 0px) + 12px);
   flex-shrink: 0;
@@ -599,7 +603,7 @@ body {
   display: flex; align-items: center; line-height: 1;
 }
 .nav-back .nav-icon img, .nav-next .nav-icon img {
-  width: 24px; height: 24px; display: block;
+  width: 31px; height: 31px; display: block;
 }
 .nav-back .nav-icon img { transform: scaleX(-1); }
 </style>
