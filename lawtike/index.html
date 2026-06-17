@@ -250,7 +250,7 @@ body {
 /* IDOLY PRIDE title - top-left under header */
 .event-title {
   position: absolute;
-  top: 92px; left: 8px;
+  top: 96px; left: 8px;
   color: white;
   /* 実機タイトルの「Ｉ」のスラブセリフ・幾何学的な丸み・広い字間は【全角英字】の特徴。
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
@@ -697,17 +697,22 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   ctx.arc(w/2, h/2, w/2, 0, Math.PI*2);
   ctx.clip();
 
-  /* Chevron geometry derived from 実機 marker (circle ⌀≈194px in screenshot, ×0.33 → 64px canvas):
-       row spacing ≈ 8px, half-period ≈ 9px, peak-to-baseline ≈ 4px, stroke ≈ 2.5px. */
-  const sH  = 7.2;
-  const zW  = 8.2;
-  const amp = 3.8;
-  const xOff = (offset * 9) % (zW * 2);
+  /* 実機の二点バーは、現行モックより
+     - 行間が少し広い
+     - 1山の横幅が少し大きい
+     - 山の高さが少し高い
+     - 線がやや太く、角も少しだけ柔らかい
+     ため、その比率に寄せる。 */
+  const sH  = 8.0;   // row spacing
+  const zW  = 9.2;   // half period
+  const amp = 4.35;  // peak height
+  const xOff = (offset * 9.8) % (zW * 2);
 
-  /* 実機サンプル: marker chevron color = rgba(255,64,129) = #FF4081 (same Unity pink as the check glyph). */
-  ctx.strokeStyle = whiteFill ? 'rgba(255,255,255,0.94)' : (strokeColor || '#FF4081');
-  ctx.lineWidth   = whiteFill ? 2.35 : 2.35;
-  ctx.lineJoin    = 'miter';
+  /* 実機サンプル色 */
+  ctx.strokeStyle = whiteFill ? 'rgba(255,255,255,0.96)' : (strokeColor || '#FF4081');
+  ctx.lineWidth   = whiteFill ? 2.55 : 2.55;
+  ctx.lineJoin    = 'round';
+  ctx.lineCap     = 'square';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
     const y = row * sH;
