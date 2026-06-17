@@ -370,7 +370,7 @@ body {
 }
 
 .ticket-main {
-  padding: 0 0 15px 15px;
+  padding: 11px 0 15px 15px;
   display: flex; align-items: center; gap: 10px;
   cursor: pointer; user-select: none;
   transition: background 0.3s;
@@ -381,18 +381,20 @@ body {
 /* 実機: 「１Ｆ 全自由 ＜チケットのみ＞」は中央寄せではなく、整理番号・氏名と同じ左端(情報列, 約67px)に左寄せ。 */
 .ticket-type {
   font-size: 18px;
+  line-height: 1.25;
   color: #323232;
   text-align: left;
-  padding: 11px 14px 14px 63px;
+  padding: 0;
+  margin: 0;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-weight: 400;
   transition: color 0.3s;
   position: relative;
 }
 .ticket-type.secondary {
-  padding-top: 0;
-  padding-bottom: 3px;
-  margin-top: -12px;
+  padding: 0;
+  margin-top: -3px;
+  margin-bottom: 2px;
 }
 .ticket-type.secondary:empty {
   display: none;
@@ -408,12 +410,12 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; color: #005186; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  white-space: nowrap; line-height: 1; letter-spacing: -0.5px; transform: translateY(-4px);
+  white-space: nowrap; line-height: 1; letter-spacing: -0.5px; transform: none;
   flex-shrink: 0;
   background: #fff;
   transition: background 0.3s;
-  /* 3段券面では、線で区切られた範囲の上下中央に寄せる。
-     チェック欄と同じ translateY で中心線を横軸合わせ。 */
+  /* 価格下の横線より上の範囲全体で上下中央に配置。
+     チェック欄も同じ中心線に合わせる。 */
   align-self: center;
   margin-top: 0;
 }
@@ -467,7 +469,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   margin-top: 0;
-  transform: translateY(-4px);
+  transform: none;
   transition: all 0.25s;
 }
 
@@ -661,15 +663,14 @@ body {
 
         <!-- Top: Zashu (1F全自由) — Unity pos.x=114 width=512 in 712-wide card, text-align center within rect.
              Half-row at top of card, before the avatar/info/checkbox row. -->
-        <div class="ticket-type" id="ticketType1">アリーナＶＩＰ席　（グッズ付き）</div>
-        <div class="ticket-type secondary" id="ticketType2">アリーナＶＩＰ－１</div>
-
-        <!-- Middle row: avatar (Unity StatusIcon at x=63, anchor 0,0.5 → vertically centered)
-             | info column (SheatNum + Name + Phone + Price)
-             | checkbox (Unity at x=-57 from right, anchor 1,0.5 → vertically centered) -->
+        <!-- Upper ticket area: チケット種類1/2 + 席番号 + 名前/電話/価格。
+             Avatar and checkbox are centered vertically within this whole area,
+             i.e. above the horizontal separator under the price. -->
         <div class="ticket-main" id="ticketMain" onclick="onTicketTap()">
           <div class="avatar-circle">あなた</div>
           <div class="ticket-info">
+            <div class="ticket-type" id="ticketType1">アリーナＶＩＰ席　（グッズ付き）</div>
+            <div class="ticket-type secondary" id="ticketType2">アリーナＶＩＰ－１</div>
             <div class="ticket-number" id="ticketNumber">ブロック　２列5番</div>
             <div class="ticket-detail" id="ticketDetail">
               山田　太郎様<br>
