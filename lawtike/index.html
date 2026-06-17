@@ -247,7 +247,7 @@ body {
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
      文字列を全角(ＩＤＯＬＹ　ＰＲＩＤＥ)にすると実機と一致する。全角自体が広いので字間は最小。 */
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  font-size: 22px; font-weight: 800; letter-spacing: 1.1px;
+  font-size: 22px; font-weight: 700; letter-spacing: 1.1px;
   z-index: 5; pointer-events: none;
 }
 /* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
@@ -276,7 +276,7 @@ body {
 }
 
 /* ===== TICKET AREA ===== */
-.ticket-section { padding: 33px 11px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
+.ticket-section { padding: 33px 9px 16px; background: #e6e6e6; flex: 1; flex-grow: 1; min-height: 200px;
   overflow-y: auto;
 }
 
@@ -348,8 +348,8 @@ body {
 }
 
 .ticket-main {
-  padding: 0 0 15px 17px;
-  display: flex; align-items: center; gap: 12px;
+  padding: 0 0 15px 15px;
+  display: flex; align-items: center; gap: 10px;
   cursor: pointer; user-select: none;
   transition: background 0.3s;
   position: relative;
@@ -361,7 +361,7 @@ body {
   font-size: 18px;
   color: #323232;
   text-align: left;
-  padding: 11px 14px 14px 67px;
+  padding: 11px 14px 14px 63px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   font-weight: 400;
   transition: color 0.3s;
@@ -394,7 +394,7 @@ body {
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
 /* 実機比率(整理番号:席種:氏名 ≈ 1.0:0.8:0.57, code 40:32:24 と一致)に合わせ整理番号を22pxに。 */
 .ticket-number {
-  font-size: 22px; font-weight: 700; color: #323232; margin-bottom: 3px;
+  font-size: 22px; font-weight: 700; color: #323232; margin-bottom: 1px;
   letter-spacing: -0.5px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
 }
