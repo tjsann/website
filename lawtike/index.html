@@ -1015,6 +1015,10 @@ function doCheckIn(){
 /* ヘッダーの更新ボタンで、入場済(または選択中)の状態を最初の未選択状態へ戻す。 */
 function resetEntry(){
   const card   = document.getElementById('ticketCard');
+  const inner  = document.getElementById('ticketInner');
+  const main   = document.getElementById('ticketMain');
+  const footer = document.querySelector('.ticket-footer');
+  const zone   = document.getElementById('checkboxZone');
   const chk    = document.getElementById('checkbox');
   const stamp  = document.getElementById('nyujozumi');
   const detail = document.getElementById('ticketDetail');
@@ -1033,16 +1037,37 @@ function resetEntry(){
 
   // スタンプ・クラス
   stamp.style.display = 'none';
-  card.classList.remove('entered');
-  card.classList.remove('selected');
+  card.className = 'ticket-card';
 
   // チェックボックス（再表示・チェック解除）
   chk.classList.remove('checked');
-  document.getElementById('checkboxZone').classList.remove('hidden');
+  zone.classList.remove('hidden');
+
+  // 入場済/選択時に残り得るインライン描画状態を完全リセット
+  [inner, main, footer, zone, chk].forEach(el => {
+    if (!el) return;
+    el.style.background = '';
+    el.style.borderTopColor = '';
+    el.style.borderColor = '';
+    el.style.boxShadow = '';
+    el.style.outline = '';
+    el.style.filter = '';
+  });
+
+  // iOS Safari 対策:
+  // mask + drop-shadow の高さ変更後に古い影/灰色枠が残ることがあるため、
+  // reset時だけ filter/mask を1フレーム外して再描画させる。
+  card.style.filter = 'none';
+  inner.style.webkitMaskImage = 'none';
+  inner.style.maskImage = 'none';
+  void card.offsetHeight;
+  requestAnimationFrame(() => {
+    card.style.filter = '';
+    inner.style.webkitMaskImage = '';
+    inner.style.maskImage = '';
+  });
 
   // 背景・件数・警告
-  document.getElementById('ticketInner').style.background = '';
-  document.getElementById('ticketMain').style.background = '';
   document.getElementById('ticketCount').textContent = '合計１枚';
   document.getElementById('warningBanner').style.display = 'none';
 
