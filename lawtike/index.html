@@ -89,7 +89,7 @@ body {
   margin-left: 8px;
 }
 .header-icons { display: flex; gap: 17px; pointer-events: auto; }
-.header-icons svg { fill: white; width: 24px; height: 24px; }
+.header-icons svg { fill: white; width: 26px; height: 26px; }
 
 /* ===== HERO ===== */
 .hero {
@@ -173,10 +173,10 @@ body {
      → wave lifetime 3.0s, respawn cadence 1.5s, so exactly 2 waves overlap.
      timing-function is linear because EaseOutQuad is baked into the keyframe stops below
      (the previous cubic-bezier approximation grew too gently early → read as "slow"). */
-  /* 広がり(lifetime)=1.5s、波の発生間隔=0.5s（ユーザー指定）。1.5/0.5=3波が重なる。 */
+  /* 実機比で約0.2s早かったため、広がり(lifetime)を 1.7s → 1.9s に調整。 */
   animation:
-    rippleScale 1.7s linear infinite,
-    rippleAlpha 1.7s linear infinite;
+    rippleScale 1.9s linear infinite,
+    rippleAlpha 1.9s linear infinite;
   animation-delay: -1.03s, -1.03s;
 }
 /* 2nd wave: 0.75s behind (= 倍速時の respawn cadence)。 */
@@ -379,12 +379,16 @@ body {
   font-size: 12px; color: #005186; font-weight: 700;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   white-space: nowrap; line-height: 1; letter-spacing: -0.5px; transform: translateY(-1px);
-  flex-shrink: 0; background: white;
+  flex-shrink: 0;
+  background: #fff;
+  transition: background 0.3s;
   /* 実機: アバター中心は整理番号の中心より少し下(小川の行付近)。上寄せ＋margin-topで調整。 */
   align-self: flex-start;
   margin-top: 8px;
 }
-/* Real app: avatar circle does NOT change appearance when selected — stays white center, dark blue border, dark blue text. */
+/* アバター内側の背景は周囲の地色に追従（未選択=白 / 選択=青 / 入場済=グレー）。 */
+.ticket-card.selected .avatar-circle { background: #0086c8; }
+.ticket-card.entered .avatar-circle { background: #f4f4f4; }
 
 .ticket-info { flex: 1; min-width: 0; padding-right: 8px; }
 /* Unity SheatNum Text: NotoSansJP-Bold size 40, color #323232 (extracted from libil2cpp). */
