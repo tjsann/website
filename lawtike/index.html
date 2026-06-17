@@ -56,7 +56,7 @@ body {
   /* 実機ヘッダーはiOSステータスバー下に来る（実測ロゴ top≈60px, left≈8px）。
      env(safe-area-inset-top) が0になる環境(デスクトップ描画等)でもステータスバー相当の
      最小44pxを確保し、実機と同じ位置に。左は8pxに。 */
-  padding: calc(max(env(safe-area-inset-top, 0px), 24px)) 16px 14px 8px;
+  padding: calc(max(env(safe-area-inset-top, 0px), 28px)) 16px 14px 8px;
   pointer-events: none;
 }
 .logo-area {
@@ -250,7 +250,7 @@ body {
 /* IDOLY PRIDE title - top-left under header */
 .event-title {
   position: absolute;
-  top: 96px; left: 8px;
+  top: 120px; left: 8px;
   color: white;
   /* 実機タイトルの「Ｉ」のスラブセリフ・幾何学的な丸み・広い字間は【全角英字】の特徴。
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
@@ -697,21 +697,21 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   ctx.arc(w/2, h/2, w/2, 0, Math.PI*2);
   ctx.clip();
 
-  /* 実機の二点バーは、現行モックより
-     - 行間が少し広い
-     - 1山の横幅が少し大きい
-     - 山の高さが少し高い
-     - 線がやや太く、角も少しだけ柔らかい
-     ため、その比率に寄せる。 */
-  const sH  = 8.0;   // row spacing
-  const zW  = 9.2;   // half period
-  const amp = 4.35;  // peak height
-  const xOff = (offset * 9.8) % (zW * 2);
+  /* 実機画像を再確認すると、二点リーダーの山波線は
+     - 現在のモックよりも密度が高い
+     - 山の横幅が少し狭い
+     - 行間も少し詰まっている
+     - 角は丸いというより、ややシャープ
+     ため、その見え方に再調整する。 */
+  const sH  = 6.6;   // row spacing（行間をさらに詰める）
+  const zW  = 7.6;   // half period（山の横幅を少し狭く）
+  const amp = 4.0;   // peak height
+  const xOff = (offset * 8.7) % (zW * 2);
 
   /* 実機サンプル色 */
   ctx.strokeStyle = whiteFill ? 'rgba(255,255,255,0.96)' : (strokeColor || '#FF4081');
-  ctx.lineWidth   = whiteFill ? 2.55 : 2.55;
-  ctx.lineJoin    = 'round';
+  ctx.lineWidth   = whiteFill ? 2.35 : 2.35;
+  ctx.lineJoin    = 'miter';
   ctx.lineCap     = 'square';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
