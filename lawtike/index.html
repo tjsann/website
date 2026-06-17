@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <!-- Disable mobile browser auto-linking of phone numbers / addresses / emails (real app: phone is plain text #323232, not blue). -->
 <meta name="format-detection" content="telephone=no, address=no, email=no">
-<title>IDOLY PRIDE チケット</title>
+<title>ローソン チケット</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet"><style>
@@ -570,7 +570,7 @@ body {
   background: #DAECF8;
   border-top: none;
   /* 実機同様、フッター水色部分の上端に影を付ける。 */
-  box-shadow: 0 -7px 13px rgba(0,0,0,0.24);
+  box-shadow: 0 -3px 7px rgba(0,0,0,0.16);
   position: relative;
   z-index: 30;
   /* 実機は矢印が画面端から約11px。横paddingを20px→10pxに詰める。 */
@@ -601,9 +601,10 @@ body {
    旧テキスト矢印(← →)は字形が横長で実機より長く見えたため差し替え。左向きはCSSで反転。 */
 .nav-back .nav-icon, .nav-next .nav-icon {
   display: flex; align-items: center; line-height: 1;
+  transform: translateY(-2px);
 }
 .nav-back .nav-icon img, .nav-next .nav-icon img {
-  width: 31px; height: 31px; display: block;
+  width: 29px; height: 29px; display: block;
 }
 .nav-back .nav-icon img { transform: scaleX(-1); }
 </style>
