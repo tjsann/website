@@ -220,8 +220,8 @@ body {
 .wavy-wrap.white-fill {
   background: white;
 }
-.wavy-left  { top: 156px; left: calc(30.55% - 34px); }
-.wavy-right { top: 156px; left: calc(69.45% - 34px); }
+.wavy-left  { top: 162px; left: calc(30.55% - 28px); }
+.wavy-right { top: 162px; left: calc(69.45% - 28px); }
 .wavy-wrap canvas { display: block; width: 68px; height: 68px; }
 
 /* Blue gradient overlay for slide animation */
@@ -323,8 +323,9 @@ body {
 /* Selected state: Zashu(seat) + main row both turn blue. Footer stays white.
    Implementation matches Unity behavior — the dashed-line/notch separator only sits between
    info and footer, so the entire upper area (seat + main) is one continuous blue region. */
+.ticket-card.selected .ticket-inner { background: #0074bc; }
 .ticket-card.selected .ticket-type,
-.ticket-card.selected .ticket-main { background: #0083c4; }
+.ticket-card.selected .ticket-main { background: #0074bc; }
 .ticket-card.selected .ticket-footer { background: white !important; }
 .ticket-footer { border-top: 1px solid #d8d8d8; }
 
@@ -388,7 +389,7 @@ body {
   margin-top: 8px;
 }
 /* アバター内側の背景は周囲の地色に追従（未選択=白 / 選択=青 / 入場済=グレー）。 */
-.ticket-card.selected .avatar-circle { background: #0086c8; }
+.ticket-card.selected .avatar-circle { background: #0074bc; border-color: white; color: white; }
 .ticket-card.entered .avatar-circle { background: #eeeeee; }
 
 .ticket-info { flex: 1; min-width: 0; padding-right: 8px; }
@@ -424,7 +425,7 @@ body {
 
 /* 選択時：青ゾーン背景を表示 */
 .ticket-card.selected .checkbox-zone {
-  background: #0083c4;
+  background: #0074bc;
 }
 
 /* チェックボックス本体：未選択時は白背景＋グレー枠 */
@@ -486,6 +487,21 @@ body {
 
 /* 実機比率: footer「ご来場までに…」≈ 17px（整理番号×0.77）。文字色は実機実測 #323232（旧#555は薄すぎ）。 */
 .ticket-footer span { font-size: 18px; color: #323232; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; line-height: 1.1; }
+.ticket-card.selected .ticket-type,
+.ticket-card.selected .ticket-main,
+.ticket-card.selected .checkbox-zone,
+.ticket-card.selected .checkbox-zone::before,
+.ticket-card.selected .checkbox-zone::after {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ticket-card.selected .ticket-inner {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
 .ticket-card.selected .ticket-footer span { color: #323232; }
 .ticket-footer svg { fill: #8e8e8e; width: 24px; height: 24px; transform: translateY(1px); opacity: 0.92; }
 .ticket-card.selected .ticket-footer svg { fill: #999; }
@@ -727,7 +743,7 @@ function onTicketTap(){
   const overlay = document.getElementById('slideOverlay');
 
   if(isSelected){
-    document.getElementById('ticketMain').style.background = '#0086c8';
+    document.getElementById('ticketMain').style.background = '#0074bc';
     document.getElementById('ticketCard').classList.add('selected');
     chk.classList.add('checked');
     warn.style.display  = 'block';
