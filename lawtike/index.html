@@ -220,8 +220,8 @@ body {
 .wavy-wrap.white-fill {
   background: white;
 }
-.wavy-left  { top: 162px; left: calc(25% - 34px); }
-.wavy-right { top: 162px; left: calc(75% - 34px); }
+.wavy-left  { top: 162px; left: calc(30.55% - 34px); }
+.wavy-right { top: 162px; left: calc(69.45% - 34px); }
 .wavy-wrap canvas { display: block; width: 68px; height: 68px; }
 
 /* Blue gradient overlay for slide animation */
@@ -750,7 +750,9 @@ function onTicketTap(){
     wl.style.display    = 'block';
     wr.style.display    = 'block';
     animateWavy();
-    initSlide();
+    applyWavyBasePositions();
+window.addEventListener('resize', applyWavyBasePositions);
+initSlide();
   } else {
     document.getElementById('ticketCard').classList.remove('selected');
     document.getElementById('ticketMain').style.background = '';
@@ -772,17 +774,41 @@ function lerpColor(r1,g1,b1, r2,g2,b2, t){
   return [Math.round(r1+(r2-r1)*t), Math.round(g1+(g2-g1)*t), Math.round(b1+(b2-b1)*t)];
 }
 
+function getWavyBaseLeftPx(){
+  const hero = document.getElementById('hero');
+  const wl   = document.getElementById('wavyLeft');
+  const heroW = hero.offsetWidth;
+  const wavyW = wl.offsetWidth || 68;
+  return heroW * 0.3055 - (wavyW / 2);
+}
+
+function getWavyBaseRightPx(){
+  const hero = document.getElementById('hero');
+  const wr   = document.getElementById('wavyRight');
+  const heroW = hero.offsetWidth;
+  const wavyW = wr.offsetWidth || 68;
+  return heroW * 0.6945 - (wavyW / 2);
+}
+
+function applyWavyBasePositions(){
+  const wl = document.getElementById('wavyLeft');
+  const wr = document.getElementById('wavyRight');
+  wl.style.left = getWavyBaseLeftPx() + 'px';
+  wr.style.left = getWavyBaseRightPx() + 'px';
+}
+
 /* ── Update hero visuals based on slide progress 0→1 ── */
 function updateSlideVisuals(progress){
   const hero = document.getElementById('hero');
   const wl   = document.getElementById('wavyLeft');
   const wr   = document.getElementById('wavyRight');
+  const rb   = document.getElementById('circlesRainbowBg');
   const heroW = hero.offsetWidth;
-  const baseL = 83, baseR = 235;
+  const baseL = getWavyBaseLeftPx();
+  const baseR = getWavyBaseRightPx();
   const maxShift = heroW * 0.40;
-  const rb = document.getElementById('circlesRainbowBg');
-  wl.style.left = (baseL  + progress * maxShift) + 'px';
-  wr.style.left = (baseR  + progress * maxShift) + 'px';
+  wl.style.left = (baseL + progress * maxShift) + 'px';
+  wr.style.left = (baseR + progress * maxShift) + 'px';
   rb.style.left = (progress * maxShift) + 'px';
 }
 
@@ -794,8 +820,7 @@ function resetSlideVisuals(){
   wl.style.transition = 'left 0.28s';
   wr.style.transition = 'left 0.28s';
   rb2.style.transition = 'left 0.28s';
-  wl.style.left = '83px';
-  wr.style.left = '235px';
+  applyWavyBasePositions();
   rb2.style.left = '0px';
   setTimeout(()=>{
     wl.style.transition = 'none';
