@@ -94,7 +94,10 @@ body {
 /* ===== HERO ===== */
 .hero {
   width: 100%;
-  height: 270px;
+  /* 実機のヒーロー＝画面高さの約31.2%(実測 263.7/844)。固定pxだと iPhone 15 Pro Max など
+     縦の長い画面で相対的に短く見えるため、画面高さ比(dvh)で指定し実機比率を保つ。 */
+  height: 290px;        /* dvh非対応時のフォールバック */
+  height: 31.2dvh;
   /* Real app hero rendering reconstructed from Unity:
      Layer 1: solid color #039FDC (HeaderBG/Background m_Color, extracted from libil2cpp).
      Layer 2: entry_bg_gradation sprite tinted #000066 (HeaderBG/Background/Gradation m_Color),
@@ -256,7 +259,8 @@ body {
   pointer-events: none;
 }
 /* カレンダー(日付)はもう少し下へ。時計＋開場開演時間は下端寄せのまま（ヒーロー最下部）。 */
-.event-date { bottom: 32px; }
+/* 日付と開場/開演の余白を実機(約12px)に拡大: 日付を少し上げる。時刻は下端寄せのまま。 */
+.event-date { bottom: 38px; }
 .event-time { bottom: 10px; }
 /* 実機アセット Texture2D/entry_icon_date.png・entry_icon_time.png（白, 元36×36, 透明余白あり）。青ヒーロー上に白でそのまま。
    実機の字形は約15px。元画像に透明余白があるため18px指定で字形≈15pxに合わせる。 */
@@ -337,7 +341,10 @@ body {
   pointer-events: none;
   display: none;
   z-index: 10;
-  opacity: 0.5;
+  /* 実機の「入場済」は しっかり見える濃いめのピンク。元PNGが淡いので不透明度を上げ、
+     さらに filter: saturate で彩度を上げて実機(#EF95B3付近)に寄せる。 */
+  opacity: 0.8;
+  filter: saturate(2.1) brightness(0.9) hue-rotate(12deg);
 }
 
 .ticket-main {
@@ -517,7 +524,8 @@ body {
   gap: 9px;
   color: #0074BD;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  font-size: 15.5px;
+  /* 実機比率(390幅で約15.2px)。15 Pro Max(430幅)では相対的に小さく見えるため 16.5px に。 */
+  font-size: 16.5px;
   font-weight: 400;
   line-height: 1;
   cursor: pointer;
