@@ -116,11 +116,20 @@ body {
   width: 100%;
   height: 206px;
   border-radius: 0;
-  z-index: 3;
+  z-index: 6;
   display: none;
+  /* 実機「二点タップ中」画像のグラデーションを、同位置の通常ヒーロー色から逆算。
+     合成αは約0.76。左紫 → 青 → シアン → 青紫 → 右紫の流れに合わせる。 */
   background: linear-gradient(90deg,
-    #7b3de8 0%, #3a5de8 30%, #2ab8e8 55%, #7b3de8 100%);
-  opacity: 0.88;
+    rgba(115,  92, 220, 0.76) 0%,
+    rgba( 98, 126, 226, 0.76) 12%,
+    rgba( 79, 161, 224, 0.76) 24%,
+    rgba( 22, 221, 226, 0.76) 38%,
+    rgba( 45, 203, 232, 0.76) 52%,
+    rgba(116, 138, 235, 0.76) 68%,
+    rgba(142,  99, 234, 0.76) 84%,
+    rgba(148,  61, 221, 0.76) 100%);
+  opacity: 1;
 }
 
 
@@ -210,7 +219,7 @@ body {
 /* Wavy circles */
 .wavy-wrap {
   position: absolute;
-  z-index: 4;
+  z-index: 7;
   border-radius: 50%;
   overflow: hidden;
   display: none;
@@ -218,7 +227,7 @@ body {
   background: transparent;
 }
 .wavy-wrap.white-fill {
-  background: white;
+  background: transparent;
 }
 .wavy-left  { top: 162px; left: calc(30.55% - 34px); }
 .wavy-right { top: 162px; left: calc(69.45% - 34px); }
@@ -405,6 +414,7 @@ body {
 .ticket-detail { font-size: 14px; color: #323232; line-height: 1.34; letter-spacing: -0.2px; font-family: 'Noto Sans JP','Hiragino Sans',sans-serif; font-weight: 400; }
 .ticket-card.selected .ticket-main .ticket-detail { color: rgba(255,255,255,0.9); }
 .entry-time {
+  display: block;
   font-size: 14px;
   line-height: 1.34;
 }
@@ -641,7 +651,7 @@ body {
             <div class="ticket-detail" id="ticketDetail">
               山田　太郎様<br>
               09012345678<br>
-              9,000円
+              9,000円<span class="entry-time" id="entryTimeRow" style="display:none;"></span>
             </div>
           </div>
           <div class="checkbox-zone" id="checkboxZone">
@@ -687,11 +697,6 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   ctx.arc(w/2, h/2, w/2, 0, Math.PI*2);
   ctx.clip();
 
-  if(whiteFill){
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0,0,w,h);
-  }
-
   /* Chevron geometry derived from 実機 marker (circle ⌀≈194px in screenshot, ×0.33 → 64px canvas):
        row spacing ≈ 8px, half-period ≈ 9px, peak-to-baseline ≈ 4px, stroke ≈ 2.5px. */
   const sH  = 7.2;
@@ -700,8 +705,8 @@ function drawWavy(canvas, offset, strokeColor, whiteFill){
   const xOff = (offset * 9) % (zW * 2);
 
   /* 実機サンプル: marker chevron color = rgba(255,64,129) = #FF4081 (same Unity pink as the check glyph). */
-  ctx.strokeStyle = whiteFill ? 'rgba(20,28,130,0.80)' : (strokeColor || '#FF4081');
-  ctx.lineWidth   = whiteFill ? 2.4 : 2.35;
+  ctx.strokeStyle = whiteFill ? 'rgba(255,255,255,0.94)' : (strokeColor || '#FF4081');
+  ctx.lineWidth   = whiteFill ? 2.35 : 2.35;
   ctx.lineJoin    = 'miter';
 
   for(let row = -1; row <= Math.ceil(h / sH) + 2; row++){
@@ -853,10 +858,13 @@ function initSlide(){
     curProgress = 0;
     const wl2 = document.getElementById('wavyLeft');
     const wr2 = document.getElementById('wavyRight');
+    applyWavyBasePositions();
     wl2.classList.add('white-fill');
     wr2.classList.add('white-fill');
     wavyWhiteFill = true;
-    document.getElementById('circlesRainbowBg').style.display = 'block';
+    const rbStart = document.getElementById('circlesRainbowBg');
+    rbStart.style.left = '0px';
+    rbStart.style.display = 'block';
   }
   function onMove(e){
     if(!dragging) return;
@@ -891,6 +899,19 @@ function initSlide(){
   window.addEventListener('mouseup',   onEnd);
 }
 
+function ensureEntryTimeRow(){
+  const detail = document.getElementById('ticketDetail');
+  let row = document.getElementById('entryTimeRow');
+  if(!row){
+    row = document.createElement('span');
+    row.id = 'entryTimeRow';
+    row.className = 'entry-time';
+    row.style.display = 'none';
+    detail.appendChild(row);
+  }
+  return row;
+}
+
 /* ========== DO CHECK-IN ========== */
 function doCheckIn(){
   if(isCheckedIn) return;
@@ -914,7 +935,9 @@ function doCheckIn(){
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
   const ts  = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  detail.innerHTML += '<br><span class="entry-time">入場時間：' + ts + '</span>';
+  const entryTimeRow = ensureEntryTimeRow();
+  entryTimeRow.textContent = '入場時間：' + ts;
+  entryTimeRow.style.display = 'block';
 
   // Revert hero and card
   document.getElementById('hero').classList.remove('selected-hero');
@@ -954,11 +977,10 @@ function resetEntry(){
   const wr     = document.getElementById('wavyRight');
   const rb     = document.getElementById('circlesRainbowBg');
 
-  // 入場時間の行(<br>入場時間：…)を削除して元の明細に戻す
-  const idx = detail.innerHTML.indexOf('入場時間');
-  if(idx >= 0){
-    detail.innerHTML = detail.innerHTML.slice(0, idx).replace(/<br\s*\/?>\s*$/i, '');
-  }
+  // 入場時間の行を非表示にして元の明細に戻す
+  const entryTimeRow = ensureEntryTimeRow();
+  entryTimeRow.textContent = '';
+  entryTimeRow.style.display = 'none';
 
   // 状態フラグ
   isCheckedIn = false;
@@ -987,8 +1009,7 @@ function resetEntry(){
     el.classList.remove('white-fill');
     el.style.transition = 'none';
   });
-  wl.style.left = '83px';
-  wr.style.left = '235px';
+  applyWavyBasePositions();
   if(rb){ rb.style.display = 'none'; rb.style.left = '0px'; }
 }
 
@@ -1046,8 +1067,18 @@ function applySettings(){
   const name  = document.getElementById('s_name').value;
   const tel   = document.getElementById('s_tel').value;
   const price = document.getElementById('s_price').value;
-  document.getElementById('ticketDetail').innerHTML =
-    name + '様<br>' + tel + '<br>' + price;
+  const oldEntryRow = document.getElementById('entryTimeRow');
+  const oldEntryText = oldEntryRow ? oldEntryRow.textContent : '';
+  const oldEntryVisible = oldEntryRow && oldEntryRow.style.display !== 'none';
+
+  const detailEl = document.getElementById('ticketDetail');
+  detailEl.innerHTML =
+    name + '様<br>' + tel + '<br>' + price +
+    '<span class="entry-time" id="entryTimeRow" style="display:none;"></span>';
+
+  const newEntryRow = ensureEntryTimeRow();
+  newEntryRow.textContent = oldEntryText;
+  newEntryRow.style.display = oldEntryVisible ? 'block' : 'none';
 
   closeSettings();
 }
