@@ -89,7 +89,7 @@ body {
   margin-left: 8px;
 }
 .header-icons { display: flex; gap: 17px; pointer-events: auto; }
-.header-icons svg { fill: white; width: 26px; height: 26px; }
+.header-icons svg { fill: white; width: 27px; height: 27px; }
 
 /* ===== HERO ===== */
 .hero {
@@ -247,13 +247,13 @@ body {
      コード(Unity TitleText: NotoSansJP-Bold size40=約20px)どおり NotoSansJP-Bold で、
      文字列を全角(ＩＤＯＬＹ　ＰＲＩＤＥ)にすると実機と一致する。全角自体が広いので字間は最小。 */
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
-  font-size: 22px; font-weight: 700; letter-spacing: 1.1px;
+  font-size: 22px; font-weight: 800; letter-spacing: 1.1px;
   z-index: 5; pointer-events: none;
 }
 /* Unity Date/Time Text: NotoSansJP-Bold size 32 (extracted from libil2cpp). */
 .event-date, .event-time {
   position: absolute; left: 8px;
-  color: white; font-size: 18px; font-weight: 500; line-height: 20px;
+  color: white; font-size: 18px; font-weight: 700; line-height: 20px;
   font-family: 'Noto Sans JP','Hiragino Sans',sans-serif;
   z-index: 5; display: flex; align-items: center; gap: 7px;
   pointer-events: none;
@@ -341,9 +341,10 @@ body {
   pointer-events: none;
   display: none;
   z-index: 10;
-  /* 実機の入場済は淡いピンク寄り。彩度を上げすぎず、背景になじませる。 */
-  opacity: 0.54;
-  filter: saturate(0.78) brightness(1.03);
+  /* 実機の入場済はもう少し濃く見えるため、
+     彩度をわずかに戻しつつ不透明度を上げて実機寄せに調整。 */
+  opacity: 0.74;
+  filter: saturate(1.02) brightness(0.98);
 }
 
 .ticket-main {
@@ -499,7 +500,7 @@ body {
   line-height: 1.34;
 }
 .ticket-card.entered .ticket-footer {
-  border-top-color: #d1d1d1;
+  border-top-color: transparent;
   padding-top: 13px;
 }
 
