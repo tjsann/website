@@ -317,8 +317,8 @@ body {
      box-shadow は矩形ベースでノッチ輪郭に回り込まないため、ここでは使わない。
      値は実機計測の密着型（下端α≈0.25・極小ブラー）。 */
   filter:
-    drop-shadow(0 2px 5px rgba(0,0,0,0.24))
-    drop-shadow(0 0 1px rgba(0,0,0,0.16));
+    drop-shadow(0 1px 3px rgba(0,0,0,0.18))
+    drop-shadow(0 0 1px rgba(0,0,0,0.10));
   transition: background 0.3s;
 }
 /* inner clip for background color */
@@ -466,7 +466,7 @@ body {
 /* チェックボックス本体：未選択時は白背景＋グレー枠 */
 .checkbox {
   width: 24px; height: 24px;
-  border: 2px solid #c8c8c8;
+  border: 3.5px solid #c5c5c5;
   border-radius: 4px;
   background: white;
   display: flex; align-items: center; justify-content: center;
@@ -476,20 +476,19 @@ body {
   transition: all 0.25s;
 }
 
-/* Selected: keep white interior, lighter border (matches screenshot — checkbox stays a thin square with pink check). */
+/* Selected: border only slightly thicker/darker, gradient side is unchanged per request. */
 .ticket-card.selected .checkbox {
-  border-color: #00699d;
+  border-color: #006493;
   background: #0077b4;
 }
 
-/* Checked state — only the pink ✓ glyph appears via .checkbox.checked::after; background stays per selected/default rules above. */
-/* Unity ticket_icon_check sprite color: rgba(255,64,129,1.0) = #FF4081 (pink). */
+/* Checked state — make the pink check slightly smaller while keeping the overall look. */
 .checkbox.checked::after {
   content: '';
-  width: 14px;
-  height: 8px;
-  border-left: 4px solid #FF4081;
-  border-bottom: 4px solid #FF4081;
+  width: 11px;
+  height: 6px;
+  border-left: 2.5px solid #FF4081;
+  border-bottom: 2.5px solid #FF4081;
   border-radius: 1px;
   transform: rotate(-45deg) translate(1px, -1px);
   transform-origin: center;
@@ -569,8 +568,8 @@ body {
 .bottom-nav-outer {
   background: #DAECF8;
   border-top: none;
-  /* 実機同様、フッター水色部分の上端に影を付ける。 */
-  box-shadow: 0 -3px 7px rgba(0,0,0,0.16);
+  /* 実機同様だが、影はもっと控えめ。 */
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.12);
   position: relative;
   z-index: 30;
   /* 実機は矢印が画面端から約11px。横paddingを20px→10pxに詰める。 */
@@ -601,10 +600,10 @@ body {
    旧テキスト矢印(← →)は字形が横長で実機より長く見えたため差し替え。左向きはCSSで反転。 */
 .nav-back .nav-icon, .nav-next .nav-icon {
   display: flex; align-items: center; line-height: 1;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 .nav-back .nav-icon img, .nav-next .nav-icon img {
-  width: 29px; height: 29px; display: block;
+  width: 27px; height: 27px; display: block;
 }
 .nav-back .nav-icon img { transform: scaleX(-1); }
 </style>
