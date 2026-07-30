@@ -119,7 +119,8 @@ body {
   background-image: none;
 }
 .hero.hero-theme-white {
-  background-color: #fff;
+  /* スクリーンショットの白背景は純白ではなく、明るいグレー。 */
+  background-color: #d8d8d8;
   background-image: none;
 }
 .hero.hero-theme-orange {
@@ -1317,7 +1318,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <button type="button" class="hero-theme-option" data-theme="original" aria-pressed="false" onclick="selectHeroTheme('original')" style="--theme-swatch:linear-gradient(135deg,#039fdc,#0068ad);">元の青</button>
       <button type="button" class="hero-theme-option is-active" data-theme="cyan" aria-pressed="true" onclick="selectHeroTheme('cyan')" style="--theme-swatch:#00e4e4;">水色</button>
       <button type="button" class="hero-theme-option" data-theme="orange" aria-pressed="false" onclick="selectHeroTheme('orange')" style="--theme-swatch:#ff9800;">オレンジ</button>
-      <button type="button" class="hero-theme-option" data-theme="white" aria-pressed="false" onclick="selectHeroTheme('white')" style="--theme-swatch:#fff;">白</button>
+      <button type="button" class="hero-theme-option" data-theme="white" aria-pressed="false" onclick="selectHeroTheme('white')" style="--theme-swatch:#d8d8d8;">白</button>
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">イベント名</label>
