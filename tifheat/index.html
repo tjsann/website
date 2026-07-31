@@ -717,9 +717,12 @@ body {
      375px CSS幅では約228.5pxとなり、同一サイズで同じ比率になる。 */
   height: clamp(228px, 60.93vw, 340px);
   min-height: 228px;
+  box-shadow: inset 0 -1px rgba(255,255,255,0.42);
 }
 .event-title {
-  top: clamp(108px, 27vw, 120px);
+  /* 要素ボックス内に約5pxのフォント上部余白があるため、実機の文字先端
+     （750px画像の約160px地点）へ合わせてボックスを5px上へ補正。 */
+  top: clamp(75px, 20vw, 108px);
   right: 8px;
   max-width: calc(100% - 16px);
   font-size: clamp(18px, 5.1vw, 22px);
@@ -737,6 +740,23 @@ body {
   min-height: 260px;
   padding-inline: clamp(7px, 2.3vw, 12px);
   overflow: visible;
+}
+.ticket-card {
+  /* 実機は輪郭付近に密着した控えめな影。 */
+  filter:
+    drop-shadow(0 1px 2px rgba(0,0,0,0.15))
+    drop-shadow(0 0 0.75px rgba(0,0,0,0.07));
+}
+.ticket-inner {
+  /* 実機では切り欠き中心がカード幅の約79.5%で、半径も少し小さい。 */
+  -webkit-mask-image:
+    radial-gradient(circle 4.75px at 79.5% 0%, transparent 4.75px, #000 4.85px),
+    radial-gradient(circle 4.75px at 79.5% 100%, transparent 4.75px, #000 4.85px);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 4.75px at 79.5% 0%, transparent 4.75px, #000 4.85px),
+    radial-gradient(circle 4.75px at 79.5% 100%, transparent 4.75px, #000 4.85px);
+  mask-composite: intersect;
 }
 .ticket-header { gap: 10px; }
 .ticket-header span {
@@ -764,6 +784,10 @@ body {
 .bottom-nav-outer {
   position: sticky;
   bottom: 0;
+  /* 実機は上端から上方向へ、やや濃い短い影が広がる。 */
+  box-shadow:
+    0 -2px 5px rgba(0,0,0,0.17),
+    0 -1px 1px rgba(0,0,0,0.10);
 }
 
 @media (max-width: 359px) {
@@ -787,7 +811,7 @@ body {
     min-height: 220px;
   }
   .event-title {
-    top: 100px;
+    top: 74px;
     font-size: 17px;
     line-height: 1.3;
   }
