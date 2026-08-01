@@ -1387,6 +1387,40 @@ function adjustSeatNumber(amount){
   document.getElementById('ticketNumber').textContent = input.value;
 }
 
+let seatNumberRepeatDelay = null;
+let seatNumberRepeatTimer = null;
+let seatNumberLongPressed = false;
+
+function stopSeatNumberRepeat(){
+  clearTimeout(seatNumberRepeatDelay);
+  clearInterval(seatNumberRepeatTimer);
+  seatNumberRepeatDelay = null;
+  seatNumberRepeatTimer = null;
+}
+
+function startSeatNumberRepeat(event, amount){
+  stopSeatNumberRepeat();
+  seatNumberLongPressed = false;
+
+  if(event.currentTarget.setPointerCapture && event.pointerId !== undefined){
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  seatNumberRepeatDelay = setTimeout(() => {
+    seatNumberLongPressed = true;
+    adjustSeatNumber(amount);
+    seatNumberRepeatTimer = setInterval(() => adjustSeatNumber(amount), 85);
+  }, 450);
+}
+
+function handleSeatNumberClick(amount){
+  if(seatNumberLongPressed){
+    seatNumberLongPressed = false;
+    return;
+  }
+  adjustSeatNumber(amount);
+}
+
 function toFullWidth(value){
   return value
     .replace(/[!-~]/g, char => String.fromCharCode(char.charCodeAt(0) + 0xFEE0))
@@ -1446,7 +1480,7 @@ function applySettings(){
 
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('lawtikeHeroTheme');
-  selectHeroTheme(['original','cyan','orange','white','red','green','gray'].includes(savedTheme) ? savedTheme : 'green');
+  selectHeroTheme(['original','cyan','orange','white','red','green','gray'].includes(savedTheme) ? savedTheme : 'cyan');
   applyHeroTheme(selectedHeroTheme);
 
   const ticketType2El = document.getElementById('ticketType2');
@@ -1494,7 +1528,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">イベント名</label>
-  <input id="s_title" type="text" value="ＨＥＡＴ　ＧＡＲＡＧＥ／Ｃブロック／１３：５０～１５：０５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_title" type="text" value="ＨＥＡＴ　ＧＡＲＡＧＥ／Ｃブロック／１３：５０～１５：０５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">日付</label>
     <input id="s_date" type="date" value="2026-08-02" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
@@ -1517,8 +1551,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">席番号</label>
     <input id="s_num" type="text" value="整理番号87番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
     <div class="seat-number-stepper" role="group" aria-label="席番号の増減">
-      <button type="button" onclick="adjustSeatNumber(-1)" aria-label="席番号を1減らす">− 1</button>
-      <button type="button" onclick="adjustSeatNumber(1)" aria-label="席番号を1増やす">＋ 1</button>
+      <button type="button" onclick="handleSeatNumberClick(-1)" onpointerdown="startSeatNumberRepeat(event,-1)" onpointerup="stopSeatNumberRepeat()" onpointercancel="stopSeatNumberRepeat()" onlostpointercapture="stopSeatNumberRepeat()" oncontextmenu="event.preventDefault()" aria-label="席番号を1減らす。長押しで連続して減らす">− 1</button>
+      <button type="button" onclick="handleSeatNumberClick(1)" onpointerdown="startSeatNumberRepeat(event,1)" onpointerup="stopSeatNumberRepeat()" onpointercancel="stopSeatNumberRepeat()" onlostpointercapture="stopSeatNumberRepeat()" oncontextmenu="event.preventDefault()" aria-label="席番号を1増やす。長押しで連続して増やす">＋ 1</button>
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">名前</label>
