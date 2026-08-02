@@ -777,7 +777,9 @@ body {
   width: clamp(48px, 17vw, 67px);
 }
 .ticket-footer {
-  padding-inline: clamp(8px, 3vw, 15px);
+  /* 実機750px画像: カード左端x16→文言左端x126（CSS換算で約55px差）。
+     padding-inline は元の非対称余白を壊すため、上下・左右を個別指定する。 */
+  padding: 14px clamp(13px, 4vw, 15px) 15px clamp(54px, 14.7vw, 58px);
 }
 .ticket-footer span {
   font-size: clamp(16px, 4.5vw, 19px);
