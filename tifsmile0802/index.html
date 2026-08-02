@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -778,7 +777,9 @@ body {
   width: clamp(48px, 17vw, 67px);
 }
 .ticket-footer {
-  padding-inline: clamp(8px, 3vw, 15px);
+  /* 実機750px画像: カード左端x16→文言左端x126（CSS換算で約55px差）。
+     padding-inline は元の非対称余白を壊すため、上下・左右を個別指定する。 */
+  padding: 14px clamp(13px, 4vw, 15px) 15px clamp(54px, 14.7vw, 58px);
 }
 .ticket-footer span {
   font-size: clamp(16px, 4.5vw, 19px);
@@ -880,14 +881,14 @@ body {
         <div class="slide-thumb" id="slideThumb"></div>
       </div>
     </div>
-    <div class="event-title" id="eventTitle">ＳＭＩＬＥ　ＧＡＲＤＥＮ／Ｉブロック／１９：４５～２０：４５</div>
+    <div class="event-title" id="eventTitle">ＨＥＡＴ　ＧＡＲＡＧＥ／Ｃブロック／１３：５０～１５：０５</div>
     <div class="event-date">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABaklEQVR4nO2YwUrDQBCGp1rEF9A3KILe6kHwYvAZrA/g1ZMHz12vFdG7gl5tX0KPPkBF8Fk0/kP2MBm6W1PdzRT6wU+yTDfzZ4dNM+mWZUmW6JIx5hnqQN9ifApNGubgOc/qmgsbys5SGOpBF9AOtK5iDjpvmGNLjV+gL+gDuoM+Y4YO/ITNwMV36e8c+eMxdAYV0FvI0E3ETAo41y10GDLUp/zsy4E2tEH5qeU0v8uiD60cmF8hiYNeE+UtoOGsQKxk71Q9k1KwHQosVckke9BAjJ04H/g4M6X624D83ZiqVW9kKLTLOKGsuUzErxcn/nwiDHXUnOkihlrnt4b47q4CsbGPkzgypZojY/9iKHRBWSaNo4aYLlnrfxuM6RUywapk8zBtaFWyWUhD+jMI92BForyyv5PfDmqGOMBdZM+PHeUh2rmOoHvKy0gOtKEHqvruS6p6+7VEJrga3NtfQ08xQ8yjVyuY22U/MnI2z453UdgAAAAASUVORK5CYII=" alt="">
       <span id="eventDate">2026.08.02(Sun)</span>
     </div>
     <div class="event-time">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADVElEQVR4nN2Y62uOYRzHf2qJd+YQNtrG9g+oIW8o5VBi5gVS1CJEjpuMySTnw8iLLaccI+WwUiReSGHKK29Y2MiZeDeHYb7ffr+nXc+95z48z547a9/6tOu672u/+3tfx9/95HR0dEhPUo70MPUKQ33ABLAQjAFDwDDwB3wGn8AjcB48iNNQP7AErAOFPm0KjFKwArwEdeAY+JlNQ+yN/aK9kY5GgSOgBlSCc9kwVAu2eq59BVfBFdFeeCM6lHmgBMwCc0CutR8KzoLRYFt3DNWDZU79NdgFToD2FO2fGddFh6wCbAYj7H6t6HxbnomhPR4zjWAe+CHR9As0gFOiE7zcrjPmN7ApHUN8sw1O/TBYI5mJL8Dhq3NiVIPn4GQUQ1xNe506u39twAMnGa2iveEnrk5O8plW5whcAN/DDK0Eg6z8FswFQecLzXDS3w0xxBjzQTPIB4NF59LBMEPrnTK7tk2ypzaLecbqVWGGxouuAqpFdKlmW4zJpV9kzxoHmvwMlTvlRolPjJ2Y4OVBhkqd8s0YDd1wDI11b3gN5TvllhgNtTrlPPdGkKEPEp/c2O4zuxj661OOIgYeDt5HaOvGTtpSvIYYrMTK7MrmCMGfiKYWxdZ+u+iu3B7wP+4wJb2A19A7x1BhREOXwWPRc2uq6A68WHTTu+PzPwWeZ/oaYqY30crTwC2JplZrz7SD+Q9f6ja4JrqaXnnaT3fKTe4NryEGqLLybNHzJx1xf+FL8CTn4VxmRqeAe067Ms8zfQ0xB+aYcnIWggWiqUM64mG5RfRcOwpGSnJuzZhFVuazHgYZ4oxnqnrA6pwPzAwzOc9egMmih+hvu9ZfkjOJfRKyyihmidUWiEuZKUKZBJ/4Qfpif5niXpLOFcbrDd7GqQyxyzeC41Zn/uImV5mKMWY49Urx5EJ+hijmzMVmjFotOqfSSWETYsJ3UXQFJrQTnE7VOCin5rANkM68mgGfgt3in+S76itdk3yq3q6lVNhXBzc3jnWN1Qss4A7R5cpNkZM3sbklPoM455hW5EqyaqWbn0EUlzATcq6IxIfiQNG3r5Bo+ii6v4UmfFG/XDneXCFLwSrp3EfCFNunNMUVccjgjw2L5D//2ODqvpF19Yrfh2LVPyOFuWHqXxW2AAAAAElFTkSuQmCC" alt="">
-      開場 <span id="eventOpenTime">19:25</span> 開演 <span id="eventStartTime">19:45</span>
+      開場 <span id="eventOpenTime">13:30</span> 開演 <span id="eventStartTime">13:50</span>
     </div>
   </div>
 
@@ -919,8 +920,8 @@ body {
             <div class="ticket-type secondary" id="ticketType2" style="display:none;"></div>
             <div class="ticket-number" id="ticketNumber">整理番号87番</div>
             <div class="ticket-detail" id="ticketDetail">
-              小幡　重夫様<br>
-              07027969785<br>
+              内田　風朗様<br>
+              08069446044<br>
               2,500円<span class="entry-time" id="entryTimeRow" style="display:none;"></span>
             </div>
           </div>
@@ -1482,7 +1483,7 @@ function applySettings(){
 
 document.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('lawtikeHeroTheme');
-  selectHeroTheme(['original','cyan','orange','white','red','green','gray'].includes(savedTheme) ? savedTheme : 'orange');
+  selectHeroTheme(['original','cyan','orange','white','red','green','gray'].includes(savedTheme) ? savedTheme : 'cyan');
   applyHeroTheme(selectedHeroTheme);
 
   const ticketType2El = document.getElementById('ticketType2');
@@ -1530,16 +1531,16 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">イベント名</label>
-    <input id="s_title" type="text" value="ＳＭＩＬＥ　ＧＡＲＤＥＮ／Ｉブロック／１９：４５～２０：４５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_title" type="text" value="ＨＥＡＴ　ＧＡＲＡＧＥ／Ｃブロック／１３：５０～１５：０５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">日付</label>
     <input id="s_date" type="date" value="2026-08-02" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">開場時刻</label>
-    <input id="s_open" type="time" value="19:25" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_open" type="time" value="13:30" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">開演時刻</label>
-    <input id="s_start" type="time" value="19:45" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:24px;box-sizing:border-box;">
+    <input id="s_start" type="time" value="13:50" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:24px;box-sizing:border-box;">
 
     <!-- Section: チケット -->
     <div style="font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">チケット</div>
@@ -1558,10 +1559,10 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">名前</label>
-    <input id="s_name" type="text" value="小幡　重夫" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_name" type="text" value="内田　風朗" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">電話番号</label>
-    <input id="s_tel" type="tel" value="07027969785" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_tel" type="tel" value="08069446044" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">金額</label>
     <input id="s_price" type="text" value="2,500円" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:28px;box-sizing:border-box;">
