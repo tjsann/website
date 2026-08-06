@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#edf3f1">
+  <title>LuckyFes 前方エリア モック</title>
+  <style>
+    @font-face { font-family: "LuckyFes Roboto"; src: url("mock-assets/Roboto-Regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+    @font-face { font-family: "LuckyFes Numbers"; src: url("mock-assets/Roboto-Medium-Numbers.ttf") format("truetype"); font-style: normal; font-weight: 500; font-display: swap; }
+    :root {
+      --green: #3ba22c;
+      --pass-bg: #d14d5b;
+      --ink: #111;
+      --page-bg: #e4e8ea;
+      font-family: "LuckyFes Roboto", Roboto, "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      color: var(--ink);
+      background: var(--page-bg);
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+    body { background: var(--page-bg); overscroll-behavior: none; }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .screen { display: none; min-height: 100dvh; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    /* 設定画面（モック専用） */
+    #settingsScreen { background: #f3f5f4; }
+    .settings-head {
+      padding: calc(env(safe-area-inset-top, 0px) + 20px) 22px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, #0d9e6c, #35c129);
+      box-shadow: 0 2px 8px rgba(0,0,0,.14);
+    }
+    .settings-head h1 { margin: 0 0 5px; font-size: 24px; }
+    .settings-head p { margin: 0; font-size: 12px; opacity: .9; }
+    .settings-form { width: min(100%, 560px); margin: 0 auto; padding: 22px 18px 34px; }
+    .form-card { padding: 20px; border-radius: 16px; background: #fff; box-shadow: 0 3px 14px rgba(26,54,44,.1); }
+    .field { display: block; margin-bottom: 18px; }
+    .field span { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 700; color: #43504b; }
+    .field input[type="text"] {
+      width: 100%; height: 46px; padding: 0 13px; border: 1px solid #d2d9d6; border-radius: 10px;
+      background: #fbfcfc; font-size: 15px; outline: none;
+    }
+    .field input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(53,193,41,.13); }
+    .color-row { display: flex; align-items: center; gap: 12px; }
+    .color-row input[type="color"] { width: 56px; height: 42px; padding: 3px; border: 1px solid #ccd5d1; border-radius: 9px; background: white; }
+    .color-value { color: #68736f; font-size: 13px; }
+    .preview-pass { height: 76px; margin: 2px 0 22px; border-radius: 8px; }
+    .primary-button {
+      width: 100%; height: 50px; border: 0; border-radius: 10px; color: #fff; background: var(--green);
+      font-weight: 700; box-shadow: 0 3px 8px rgba(53,193,41,.28); cursor: pointer;
+    }
+
+    /* 一覧画面 */
+    #ticketsScreen { background: var(--page-bg); overflow: hidden; }
+    .list-top {
+      position: relative; flex: 0 0 auto; height: 46px; padding-top: env(safe-area-inset-top, 0px);
+      background: linear-gradient(105deg, rgba(218,222,224,.9), rgba(239,243,244,.96));
+      box-shadow: 0 2px 12px rgba(46,76,66,.12); z-index: 3;
+    }
+    .list-top::before { content: ""; position: absolute; inset: 0; opacity: .15; background: radial-gradient(circle at 15% 50%, #97a7a1, transparent 28%), radial-gradient(circle at 78% 40%, #9bb2aa, transparent 32%); }
+    .list-toolbar { position: relative; height: 100%; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; padding: 0 8px; }
+    .round-icon { width: 34px; height: 34px; display:grid; place-items:center; padding:7px; border: 0; border-radius: 50%; background: rgba(252,252,252,.84); box-shadow: 0 2px 6px rgba(0,0,0,.1); cursor: pointer; }
+    .round-icon img { width:100%; height:100%; object-fit:contain; }
+    .list-title { text-align: center; font-size: 15px; font-weight: 700; }
+    .ticket-list-scroll { flex: 1; overflow: auto; padding: 12px 12px 84px; }
+    .sale-card, .artist-ticket { background: #fcfcfc; border-radius: 7px; box-shadow: 0 3px 10px rgba(49,63,59,.09); }
+    .sale-card { padding: 18px 14px 14px; margin-bottom: 14px; }
+    .sale-card h2 { margin: 0 0 8px; text-align: center; font-size: 15px; }
+    .sale-card p { margin: 0 0 14px; font-size: 11px; line-height: 1.3; }
+    .sale-button { display: grid; place-items: center; height: 46px; border-radius: 5px; color: #fff; background: var(--green); font-size: 15px; font-weight: 700; }
+    .sale-button.disabled { color: #aaa; background: #f0f1f1; }
+    .artist-ticket { margin-bottom: 12px; overflow: hidden; }
+    .ticket-summary { display: grid; grid-template-columns: 38px 1fr auto; gap: 7px; align-items: start; padding: 13px 12px 10px; }
+    .mega { width: 40px; height: 40px; object-fit: contain; }
+    .artist-name { font-size: 15px; line-height: 1.15; font-weight: 700; }
+    .artist-schedule { margin-top: 4px; color: #909a96; font-size: 13px; line-height: 1.15; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ticket-number { padding-top: 2px; font-size: 12px; white-space: nowrap; }
+    .ticket-link {
+      width: 100%; height: 40px; display: flex; justify-content: center; align-items: center; gap: 6px;
+      border: 0; border-top: 1px dashed #aeb4b2; color: var(--green); background: #fcfcfc; font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+    .link-arrow { width: 24px; height: 24px; display: block; padding: 6px 7px; border-radius: 50%; object-fit: contain; background: var(--green); }
+    .bottom-nav {
+      position: fixed; z-index: 5; left: 18px; right: 18px; bottom: max(14px, env(safe-area-inset-bottom, 0px));
+      height: 60px; display: grid; grid-template-columns: repeat(4,1fr); padding: 4px 6px; border: 2px solid #fff;
+      border-radius: 34px; background: rgba(255,255,255,.92); box-shadow: 0 7px 20px rgba(42,75,64,.14); backdrop-filter: blur(10px);
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border-radius: 25px; font-size: 8px; font-weight: 700; }
+    .nav-item.active { color: var(--green); background: #e3efea; }
+    .nav-item img { width: 25px; height: 25px; object-fit: contain; }
+
+    /* 優先入場券画面 */
+    #passScreen {
+      position: fixed; inset: 0; z-index: 20; pointer-events: none; overflow: hidden;
+      background: rgba(37,55,49,0); padding-top: env(safe-area-inset-top, 0px);
+      transition: background-color .36s ease;
+    }
+    #passScreen.active { pointer-events: auto; }
+    #passScreen.open { background: rgba(37,55,49,.13); }
+    .pass-sheet {
+      width: 100%; flex: 1; min-height: 0; margin-top: 7px; overflow: hidden; border-radius: 20px 20px 0 0;
+      background: #fff; box-shadow: 0 -4px 20px rgba(26,48,40,.22);
+      transform: translateY(calc(100% + 8px));
+      transition: transform .4s cubic-bezier(.22,.72,.2,1);
+      will-change: transform;
+    }
+    #passScreen.open .pass-sheet { transform: translateY(0); }
+    .pass-head { position: sticky; top: 0; z-index: 4; height: 68px; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; padding: 0 9px; background: rgba(252,252,252,.96); box-shadow: 0 2px 8px rgba(0,0,0,.13); }
+    .pass-head-title { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 20px; font-weight: 700; }
+    .pass-head-title img { width: 40px; height: 40px; }
+    .close-button { width: 40px; height: 40px; display:grid; place-items:center; padding:0; border: 0; border-radius: 50%; background: transparent; box-shadow: 0 2px 8px rgba(0,0,0,.08); cursor: pointer; }
+    .close-button img { width:100%; height:100%; object-fit:contain; }
+    .pass-scroll { height: calc(100% - 68px); overflow-y: auto; overscroll-behavior: contain; }
+    .artist-photo { width: 100%; display: block; aspect-ratio: 588 / 390; object-fit: cover; }
+    .artist-meta { padding: 21px 16px 19px; text-align: center; background: #fff; }
+    .artist-meta h2 { margin: 0 0 9px; font-size: 22px; }
+    .artist-meta p { margin: 0; font-size: 20px; line-height: 1.2; font-weight: 700; white-space: pre-line; }
+    .number-block { padding: 20px 12px 22px; border-top: 1px dashed #9ea7a3; text-align: center; }
+    .number-label { color: #8d9592; font-size: 20px; }
+    .number-large { margin-top: 7px; font-family: "LuckyFes Roboto", Roboto, sans-serif; font-size: 34px; font-weight: 700; }
+    .pass-banner {
+      position: relative; height: 119px; overflow: hidden; display: grid; place-items: center; color: #fff; background-color: var(--pass-bg);
+      background-image: url("mock-assets/pass-pattern-apk.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      /* APKのImageView scaleType=centerCrop (6) と同じ表示方式 */
+      background-size: cover;
+    }
+    .lucky-logo { position: relative; z-index: 1; font-family: Impact, "Arial Black", sans-serif; font-size: 37px; font-weight: 900; font-style: italic; letter-spacing: -2px; text-shadow: 2px 2px 0 #834c22; }
+    .lucky-logo span { font-size: 24px; letter-spacing: -1px; }
+    .lucky-logo-img { position: relative; z-index: 1; width: min(64%, 254px); height: auto; display: block; }
+    .preview-pass .lucky-logo-img { width: min(58%, 220px); }
+    .rules-wrap { padding: 14px 12px 24px; background: #fff; }
+    .rules { padding: 20px 15px; border-radius: 5px; background: #edf3f1; font-size: 12px; line-height: 1.48; }
+    .rules h3 { margin: 0 0 17px; font-size: 18px; }
+    .rules p { margin: 0 0 15px; }
+    .holder {
+      min-height: 70px; margin-top: 20px; display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center;
+      column-gap: 12px; padding: 10px 1px 7px 0; border-bottom: 1px solid #c8cdcb;
+    }
+    .holder-mark { width: 43px; height: 43px; display: block; border-radius: 50%; object-fit: cover; }
+    .holder-text { min-width: 0; line-height: 1.2; }
+    .holder-ticket { display: block; margin-bottom: 5px; font-size: 10px; font-weight: 500; white-space: nowrap; }
+    .holder-person { display: flex; align-items: baseline; gap: 7px; white-space: nowrap; }
+    .holder-role { color: #929795; font-size: 13px; }
+    .holder-name { font-size: 17px; font-weight: 700; letter-spacing: .01em; }
+    .share { align-self: center; padding-left: 4px; color: #70bd63; font-size: 11px; white-space: nowrap; }
+
+    @media (min-width: 394px) {
+      body { display: flex; justify-content: center; background: #dce5e2; }
+      #app { width: 393px; min-height: 100dvh; position: relative; box-shadow: 0 0 30px rgba(0,0,0,.12); }
+      .bottom-nav { left: calc(50% - 184px); right: calc(50% - 184px); }
+      #passScreen { left: 50%; right: auto; width: 393px; transform: translateX(-50%); }
+    }
+  </style>
+</head>
+<body>
+<main id="app">
+  <section class="screen active" id="settingsScreen" aria-label="モック設定画面">
+    <header class="settings-head">
+      <h1>LuckyFes モック設定</h1>
+      <p>前方エリア優先入場券の初期表示を設定します</p>
+    </header>
+    <div class="settings-form">
+      <div class="form-card">
+        <label class="field"><span>アーティスト名</span><input id="artistInput" type="text" value="Liella!" autocomplete="off"></label>
+        <label class="field"><span>日程・ステージ</span><input id="scheduleInput" type="text" value="08.09 日, 14:50- RAINBOW STAGE" autocomplete="off"></label>
+        <label class="field"><span>整理番号</span><input id="numberInput" type="text" inputmode="numeric" value="0200" autocomplete="off"></label>
+        <label class="field"><span>PASSバナーの背景色</span><span class="color-row"><input id="colorInput" type="color" value="#d14d5b"><em class="color-value" id="colorValue">#D14D5B</em></span></label>
+        <div class="pass-banner preview-pass" id="bannerPreview"><img class="lucky-logo-img" src="mock-assets/luckyfes-logo-clean.png" alt="LuckyFes'26"></div>
+        <button class="primary-button" type="button" id="openTickets">チケット選択画面を表示</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="ticketsScreen" aria-label="チケット選択画面">
+    <header class="list-top"><div class="list-toolbar">
+      <button class="round-icon" type="button" id="backSettings" aria-label="設定へ戻る"><img src="mock-assets/apk-back.svg" alt=""></button>
+      <div class="list-title">前方エリア</div>
+      <button class="round-icon help" type="button" aria-label="ヘルプ"><img src="mock-assets/apk-help_icon.svg" alt=""></button>
+    </div></header>
+    <div class="ticket-list-scroll">
+      <article class="sale-card"><h2>前方エリア優先入場 先着販売</h2><p>申込期間：2026年7月15日（水）12:00〜各日前日18:00まで</p><div class="sale-button">申し込みに進む</div></article>
+      <article class="sale-card"><h2>前方エリア優先入場 抽選販売</h2><p>申込期間：2026年6月19日（金）12:00〜2026年7月5日（日）23:59</p><div class="sale-button disabled">当選</div></article>
+      <article class="artist-ticket">
+        <div class="ticket-summary"><img class="mega" src="mock-assets/apk-map_icon_mic.svg" alt=""><div><div class="artist-name">高嶺のなでしこ</div><div class="artist-schedule">08.09 日, 13:20- GARDEN STAGE</div></div><div class="ticket-number">整理番号 0040 番台</div></div>
+        <button class="ticket-link show-pass-link" type="button">前方エリア優先入場券を表示 <img class="link-arrow" src="mock-assets/apk-chevron_right.svg" alt=""></button>
+      </article>
+      <article class="artist-ticket">
+        <div class="ticket-summary"><img class="mega" src="mock-assets/apk-map_icon_mic.svg" alt=""><div><div class="artist-name" id="listArtist">Liella!</div><div class="artist-schedule" id="listSchedule">08.09 日, 14:50- RAINBOW STAGE</div></div><div class="ticket-number">整理番号 <span id="listNumber">0200</span> 番台</div></div>
+        <button class="ticket-link show-pass-link" type="button">前方エリア優先入場券を表示 <img class="link-arrow" src="mock-assets/apk-chevron_right.svg" alt=""></button>
+      </article>
+    </div>
+    <nav class="bottom-nav" aria-label="メインメニュー">
+      <div class="nav-item active"><img src="mock-assets/apk-home.svg" alt=""><span>ホーム</span></div>
+      <div class="nav-item"><img src="mock-assets/apk-lineup.svg" alt=""><span>ラインナップ</span></div>
+      <div class="nav-item"><img src="mock-assets/apk-timetable.svg" alt=""><span>タイムテーブル</span></div>
+      <div class="nav-item"><img src="mock-assets/apk-map.svg" alt=""><span>マップ</span></div>
+    </nav>
+  </section>
+
+  <section class="screen" id="passScreen" aria-label="前方エリア優先入場券画面">
+    <div class="pass-sheet">
+      <header class="pass-head"><span></span><div class="pass-head-title"><img src="mock-assets/apk-map_icon_mic.svg" alt="">前方エリア優先入場券</div><button class="close-button" type="button" id="closePass" aria-label="閉じる"><img src="mock-assets/apk-close.svg" alt=""></button></header>
+      <div class="pass-scroll" id="passScroll">
+        <img class="artist-photo" src="Liella2.jpg" alt="Liella! アーティスト写真">
+        <div class="artist-meta"><h2 id="detailArtist">Liella!</h2><p id="detailSchedule">08.09 日, 14:50-
+RAINBOW STAGE</p></div>
+        <div class="number-block"><div class="number-label">整理番号</div><div class="number-large"><span id="detailNumber">0200</span> 番台</div></div>
+        <div class="pass-banner" id="passBanner"><img class="lucky-logo-img" src="mock-assets/luckyfes-logo-clean.png" alt="LuckyFes'26"></div>
+        <div class="rules-wrap">
+          <div class="rules">
+            <h3>入場ルール</h3>
+            <p>① 当該アーティスト開演45分前（ガーデンステージは30分前）より、前方エリア優先入場待機エリアを開放致します。お持ちの「前方エリア優先入場券」に記載された整理番号に対応するレーン及び整理番号の記載された待機場所にてお待ちください。</p>
+            <p>② 優先入場待機エリアのレーンは整理番号毎に200番単位で別れており、各レーン入口にて「前方エリア優先入場券」を確認させていただきます。</p>
+            <p>③ 当該アーティスト開演15分前より、整理番号順に前方エリア内へと入場を開始致します。入場開始時刻までに優先入場待機エリア内の整理番号に対応した待機場所にてお待ちください。</p>
+            <p>※前方エリア優先入場券の整理番号は、1名ずつ異なる番号ではなく、10名単位のブロック番号で表示されます。例：「10番台」「20番台」「30番台」…のように表示され、同じ整理番号が10名に表示されます。誘導の際に10人単位で誘導した方がスムーズにご入場頂ける、との現場からの提案に従い改善しました。</p>
+            <p>※異なる整理番号をお持ちの同行者と一緒に入場されたい場合は後ろの番号に合わせてご入場ください。</p>
+            <p>※各STAGE横の「前方エリア優先入場待機エリア」については後日エリアマップで案内します。</p>
+            <p>※入場開始時刻が近づくにつれて混雑が予想されます。お時間に余裕をもってお集まりください。</p>
+            <p>※ご入場開始時に不在の場合でも、入場は可能です。</p>
+            <p>※当日の状況をみて、前方エリア優先入場券購入者が前方エリア内に入った後にスペースに余裕がある場合は、過去出演アーティストからの要望や経緯の演出を踏まえ、前方エリア優先入場券未購入の方にも、公演開始直前に前方エリア内へ誘導しますので、予めご了承ください。</p>
+          </div>
+          <div class="holder"><img class="holder-mark" src="mock-assets/owner-ticket-icon.png" alt=""><div class="holder-text"><span class="holder-ticket">各日入場券（9日）</span><span class="holder-person"><span class="holder-role">代表者</span><strong class="holder-name">山下 貴史</strong></span></div><span class="share">分配する</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  const screens = {
+    settings: document.getElementById('settingsScreen'),
+    tickets: document.getElementById('ticketsScreen'),
+    pass: document.getElementById('passScreen')
+  };
+  const artistInput = document.getElementById('artistInput');
+  const scheduleInput = document.getElementById('scheduleInput');
+  const numberInput = document.getElementById('numberInput');
+  const colorInput = document.getElementById('colorInput');
+
+  function showScreen(name) {
+    Object.entries(screens).forEach(([key, node]) => node.classList.toggle('active', key === name));
+    if (name !== 'pass') screens.pass.classList.remove('open');
+  }
+
+  let passCloseTimer;
+  function openPass(animate = true) {
+    applySettings();
+    clearTimeout(passCloseTimer);
+    screens.settings.classList.remove('active');
+    screens.tickets.classList.add('active');
+    screens.pass.classList.add('active');
+    screens.pass.classList.remove('open');
+    document.getElementById('passScroll').scrollTop = 0;
+    if (!animate) {
+      screens.pass.classList.add('open');
+      return;
+    }
+    requestAnimationFrame(() => requestAnimationFrame(() => screens.pass.classList.add('open')));
+  }
+
+  function closePass() {
+    screens.pass.classList.remove('open');
+    clearTimeout(passCloseTimer);
+    passCloseTimer = setTimeout(() => screens.pass.classList.remove('active'), 420);
+  }
+  function normalizeNumber(value) {
+    const digits = value.replace(/\D/g, '').slice(0, 4);
+    return digits.padStart(4, '0');
+  }
+  function updateColor() {
+    const color = colorInput.value.toUpperCase();
+    document.documentElement.style.setProperty('--pass-bg', color);
+    document.getElementById('colorValue').textContent = color;
+  }
+  function applySettings() {
+    const artist = artistInput.value.trim() || 'Liella!';
+    const schedule = scheduleInput.value.trim() || '08.09 日, 14:50- RAINBOW STAGE';
+    const number = normalizeNumber(numberInput.value);
+    numberInput.value = number;
+    document.getElementById('listArtist').textContent = artist;
+    document.getElementById('detailArtist').textContent = artist;
+    document.getElementById('listSchedule').textContent = schedule;
+    document.getElementById('detailSchedule').textContent = schedule.replace(/-\s+/, '-\n');
+    document.getElementById('listNumber').textContent = number;
+    document.getElementById('detailNumber').textContent = number;
+    updateColor();
+    localStorage.setItem('luckyFesMockSettingsV3', JSON.stringify({artist, schedule, number, color: colorInput.value}));
+  }
+  function restoreSettings() {
+    try {
+      const value = JSON.parse(localStorage.getItem('luckyFesMockSettingsV3'));
+      if (!value) return;
+      artistInput.value = value.artist || artistInput.value;
+      scheduleInput.value = value.schedule || scheduleInput.value;
+      numberInput.value = value.number || numberInput.value;
+      colorInput.value = value.color || colorInput.value;
+    } catch (_) {}
+  }
+
+  colorInput.addEventListener('input', updateColor);
+  document.getElementById('openTickets').addEventListener('click', () => { applySettings(); showScreen('tickets'); });
+  document.getElementById('backSettings').addEventListener('click', () => showScreen('settings'));
+  document.querySelectorAll('.show-pass-link').forEach(link => link.addEventListener('click', () => openPass()));
+  document.getElementById('closePass').addEventListener('click', closePass);
+  restoreSettings();
+  applySettings();
+  if (location.hash === '#tickets') showScreen('tickets');
+  if (location.hash === '#pass') openPass(false);
+</script>
+</body>
+</html>
