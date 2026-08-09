@@ -1119,7 +1119,9 @@ function applyWavyBasePositions(){
   wr.style.left = getWavyBaseRightPx() + 'px';
 }
 
-/* 実機のSwipeImageと同様、入場バー画像だけを独立した最前面レイヤーとして有効化する。 */
+let swipeLayerPlaceholder = null;
+
+/* 横フリック版と同じく、元の入場バーそのものを最前面へ移して追従させる。 */
 function activateSwipeImageLayer(){
   const layer = document.getElementById('swipeImageLayer');
   const source = document.querySelector('.swipe-bar-layer');
@@ -1134,21 +1136,10 @@ function activateSwipeImageLayer(){
   capture.style.top = `${heroRect.top}px`;
   capture.style.width = `${heroRect.width}px`;
   capture.style.height = `${heroRect.height}px`;
-  const clone = source.cloneNode(true);
-  clone.removeAttribute('id');
-  capture.appendChild(clone);
+  swipeLayerPlaceholder = document.createComment('swipe-bar-layer-position');
+  source.parentNode.insertBefore(swipeLayerPlaceholder, source);
+  capture.appendChild(source);
   layer.appendChild(capture);
-
-  /* cloneNodeではcanvasの描画内容が複製されないため、必要なら画素も転写する。 */
-  const sourceCanvases = source.querySelectorAll('canvas');
-  const cloneCanvases = clone.querySelectorAll('canvas');
-  sourceCanvases.forEach((canvas, index) => {
-    const copied = cloneCanvases[index];
-    if(!copied) return;
-    copied.width = canvas.width;
-    copied.height = canvas.height;
-    copied.getContext('2d').drawImage(canvas, 0, 0);
-  });
 
   layer.style.transition = 'none';
   layer.style.transform = 'translate3d(0,0,0)';
@@ -1157,6 +1148,12 @@ function activateSwipeImageLayer(){
 
 function deactivateSwipeImageLayer(){
   const layer = document.getElementById('swipeImageLayer');
+  const source = layer.querySelector('.swipe-bar-layer');
+  if(source && swipeLayerPlaceholder && swipeLayerPlaceholder.parentNode){
+    swipeLayerPlaceholder.parentNode.insertBefore(source, swipeLayerPlaceholder);
+    swipeLayerPlaceholder.remove();
+  }
+  swipeLayerPlaceholder = null;
   layer.classList.remove('is-active');
   layer.style.transition = 'none';
   layer.style.transform = 'translate3d(0,0,0)';
