@@ -1119,17 +1119,23 @@ function applyWavyBasePositions(){
   wr.style.left = getWavyBaseRightPx() + 'px';
 }
 
-/* 実機のSwipeImageと同様、現在の画面構成を独立した最前面レイヤーとして有効化する。 */
+/* 実機のSwipeImageと同様、入場バー画像だけを独立した最前面レイヤーとして有効化する。 */
 function activateSwipeImageLayer(){
   const layer = document.getElementById('swipeImageLayer');
-  const source = document.querySelector('.phone');
+  const source = document.querySelector('.swipe-bar-layer');
+  const hero = document.getElementById('hero');
+  const heroRect = hero.getBoundingClientRect();
   layer.classList.remove('is-active');
   layer.replaceChildren();
 
   const capture = document.createElement('div');
   capture.className = 'swipe-image-capture';
-  capture.style.top = `${-window.scrollY}px`;
+  capture.style.left = `${heroRect.left}px`;
+  capture.style.top = `${heroRect.top}px`;
+  capture.style.width = `${heroRect.width}px`;
+  capture.style.height = `${heroRect.height}px`;
   const clone = source.cloneNode(true);
+  clone.removeAttribute('id');
   capture.appendChild(clone);
   layer.appendChild(capture);
 
