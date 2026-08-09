@@ -223,13 +223,29 @@ body {
 
 /* Unity ScreenEntry.SwipeImage / SwipeImageRT 相当。
    券面・公演情報とは独立した最前面の入場操作レイヤーだけを移動する。 */
-.swipe-image-layer {
+.swipe-bar-layer {
   position: absolute;
   inset: 0;
   z-index: 8;
   pointer-events: none;
+}
+
+/* ScreenEntry.SwipeImage: touch-down時だけ有効になる画面最前面の独立Image。 */
+.swipe-image-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
   transform: translate3d(0,0,0);
   will-change: transform;
+}
+.swipe-image-layer.is-active { display: block; }
+.swipe-image-capture {
+  position: absolute;
+  left: 0;
+  width: 100%;
 }
 
 
@@ -884,7 +900,7 @@ body {
   <div class="ripple-ring r2"></div>
   <div class="ripple-ring r3"></div>
 </div>
-    <div class="swipe-image-layer" id="swipeImageLayer">
+    <div class="swipe-bar-layer">
       <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
       <div class="wavy-wrap wavy-left"  id="wavyLeft"><div class="wavy-fill"></div></div>
       <div class="wavy-wrap wavy-right" id="wavyRight"><div class="wavy-fill"></div></div>
@@ -1103,6 +1119,44 @@ function applyWavyBasePositions(){
   wr.style.left = getWavyBaseRightPx() + 'px';
 }
 
+/* 実機のSwipeImageと同様、現在の画面構成を独立した最前面レイヤーとして有効化する。 */
+function activateSwipeImageLayer(){
+  const layer = document.getElementById('swipeImageLayer');
+  const source = document.querySelector('.phone');
+  layer.classList.remove('is-active');
+  layer.replaceChildren();
+
+  const capture = document.createElement('div');
+  capture.className = 'swipe-image-capture';
+  capture.style.top = `${-window.scrollY}px`;
+  const clone = source.cloneNode(true);
+  capture.appendChild(clone);
+  layer.appendChild(capture);
+
+  /* cloneNodeではcanvasの描画内容が複製されないため、必要なら画素も転写する。 */
+  const sourceCanvases = source.querySelectorAll('canvas');
+  const cloneCanvases = clone.querySelectorAll('canvas');
+  sourceCanvases.forEach((canvas, index) => {
+    const copied = cloneCanvases[index];
+    if(!copied) return;
+    copied.width = canvas.width;
+    copied.height = canvas.height;
+    copied.getContext('2d').drawImage(canvas, 0, 0);
+  });
+
+  layer.style.transition = 'none';
+  layer.style.transform = 'translate3d(0,0,0)';
+  layer.classList.add('is-active');
+}
+
+function deactivateSwipeImageLayer(){
+  const layer = document.getElementById('swipeImageLayer');
+  layer.classList.remove('is-active');
+  layer.style.transition = 'none';
+  layer.style.transform = 'translate3d(0,0,0)';
+  layer.replaceChildren();
+}
+
 /* ── Update hero visuals based on slide progress 0→1 ── */
 function updateSlideVisuals(progress, directionSign = 1){
   const layer = document.getElementById('swipeImageLayer');
@@ -1128,7 +1182,7 @@ function resetSlideVisuals(){
   wr.style.transform = '';
   rb2.style.transform = '';
   setTimeout(()=>{
-    layer.style.transition = 'none';
+    deactivateSwipeImageLayer();
   }, 220);
 }
 
@@ -1174,6 +1228,7 @@ function initSlide(){
     const rbStart = document.getElementById('circlesRainbowBg');
     rbStart.style.left = '0px';
     rbStart.style.display = 'block';
+    activateSwipeImageLayer();
   }
   function onMove(e){
     if(!dragging) return;
@@ -1212,7 +1267,10 @@ function initSlide(){
       }else{
         layer.style.transform = `translate3d(${target}px,0,0)`;
       }
-      setTimeout(doCheckIn, 500);
+      setTimeout(()=>{
+        doCheckIn();
+        deactivateSwipeImageLayer();
+      }, 500);
     }else{
       resetSlideVisuals();
       const wl3 = document.getElementById('wavyLeft');
@@ -1646,5 +1704,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 </div>
+<div class="swipe-image-layer" id="swipeImageLayer" aria-hidden="true"></div>
 </body>
 </html>
