@@ -127,7 +127,17 @@ body {
   background-color: #ff9800;
   background-image: none;
 }
-.hero:is(.hero-theme-cyan,.hero-theme-orange,.hero-theme-white) :is(.event-title,.event-date,.event-time) {
+.hero.hero-theme-red {
+  /* lawtike赤.jpg のヒーロー地色から採取したコーラルレッド。 */
+  background-color: #fe748d;
+  background-image: none;
+}
+.hero.hero-theme-green {
+  /* lawtike緑jpg.jpg のヒーロー地色から採取した鮮やかな緑。 */
+  background-color: #00ff00;
+  background-image: none;
+}
+.hero:is(.hero-theme-cyan,.hero-theme-orange,.hero-theme-white,.hero-theme-red,.hero-theme-green) :is(.event-title,.event-date,.event-time) {
   color: #111;
 }
 .hero-theme-picker {
@@ -209,6 +219,17 @@ body {
     rgba(142,  99, 234, 0.76) 84%,
     rgba(148,  61, 221, 0.76) 100%);
   opacity: 0.72;
+}
+
+/* Unity ScreenEntry.SwipeImage / SwipeImageRT 相当。
+   券面・公演情報とは独立した最前面の入場操作レイヤーだけを移動する。 */
+.swipe-image-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  transform: translate3d(0,0,0);
+  will-change: transform;
 }
 
 
@@ -685,6 +706,157 @@ body {
   width: 27px; height: 27px; display: block;
 }
 .nav-back .nav-icon img { transform: scaleX(-1); }
+
+/* ===== RESPONSIVE LAYOUT OVERRIDES =====
+   Mobile browser toolbars can make 31.2dvh too short and overlap the title
+   with the date. This separate version protects the original proportions. */
+html, body {
+  min-width: 280px;
+  min-height: 100%;
+}
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.phone {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+}
+.hero {
+  /* 実機スクショは750px幅に対してヒーロー高が約457px（60.93%）。
+     375px CSS幅では約228.5pxとなり、同一サイズで同じ比率になる。 */
+  height: clamp(228px, 60.93vw, 340px);
+  min-height: 228px;
+  box-shadow: inset 0 -1px rgba(255,255,255,0.42);
+}
+.event-title {
+  /* 要素ボックス内に約5pxのフォント上部余白があるため、実機の文字先端
+     （750px画像の約160px地点）へ合わせてボックスを5px上へ補正。 */
+  top: clamp(75px, 20vw, 108px);
+  right: 8px;
+  max-width: calc(100% - 16px);
+  font-size: clamp(18px, 5.1vw, 22px);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.event-date, .event-time {
+  right: 8px;
+  max-width: calc(100% - 16px);
+  font-size: clamp(16px, 4.3vw, 18px);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.ticket-section {
+  min-height: 260px;
+  padding-inline: clamp(7px, 2.3vw, 12px);
+  overflow: visible;
+}
+.ticket-card {
+  /* 実機画像に合わせ、輪郭の暗さと下・右側の落ち影を強める。
+     box-shadowではなくdrop-shadowを使い、上下の切り欠きにも影を回り込ませる。 */
+  filter:
+    drop-shadow(0 1.5px 2.5px rgba(0,0,0,0.28))
+    drop-shadow(0 0 1px rgba(0,0,0,0.17));
+}
+.ticket-inner {
+  /* 実機では切り欠き中心がカード幅の約79.5%で、半径も少し小さい。 */
+  -webkit-mask-image:
+    radial-gradient(circle 4.75px at 79.5% 0%, transparent 4.75px, #000 4.85px),
+    radial-gradient(circle 4.75px at 79.5% 100%, transparent 4.75px, #000 4.85px);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 4.75px at 79.5% 0%, transparent 4.75px, #000 4.85px),
+    radial-gradient(circle 4.75px at 79.5% 100%, transparent 4.75px, #000 4.85px);
+  mask-composite: intersect;
+}
+.ticket-header { gap: 10px; }
+.ticket-header span {
+  font-size: clamp(18px, 5.2vw, 22px);
+  white-space: nowrap;
+}
+.ticket-main {
+  padding-left: clamp(9px, 3.8vw, 15px);
+  gap: clamp(7px, 2.5vw, 10px);
+}
+.ticket-type {
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.checkbox-zone {
+  width: clamp(48px, 17vw, 67px);
+}
+.ticket-footer {
+  /* 実機750px画像: カード左端x16→文言左端x126（CSS換算で約55px差）。
+     padding-inline は元の非対称余白を壊すため、上下・左右を個別指定する。 */
+  padding: 14px clamp(13px, 4vw, 15px) 15px clamp(54px, 14.7vw, 58px);
+}
+.ticket-footer span {
+  font-size: clamp(16px, 4.5vw, 19px);
+}
+.bottom-nav-outer {
+  position: sticky;
+  bottom: 0;
+  /* 実機は上端から上方向へ、やや濃い短い影が広がる。 */
+  box-shadow:
+    0 -2px 5px rgba(0,0,0,0.17),
+    0 -1px 1px rgba(0,0,0,0.10);
+}
+
+@media (max-width: 359px) {
+  .header {
+    padding-left: 6px;
+    padding-right: 10px;
+  }
+  .header-logo { width: 52px; }
+  .header-title {
+    margin-left: 4px;
+    font-size: 16px;
+  }
+  .header-icons { gap: 10px; }
+  .header-icons svg {
+    width: 24px;
+    height: 24px;
+  }
+  .hero {
+    /* 極端な狭幅だけは、タイトルと日時の重なりを防ぐ最低高を確保。 */
+    height: max(220px, 64vw);
+    min-height: 220px;
+  }
+  .event-title {
+    top: 74px;
+    font-size: 17px;
+    line-height: 1.3;
+  }
+  .event-date, .event-time {
+    font-size: 15px;
+    gap: 5px;
+  }
+  .event-date { bottom: 36px; }
+  .event-date img, .event-time img {
+    width: 16px;
+    height: 16px;
+  }
+  .ticket-section { padding-top: 25px; }
+  .ticket-header span { font-size: 17px; }
+  .ticket-type { font-size: 16px; }
+  .ticket-number { font-size: 20px; }
+  .avatar-circle {
+    width: 34px;
+    height: 34px;
+    font-size: 11px;
+  }
+  .checkbox-zone { width: 44px; }
+  .nav-next {
+    gap: 4px;
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 620px) {
+  .phone { min-height: 620px; }
+}
 </style>
 </head>
 <body>
@@ -705,29 +877,31 @@ body {
   </div>
 
   <!-- Hero -->
-  <div class="hero hero-theme-cyan" id="hero">
+  <div class="hero hero-theme-orange" id="hero">
     <div class="hero-slide-bg" id="heroSlideBg"></div>
     <div class="ripple-container">
   <div class="ripple-ring"></div>
   <div class="ripple-ring r2"></div>
   <div class="ripple-ring r3"></div>
 </div>
-    <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
-    <div class="wavy-wrap wavy-left"  id="wavyLeft"><div class="wavy-fill"></div></div>
-    <div class="wavy-wrap wavy-right" id="wavyRight"><div class="wavy-fill"></div></div>
-    <div class="slide-overlay" id="slideOverlay">
-      <div class="slide-track" id="slideTrack">
-        <div class="slide-thumb" id="slideThumb"></div>
+    <div class="swipe-image-layer" id="swipeImageLayer">
+      <div class="circles-rainbow-bg" id="circlesRainbowBg"></div>
+      <div class="wavy-wrap wavy-left"  id="wavyLeft"><div class="wavy-fill"></div></div>
+      <div class="wavy-wrap wavy-right" id="wavyRight"><div class="wavy-fill"></div></div>
+      <div class="slide-overlay" id="slideOverlay">
+        <div class="slide-track" id="slideTrack">
+          <div class="slide-thumb" id="slideThumb"></div>
+        </div>
       </div>
     </div>
-    <div class="event-title" id="eventTitle">ＨＯＴ　ＳＴＡＧＥ／Ｄブロック／１４：００～１５：２５</div>
+    <div class="event-title" id="eventTitle">ＳＭＩＬＥ　ＧＡＲＤＥＮ／Ｉブロック／１９：４５～２０：４５</div>
     <div class="event-date">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABaklEQVR4nO2YwUrDQBCGp1rEF9A3KILe6kHwYvAZrA/g1ZMHz12vFdG7gl5tX0KPPkBF8Fk0/kP2MBm6W1PdzRT6wU+yTDfzZ4dNM+mWZUmW6JIx5hnqQN9ifApNGubgOc/qmgsbys5SGOpBF9AOtK5iDjpvmGNLjV+gL+gDuoM+Y4YO/ITNwMV36e8c+eMxdAYV0FvI0E3ETAo41y10GDLUp/zsy4E2tEH5qeU0v8uiD60cmF8hiYNeE+UtoOGsQKxk71Q9k1KwHQosVckke9BAjJ04H/g4M6X624D83ZiqVW9kKLTLOKGsuUzErxcn/nwiDHXUnOkihlrnt4b47q4CsbGPkzgypZojY/9iKHRBWSaNo4aYLlnrfxuM6RUywapk8zBtaFWyWUhD+jMI92BForyyv5PfDmqGOMBdZM+PHeUh2rmOoHvKy0gOtKEHqvruS6p6+7VEJrga3NtfQ08xQ8yjVyuY22U/MnI2z453UdgAAAAASUVORK5CYII=" alt="">
-      <span id="eventDate">2026.07.31(Fri)</span>
+      <span id="eventDate">2026.08.02(Sun)</span>
     </div>
     <div class="event-time">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADVElEQVR4nN2Y62uOYRzHf2qJd+YQNtrG9g+oIW8o5VBi5gVS1CJEjpuMySTnw8iLLaccI+WwUiReSGHKK29Y2MiZeDeHYb7ffr+nXc+95z48z547a9/6tOu672u/+3tfx9/95HR0dEhPUo70MPUKQ33ABLAQjAFDwDDwB3wGn8AjcB48iNNQP7AErAOFPm0KjFKwArwEdeAY+JlNQ+yN/aK9kY5GgSOgBlSCc9kwVAu2eq59BVfBFdFeeCM6lHmgBMwCc0CutR8KzoLRYFt3DNWDZU79NdgFToD2FO2fGddFh6wCbAYj7H6t6HxbnomhPR4zjWAe+CHR9As0gFOiE7zcrjPmN7ApHUN8sw1O/TBYI5mJL8Dhq3NiVIPn4GQUQ1xNe506u39twAMnGa2iveEnrk5O8plW5whcAN/DDK0Eg6z8FswFQecLzXDS3w0xxBjzQTPIB4NF59LBMEPrnTK7tk2ypzaLecbqVWGGxouuAqpFdKlmW4zJpV9kzxoHmvwMlTvlRolPjJ2Y4OVBhkqd8s0YDd1wDI11b3gN5TvllhgNtTrlPPdGkKEPEp/c2O4zuxj661OOIgYeDt5HaOvGTtpSvIYYrMTK7MrmCMGfiKYWxdZ+u+iu3B7wP+4wJb2A19A7x1BhREOXwWPRc2uq6A68WHTTu+PzPwWeZ/oaYqY30crTwC2JplZrz7SD+Q9f6ja4JrqaXnnaT3fKTe4NryEGqLLybNHzJx1xf+FL8CTn4VxmRqeAe067Ms8zfQ0xB+aYcnIWggWiqUM64mG5RfRcOwpGSnJuzZhFVuazHgYZ4oxnqnrA6pwPzAwzOc9egMmih+hvu9ZfkjOJfRKyyihmidUWiEuZKUKZBJ/4Qfpif5niXpLOFcbrDd7GqQyxyzeC41Zn/uImV5mKMWY49Urx5EJ+hijmzMVmjFotOqfSSWETYsJ3UXQFJrQTnE7VOCin5rANkM68mgGfgt3in+S76itdk3yq3q6lVNhXBzc3jnWN1Qss4A7R5cpNkZM3sbklPoM455hW5EqyaqWbn0EUlzATcq6IxIfiQNG3r5Bo+ii6v4UmfFG/XDneXCFLwSrp3EfCFNunNMUVccjgjw2L5D//2ODqvpF19Yrfh2LVPyOFuWHqXxW2AAAAAElFTkSuQmCC" alt="">
-      開場 <span id="eventOpenTime">13:40</span> 開演 <span id="eventStartTime">14:00</span>
+      開場 <span id="eventOpenTime">19:25</span> 開演 <span id="eventStartTime">19:45</span>
     </div>
   </div>
 
@@ -757,10 +931,10 @@ body {
           <div class="ticket-info">
             <div class="ticket-type" id="ticketType1">マシマシチケット</div>
             <div class="ticket-type secondary" id="ticketType2" style="display:none;"></div>
-            <div class="ticket-number" id="ticketNumber">整理番号59番</div>
+            <div class="ticket-number" id="ticketNumber">整理番号87番</div>
             <div class="ticket-detail" id="ticketDetail">
-              老川　克輝様<br>
-              08045823980<br>
+              小幡　重夫様<br>
+              07027969785<br>
               2,500円<span class="entry-time" id="entryTimeRow" style="display:none;"></span>
             </div>
           </div>
@@ -895,6 +1069,11 @@ initSlide();
 
 /* ========== SLIDE TO CHECK-IN ========== */
 let slideInited = false;
+// APK: Awake() で minSwipeLength = Screen.dpi * 0.2。
+// Android のCSS座標へ換算すると概ね 0.2 * 160 = 32 CSS px。
+const MIN_SWIPE_LENGTH_CSS_PX = 32;
+// APKの4方向判定で使われる内積しきい値（約±25度）。
+const DIRECTION_DOT_THRESHOLD = 0.906;
 
 /* ── lerp helper ── */
 function lerpColor(r1,g1,b1, r2,g2,b2, t){
@@ -925,49 +1104,53 @@ function applyWavyBasePositions(){
 }
 
 /* ── Update hero visuals based on slide progress 0→1 ── */
-function updateSlideVisuals(progress){
-  const hero = document.getElementById('hero');
-  const wl   = document.getElementById('wavyLeft');
-  const wr   = document.getElementById('wavyRight');
-  const rb   = document.getElementById('circlesRainbowBg');
-  const heroW = hero.offsetWidth;
-  const baseL = getWavyBaseLeftPx();
-  const baseR = getWavyBaseRightPx();
-  const maxShift = heroW * 0.40;
-  wl.style.left = (baseL + progress * maxShift) + 'px';
-  wr.style.left = (baseR + progress * maxShift) + 'px';
-  rb.style.left = (progress * maxShift) + 'px';
+function updateSlideVisuals(progress, directionSign = 1){
+  const layer = document.getElementById('swipeImageLayer');
+  const axisDistance = progress * MIN_SWIPE_LENGTH_CSS_PX * directionSign;
+  layer.style.transition = 'none';
+  layer.style.transform = selectedSwipeDirection === 'vertical'
+    ? `translate3d(0,${axisDistance}px,0)`
+    : `translate3d(${axisDistance}px,0,0)`;
 }
 
 /* ── Reset hero visuals (slide released without completing) ── */
 function resetSlideVisuals(){
+  const layer = document.getElementById('swipeImageLayer');
   const wl = document.getElementById('wavyLeft');
   const wr = document.getElementById('wavyRight');
   const rb2 = document.getElementById('circlesRainbowBg');
-  wl.style.transition = 'left 0.28s';
-  wr.style.transition = 'left 0.28s';
-  rb2.style.transition = 'left 0.28s';
+  // APK TouchUpDetected(): 元の anchoredPosition へ 0.2 秒で戻す。
+  layer.style.transition = 'transform 0.2s ease-out';
+  layer.style.transform = 'translate3d(0,0,0)';
   applyWavyBasePositions();
   rb2.style.left = '0px';
+  wl.style.transform = '';
+  wr.style.transform = '';
+  rb2.style.transform = '';
   setTimeout(()=>{
-    wl.style.transition = 'none';
-    wr.style.transition = 'none';
-    rb2.style.transition = 'none';
-  }, 300);
+    layer.style.transition = 'none';
+  }, 220);
 }
 
 function initSlide(){
   if(slideInited) return;
   slideInited = true;
   const hero = document.getElementById('hero');
-  let dragging = false, startX = 0, curProgress = 0;
-  const COMPLETE_THRESHOLD = 0.55;
+  let dragging = false, startX = 0, startY = 0;
+  let currentDx = 0, currentDy = 0, curProgress = 0;
 
   function getClientX(e){
     if(e.touches && e.touches.length >= 2){
       return (e.touches[0].clientX + e.touches[1].clientX) / 2;
     }
     return e.touches ? e.touches[0].clientX : e.clientX;
+  }
+
+  function getClientY(e){
+    if(e.touches && e.touches.length >= 2){
+      return (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    }
+    return e.touches ? e.touches[0].clientY : e.clientY;
   }
 
   function onStart(e){
@@ -977,6 +1160,9 @@ function initSlide(){
     e.preventDefault();
     dragging = true;
     startX = getClientX(e);
+    startY = getClientY(e);
+    currentDx = 0;
+    currentDy = 0;
     curProgress = 0;
     const wl2 = document.getElementById('wavyLeft');
     const wr2 = document.getElementById('wavyRight');
@@ -993,16 +1179,41 @@ function initSlide(){
     if(!dragging) return;
     if(e.touches && e.touches.length < 2){ return; }
     e.preventDefault();
-    const dx = getClientX(e) - startX;
-    const heroW = hero.offsetWidth;
-    curProgress = Math.max(0, Math.min(1, dx / (heroW * 0.78)));
-    updateSlideVisuals(curProgress);
-    if(curProgress >= COMPLETE_THRESHOLD) doCheckIn();
+    currentDx = getClientX(e) - startX;
+    currentDy = getClientY(e) - startY;
+    const axisDistance = selectedSwipeDirection === 'vertical' ? currentDy : currentDx;
+    // APK OnTouchPosition(): SwipeImageRTだけを選択軸のタッチ量へ直接追従させる。
+    curProgress = Math.abs(axisDistance) / MIN_SWIPE_LENGTH_CSS_PX;
+    updateSlideVisuals(curProgress, Math.sign(axisDistance) || 1);
   }
   function onEnd(){
     if(!dragging) return;
     dragging = false;
-    if(curProgress < COMPLETE_THRESHOLD){
+    const length = Math.hypot(currentDx, currentDy);
+    const axisDot = length > 0
+      ? Math.abs(selectedSwipeDirection === 'vertical' ? currentDy : currentDx) / length
+      : 0;
+    const completed = length >= MIN_SWIPE_LENGTH_CSS_PX && axisDot > DIRECTION_DOT_THRESHOLD;
+
+    if(completed){
+      const axisDistance = selectedSwipeDirection === 'vertical' ? currentDy : currentDx;
+      const directionSign = Math.sign(axisDistance) || 1;
+      const layer = document.getElementById('swipeImageLayer');
+      // APK: LeanTween.moveLocalX/Y(..., 0.5f)。方向により +800 / -1500。
+      // UnityのY軸は上が正、CSSのY軸は下が正なので縦だけ符号を変換する。
+      const unityTarget = selectedSwipeDirection === 'vertical'
+        ? (directionSign < 0 ? -800 : 1500)
+        : (directionSign > 0 ? 800 : -1500);
+      const canvasScale = hero.offsetWidth / 720;
+      const target = unityTarget * canvasScale;
+      layer.style.transition = 'transform 0.5s cubic-bezier(.4,0,.2,1)';
+      if(selectedSwipeDirection === 'vertical'){
+        layer.style.transform = `translate3d(0,${target}px,0)`;
+      }else{
+        layer.style.transform = `translate3d(${target}px,0,0)`;
+      }
+      setTimeout(doCheckIn, 500);
+    }else{
       resetSlideVisuals();
       const wl3 = document.getElementById('wavyLeft');
       const wr3 = document.getElementById('wavyRight');
@@ -1011,8 +1222,10 @@ function initSlide(){
       wavyWhiteFill = false;
       animateWavy();   // ピンクの波線で静止描画し直す
       document.getElementById('circlesRainbowBg').style.display = 'none';
-      }
+    }
     curProgress = 0;
+    currentDx = 0;
+    currentDy = 0;
   }
 
   hero.addEventListener('touchstart', onStart, {passive:false});
@@ -1193,11 +1406,18 @@ function closeSettingsIfOutside(e){
   if(e.target === document.getElementById('settingsOverlay')) closeSettings();
 }
 
-let selectedHeroTheme = 'cyan';
+let selectedHeroTheme = 'orange';
+let selectedSwipeDirection = 'horizontal';
+
+function selectSwipeDirection(direction){
+  selectedSwipeDirection = direction === 'vertical' ? 'vertical' : 'horizontal';
+  const select = document.getElementById('s_swipeDirection');
+  if(select) select.value = selectedSwipeDirection;
+}
 
 function selectHeroTheme(theme){
   if(theme === 'gray') theme = 'white';
-  if(!['original','cyan','orange','white'].includes(theme)) theme = 'cyan';
+  if(!['original','cyan','orange','white','red','green'].includes(theme)) theme = 'cyan';
   selectedHeroTheme = theme;
   document.querySelectorAll('.hero-theme-option').forEach(button => {
     const active = button.dataset.theme === theme;
@@ -1209,9 +1429,9 @@ function selectHeroTheme(theme){
 
 function applyHeroTheme(theme){
   const hero = document.getElementById('hero');
-  hero.classList.remove('hero-theme-original','hero-theme-cyan','hero-theme-orange','hero-theme-white','hero-theme-gray');
+  hero.classList.remove('hero-theme-original','hero-theme-cyan','hero-theme-orange','hero-theme-white','hero-theme-red','hero-theme-green','hero-theme-gray');
   hero.classList.add('hero-theme-' + theme);
-  localStorage.setItem('lawtikeHeroTheme', theme);
+  localStorage.setItem('lawtikeHeroThemeV2', theme);
 }
 
 function adjustSeatNumber(amount){
@@ -1229,6 +1449,40 @@ function adjustSeatNumber(amount){
   document.getElementById('ticketNumber').textContent = input.value;
 }
 
+let seatNumberRepeatDelay = null;
+let seatNumberRepeatTimer = null;
+let seatNumberLongPressed = false;
+
+function stopSeatNumberRepeat(){
+  clearTimeout(seatNumberRepeatDelay);
+  clearInterval(seatNumberRepeatTimer);
+  seatNumberRepeatDelay = null;
+  seatNumberRepeatTimer = null;
+}
+
+function startSeatNumberRepeat(event, amount){
+  stopSeatNumberRepeat();
+  seatNumberLongPressed = false;
+
+  if(event.currentTarget.setPointerCapture && event.pointerId !== undefined){
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  seatNumberRepeatDelay = setTimeout(() => {
+    seatNumberLongPressed = true;
+    adjustSeatNumber(amount);
+    seatNumberRepeatTimer = setInterval(() => adjustSeatNumber(amount), 85);
+  }, 450);
+}
+
+function handleSeatNumberClick(amount){
+  if(seatNumberLongPressed){
+    seatNumberLongPressed = false;
+    return;
+  }
+  adjustSeatNumber(amount);
+}
+
 function toFullWidth(value){
   return value
     .replace(/[!-~]/g, char => String.fromCharCode(char.charCodeAt(0) + 0xFEE0))
@@ -1243,6 +1497,9 @@ function normalizeEventTitle(){
 
 function applySettings(){
   applyHeroTheme(selectedHeroTheme);
+  selectSwipeDirection(document.getElementById('s_swipeDirection').value);
+  localStorage.setItem('lawtikeSwipeDirectionV1', selectedSwipeDirection);
+  resetSlideVisuals();
 
   // イベント名
   const titleEl = document.getElementById('eventTitle');
@@ -1287,9 +1544,12 @@ function applySettings(){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('lawtikeHeroTheme');
-  selectHeroTheme(['original','cyan','orange','white','gray'].includes(savedTheme) ? savedTheme : 'cyan');
+  const savedTheme = localStorage.getItem('lawtikeHeroThemeV2');
+  selectHeroTheme(['original','cyan','orange','white','red','green','gray'].includes(savedTheme) ? savedTheme : 'orange');
   applyHeroTheme(selectedHeroTheme);
+
+  const savedSwipeDirection = localStorage.getItem('lawtikeSwipeDirectionV1');
+  selectSwipeDirection(savedSwipeDirection === 'vertical' ? 'vertical' : 'horizontal');
 
   const ticketType2El = document.getElementById('ticketType2');
   if (ticketType2El && !ticketType2El.textContent.trim()) {
@@ -1327,23 +1587,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:7px;">背景色</label>
     <div class="hero-theme-picker" role="group" aria-label="ヒーロー背景色">
-      <button type="button" class="hero-theme-option" data-theme="original" aria-pressed="false" onclick="selectHeroTheme('original')" style="--theme-swatch:linear-gradient(135deg,#039fdc,#0068ad);">元の青</button>
-      <button type="button" class="hero-theme-option is-active" data-theme="cyan" aria-pressed="true" onclick="selectHeroTheme('cyan')" style="--theme-swatch:#00e4e4;">水色</button>
-      <button type="button" class="hero-theme-option" data-theme="orange" aria-pressed="false" onclick="selectHeroTheme('orange')" style="--theme-swatch:#ff9800;">オレンジ</button>
+      <button type="button" class="hero-theme-option" data-theme="original" aria-pressed="false" onclick="selectHeroTheme('original')" style="--theme-swatch:linear-gradient(135deg,#039fdc,#0068ad);">青</button>
+      <button type="button" class="hero-theme-option" data-theme="cyan" aria-pressed="false" onclick="selectHeroTheme('cyan')" style="--theme-swatch:#00e4e4;">水色</button>
+      <button type="button" class="hero-theme-option is-active" data-theme="orange" aria-pressed="true" onclick="selectHeroTheme('orange')" style="--theme-swatch:#ff9800;">オレンジ</button>
       <button type="button" class="hero-theme-option" data-theme="white" aria-pressed="false" onclick="selectHeroTheme('white')" style="--theme-swatch:#d8d8d8;">白</button>
+      <button type="button" class="hero-theme-option" data-theme="red" aria-pressed="false" onclick="selectHeroTheme('red')" style="--theme-swatch:#fe748d;">赤</button>
+      <button type="button" class="hero-theme-option" data-theme="green" aria-pressed="false" onclick="selectHeroTheme('green')" style="--theme-swatch:#00ff00;">緑</button>
     </div>
 
+    <label for="s_swipeDirection" style="display:block;font-size:13px;color:#555;margin-bottom:4px;">入場方式</label>
+    <select id="s_swipeDirection" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;background:#fff;">
+      <option value="horizontal">横フリック（左右）</option>
+      <option value="vertical">縦フリック（上下）</option>
+    </select>
+
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">イベント名</label>
-    <input id="s_title" type="text" value="ＨＯＴ　ＳＴＡＧＥ／Ｄブロック／１４：００～１５：２５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_title" type="text" value="ＳＭＩＬＥ　ＧＡＲＤＥＮ／Ｉブロック／１９：４５～２０：４５" onblur="normalizeEventTitle()" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">日付</label>
-    <input id="s_date" type="date" value="2026-07-31" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_date" type="date" value="2026-08-02" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">開場時刻</label>
-    <input id="s_open" type="time" value="13:40" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_open" type="time" value="19:25" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">開演時刻</label>
-    <input id="s_start" type="time" value="14:00" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:24px;box-sizing:border-box;">
+    <input id="s_start" type="time" value="19:45" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:24px;box-sizing:border-box;">
 
     <!-- Section: チケット -->
     <div style="font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">チケット</div>
@@ -1355,17 +1623,17 @@ document.addEventListener('DOMContentLoaded', () => {
     <input id="s_type2" type="text" value="" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">席番号</label>
-    <input id="s_num" type="text" value="整理番号59番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_num" type="text" value="整理番号87番" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
     <div class="seat-number-stepper" role="group" aria-label="席番号の増減">
-      <button type="button" onclick="adjustSeatNumber(-1)" aria-label="席番号を1減らす">− 1</button>
-      <button type="button" onclick="adjustSeatNumber(1)" aria-label="席番号を1増やす">＋ 1</button>
+      <button type="button" onclick="handleSeatNumberClick(-1)" onpointerdown="startSeatNumberRepeat(event,-1)" onpointerup="stopSeatNumberRepeat()" onpointercancel="stopSeatNumberRepeat()" onlostpointercapture="stopSeatNumberRepeat()" oncontextmenu="event.preventDefault()" aria-label="席番号を1減らす。長押しで連続して減らす">− 1</button>
+      <button type="button" onclick="handleSeatNumberClick(1)" onpointerdown="startSeatNumberRepeat(event,1)" onpointerup="stopSeatNumberRepeat()" onpointercancel="stopSeatNumberRepeat()" onlostpointercapture="stopSeatNumberRepeat()" oncontextmenu="event.preventDefault()" aria-label="席番号を1増やす。長押しで連続して増やす">＋ 1</button>
     </div>
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">名前</label>
-    <input id="s_name" type="text" value="老川　克輝" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_name" type="text" value="小幡　重夫" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">電話番号</label>
-    <input id="s_tel" type="tel" value="08045823980" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
+    <input id="s_tel" type="tel" value="07027969785" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:14px;box-sizing:border-box;">
 
     <label style="display:block;font-size:13px;color:#555;margin-bottom:4px;">金額</label>
     <input id="s_price" type="text" value="2,500円" style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:28px;box-sizing:border-box;">
