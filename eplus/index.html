@@ -978,6 +978,57 @@
             .ticket-number { color: #007aff; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 14px; line-height: 17px; font-weight: 400; }
         }
 
+        /* Final iPhone runtime sizing verified against the screen recording. */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
+            background: #e85298;
+        }
+        .home-content {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+        .horizontal-cards, .trend-row { touch-action: pan-x pan-y; }
+        .nav-bar {
+            min-height: 72px;
+            padding: 5px 8px max(7px, env(safe-area-inset-bottom, 7px));
+            border-radius: 22px 22px 0 0;
+        }
+        .nav-bar div {
+            align-content: center;
+            border-radius: 28px;
+            font-size: 10px;
+        }
+        .nav-icon { width: 46px; height: 34px; }
+        .nav-icon img { width: 26px; height: 26px; }
+        .nav-bar div.is-active { background: #e7e8e8; }
+        .nav-bar div.is-active .nav-icon { background: transparent; }
+        .nav-badge { top: -1px; right: 0; min-width: 16px; height: 16px; font-size: 10px; line-height: 16px; }
+        .ticket-tools { bottom: calc(73px + env(safe-area-inset-bottom, 0px)); }
+        .ticket-tabs { height: 34px; min-height: 34px; }
+        .ticket-tab { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 10px; font-weight: 400; }
+        .ticket-list { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+        .ticket-action {
+            min-height: 36px;
+            margin-top: 0;
+            padding: 6px 8px;
+            font-family: "Hiragino Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            line-height: 1;
+            font-weight: 600;
+        }
+        .ticket-action img { width: 17px; height: 17px; }
+        .ticket-action .action-arrow { width: 8px; height: 13px; }
+        .ticket-visual { background-image: url('新イープラ7_files/ticket-event-hero@3x.jpg'); }
+
     </style>
 </head>
 <body>
