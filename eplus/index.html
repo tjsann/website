@@ -903,25 +903,26 @@
         /* iOS 5.20.0 IPA: EDSDK NIBArchive values. */
         @supports (-webkit-touch-callout: none) {
             #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
-            .prelude-screen, .ticket-list, .detail-content { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+            .prelude-screen, .ticket-list, .detail-content { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-synthesis: none; font-kerning: normal; text-rendering: optimizeLegibility; }
             .ticket-details .ticket-year { font-size: 12px; font-weight: 500; }
             .ticket-date-line strong { font-size: 30px; font-weight: 500; }
             .ticket-event { font-size: 16px; font-weight: 600; }
             .ticket-action { font-family: "Hiragino Sans", sans-serif; font-size: 15px; font-weight: 600; }
-            .event-summary .ticket-year { font-family: "Avenir Next", sans-serif; font-size: 16px; font-weight: 500; }
-            .event-summary .date { font-size: 30px; font-weight: 700; }
+            .event-summary .ticket-year { font-family: "Avenir Next", -apple-system, "Hiragino Sans", sans-serif; font-size: 16px; line-height: 22px; font-weight: 500; letter-spacing: 0; }
+            .event-summary .date { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 30px; line-height: 48px; font-weight: 500; letter-spacing: -0.35px; font-variant-numeric: proportional-nums; }
+            .detail-date-row > b { font-family: "Hiragino Sans", sans-serif; font-size: 12px; line-height: 21px; font-weight: 600; letter-spacing: 0; }
             .detail-times { font-size: 15px; font-weight: 600; }
-            .detail-event-name { font-size: 16px; font-weight: 700; }
+            .detail-event-name { font-family: "Hiragino Sans", sans-serif; font-size: 16px; letter-spacing: -0.18px; font-weight: 600; }
             .detail-event-place { font-size: 12px; font-weight: 400; }
             .ticket-owner-title { min-height: 56px; box-sizing: border-box; align-items: center; padding: 10px 12px; font-family: "Hiragino Sans", sans-serif; font-size: 18px; line-height: 1.2; font-weight: 600; }
             .ticket-owner-title small { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; line-height: 1.2; font-weight: 400; }
             .ticket-info-main { min-height: 93px; padding: 2px 12px; box-sizing: border-box; }
-            .ticket-seat { gap: 12px; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 13px; line-height: 16px; font-weight: 700; }
+            .ticket-seat { gap: 12px; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 13px; line-height: 16px; letter-spacing: -0.08px; font-weight: 600; }
             .ticket-seat img { width: 80px; height: 89px; }
-            .ticket-seat strong { font-size: 15px; line-height: 18px; font-weight: 700; }
+            .ticket-seat strong { font-size: 15px; line-height: 18px; letter-spacing: -0.12px; font-weight: 600; }
             .distribution-wrap { padding: 0 12px 10px; }
             .distribution-button, .distribution-button img { width: 183px; height: 40px; }
-            .ticket-description, .ticket-description2 { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 12px; line-height: 14.333px; font-weight: 500; }
+            .ticket-description, .ticket-description2 { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 12px; line-height: 14.333px; letter-spacing: -0.08px; font-weight: 400; }
             .ticket-back-info { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 12px; line-height: 14.333px; font-weight: 400; }
             .ticket-number { color: #007aff; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; font-size: 14px; line-height: 17px; font-weight: 400; }
         }
