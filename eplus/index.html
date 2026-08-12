@@ -1123,6 +1123,27 @@
             .ticket-collapse { right: 12px; bottom: 12px; width: 28px; height: 28px; }
             .ticket-collapse img { width: 28px; height: 28px; }
         }
+        .home-header { height: 64px; gap: 9px; padding: 0 14px; }
+        .home-menu-icon { width: 22px; height: 22px; margin-left: 3px; }
+        .home-logo { width: 48px; height: 30px; }
+        .home-search { height: 34px; max-width: 270px; flex: 1 1 270px; margin-left: 2px; font-size: 10px; }
+        .home-content { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); background: #fff; }
+        .home-notice-row { min-height: 30px; gap: 14px; }
+        .home-notice-row > img:first-child { width: 15px; height: 15px; }
+        .nav-bar { right: 12px; bottom: max(8px, env(safe-area-inset-bottom, 8px)); left: 12px; min-height: 76px; border-radius: 38px; padding: 5px 6px; box-shadow: 0 0 18px rgba(0,0,0,.12); }
+        .nav-bar div { min-height: 64px; gap: 0; border-radius: 32px; }
+        .nav-bar div.is-active { background: #e5e6e7; }
+        .nav-icon { width: 52px; height: 37px; }
+        .nav-icon img { width: 28px; height: 28px; }
+        .tab-screen-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 12px 12px calc(96px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: #f7f7f7; -webkit-overflow-scrolling: touch; }
+        .tab-screen-header { min-height: 54px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e5e5e5; background: #fff; color: #212121; font-family: "Hiragino Sans", sans-serif; font-size: 17px; font-weight: 600; }
+        .tab-panel { margin-bottom: 12px; padding: 14px; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+        .tab-panel h3 { margin: 0 0 8px; font-size: 14px; }
+        .tab-panel p { margin: 0; color: #555; font-size: 12px; line-height: 1.6; }
+        .notification-row { display: flex; gap: 12px; align-items: flex-start; padding: 14px 4px; border-bottom: 1px solid #eee; }
+        .notification-row img { width: 22px; height: 22px; object-fit: contain; }
+        .favorite-empty { min-height: 280px; display: grid; place-items: center; text-align: center; color: #777; }
+        .favorite-empty img { width: 54px; height: 54px; margin-bottom: 10px; }
 
     </style>
 </head>
@@ -1417,6 +1438,10 @@
             image.src = '新イープラ7_files/ipa-ticket-distribute-do.png';
             image.alt = '同行者へ分配する';
         });
+        const importanceIcon = document.querySelector('.home-notices .home-notice-row:nth-child(1) > img:first-child');
+        const unreadIcon = document.querySelector('.home-notices .home-notice-row:nth-child(2) > img:first-child');
+        if (importanceIcon) importanceIcon.src = '新イープラ7_files/ipa-home-notice-important.png';
+        if (unreadIcon) unreadIcon.src = '新イープラ7_files/ipa-home-notice-unread.png';
         const pickupTrack = document.querySelector('.horizontal-cards');
         if (pickupTrack) {
             pickupTrack.innerHTML = `
@@ -1443,13 +1468,27 @@
             next.addEventListener('click', () => movePickup(1));
             requestAnimationFrame(() => { pickupTrack.scrollLeft = pickupTrack.clientWidth * .84; });
         }
+        const tabScreensMarkup = `
+          <section id="news-screen" class="prelude-screen"><header class="tab-screen-header">ニュース</header><main class="tab-screen-body"><article class="tab-panel"><h3>イープラスからのお知らせ</h3><p>公演、先行受付、チケットに関する最新情報をお届けします。</p></article><article class="tab-panel"><h3>注目のニュース</h3><p>話題のライブ・舞台・イベント情報を掲載しています。</p></article><article class="tab-panel"><h3>新着情報</h3><p>新しく受付を開始した公演を確認できます。</p></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
+          <section id="favorite-screen" class="prelude-screen"><header class="tab-screen-header">お気に入り</header><main class="tab-screen-body"><div class="tab-panel favorite-empty"><div><img src="新イープラ7_files/ic-tab-favorite-on.svg" alt=""><br>お気に入り登録したアーティストや<br>公演がここに表示されます</div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
+          <section id="notification-screen" class="prelude-screen"><header class="tab-screen-header">通知</header><main class="tab-screen-body"><div class="tab-panel"><div class="notification-row"><img src="新イープラ7_files/ipa-home-notice-important.png" alt=""><p><b>重要なお知らせ</b><br>チケットに関する重要なお知らせを確認してください。</p></div><div class="notification-row"><img src="新イープラ7_files/ipa-home-notice-unread.png" alt=""><p><b>未読の通知があります</b><br>公演 1件・申込み 38件</p></div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>`;
+        preludeLayer.insertAdjacentHTML('beforeend', tabScreensMarkup);
         const splashScreen = document.getElementById('splash-screen');
         const ticketListScreen = document.getElementById('ticket-list-screen');
         const ticketDetailScreen = document.getElementById('ticket-detail-screen');
         function showPreludeScreen(screen) {
             document.querySelectorAll('.prelude-screen').forEach(item => item.classList.remove('is-active'));
             screen.classList.add('is-active');
-            const activeTab = screen.id === 'home-screen' ? 'ホーム' : 'チケット';
+            const activeTabs = {
+                'home-screen': 'ホーム',
+                'news-screen': 'ニュース',
+                'favorite-screen': 'お気に入り',
+                'notification-screen': '通知',
+                'ticket-list-screen': 'チケット',
+                'ticket-detail-screen': 'チケット',
+                'application-history-screen': 'チケット'
+            };
+            const activeTab = activeTabs[screen.id] || 'ホーム';
             document.querySelectorAll('.nav-bar [data-nav]').forEach(item => {
                 const isActive = item.dataset.nav === activeTab;
                 item.classList.toggle('is-active', isActive);
@@ -1474,12 +1513,18 @@
             navButton.innerHTML = `<span class="nav-icon"><img data-nav-icon="${navIcons[label]}" src="新イープラ7_files/ic-tab-${navIcons[label]}.svg" alt="">${badge}</span><span>${label}</span>`;
             navButton.addEventListener('click', () => {
                 if (label === 'ホーム') showPreludeScreen(homeScreen);
+                if (label === 'ニュース') showPreludeScreen(newsScreen);
+                if (label === 'お気に入り') showPreludeScreen(favoriteScreen);
+                if (label === '通知') showPreludeScreen(notificationScreen);
                 if (label === 'チケット') showPreludeScreen(ticketListScreen);
             });
         });
         const homeScreen = document.getElementById('home-screen');
+        const newsScreen = document.getElementById('news-screen');
+        const favoriteScreen = document.getElementById('favorite-screen');
+        const notificationScreen = document.getElementById('notification-screen');
         const applicationHistoryScreen = document.getElementById('application-history-screen');
-        const previewScreen = { '#home': homeScreen, '#history': applicationHistoryScreen, '#tickets': ticketListScreen, '#detail': ticketDetailScreen }[location.hash];
+        const previewScreen = { '#home': homeScreen, '#news': newsScreen, '#favorite': favoriteScreen, '#notification': notificationScreen, '#history': applicationHistoryScreen, '#tickets': ticketListScreen, '#detail': ticketDetailScreen }[location.hash];
         const launchTargetScreen = previewScreen || homeScreen;
         const splashImage = splashScreen.querySelector('img');
         let launchScheduled = false;
