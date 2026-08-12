@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Ticket Display</title>
+    <style>
+        @font-face { font-family: 'SF Pro Text'; src: url('assets/sf-pro-text-regular.ttf') format('truetype'); font-weight: 400; }
+        @font-face { font-family: 'SF Pro Text'; src: url('assets/sf-pro-text-medium.ttf') format('truetype'); font-weight: 500; }
+        @font-face { font-family: 'SF Pro Text'; src: url('assets/sf-pro-text-semibold.ttf') format('truetype'); font-weight: 600; }
+        @font-face { font-family: 'SF Pro Text'; src: url('assets/sf-pro-text-bold.ttf') format('truetype'); font-weight: 700; }
+        @font-face { font-family: 'Eplus Japanese'; src: url('assets/noto-sans-jp-variable.ttf') format('truetype'); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+        body {
+            margin: 0;
+            width: 100%;
+            min-width: 0;
+            font-family: 'SF Pro Text', 'Eplus Japanese', sans-serif;
+            background-color: #e9e9e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #smartphone-container {
+            width: 100%;
+            max-width: 450px;
+            min-width: 0;
+            flex: 0 1 450px;
+            height: 100vh;
+            height: 100dvh;
+            background-color: #f8f8f8;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+
+        /* App launch and ticket-selection flow shown before the gate screen. */
+        #prelude-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            overflow: hidden;
+            background: #fff;
+            transition: opacity .28s ease;
+            --app-pink: #e85298;
+            --app-primary: #f16baa;
+            --app-text: #2f3032;
+        }
+        #prelude-layer.is-complete { opacity: 0; pointer-events: none; }
+        .prelude-screen {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            background: #fff;
+            color: var(--app-text);
+            font-family: "Roboto", "Noto Sans JP", sans-serif;
+            min-width: 0;
+        }
+        .prelude-screen.is-active { display: flex; animation: prelude-in .22s ease-out; }
+        @keyframes prelude-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+        .splash-screen { display: block; background: #e85298; }
+        .splash-screen img { position: absolute; top: 33%; left: 50%; width: 40%; aspect-ratio: 1; object-fit: contain; transform: translate(-50%, -50%); }
+        .app-header {
+            height: 56px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: var(--app-primary);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
+        .app-header-item { position: relative; z-index: 0; flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; cursor: pointer; }
+        .app-header-item img { width: 18px; height: 18px; object-fit: contain; }
+        .app-header-item.active { color: var(--app-primary); }
+        .app-header-item.active::before { content: ''; position: absolute; z-index: -1; top: 50%; right: 10px; left: 10px; height: 24px; border-radius: 12px; background: #fff; transform: translateY(-50%); }
+        .ticket-tabs { display: flex; height: 42px; border-bottom: 1px solid #ddd; }
+        .ticket-tab { flex: 1; display: grid; place-items: center; font-size: 11px; color: #aaa; }
+        .ticket-tab.active { color: #222; font-weight: 700; border-bottom: 3px solid var(--app-pink); }
+        .ticket-list { overflow: auto; padding: 14px 8px 90px; background: #f8f8f8; font-family: 'SF Pro Text', sans-serif; }
+        .ticket-filter { margin: 0 0 12px; padding: 7px; border-radius: 8px; background: var(--app-primary); color: #fff; text-align: center; font-size: 12px; font-weight: 700; }
+        .ticket-card { overflow: hidden; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,.25); background: #fff; cursor: pointer; }
+        .ticket-visual { height: 145px; display: flex; align-items: flex-start; padding: 8px; box-sizing: border-box; background: linear-gradient(135deg, #422c4a 0%, #8b6681 48%, #cfc3d0 100%); color: #fff; font-weight: 900; letter-spacing: -1px; }
+        .ticket-visual { background: url('assets/ticket-event-hero.jpg') center / cover no-repeat; text-shadow: 0 1px 2px rgba(0,0,0,.75); }
+        .ticket-visual::after { content: ''; position: absolute; }
+        .ticket-details { padding: 7px 9px 0; font-size: 10px; line-height: 1.45; }
+        .ticket-details strong { display: block; font-size: 16px; line-height: 1.25; }
+        .ticket-action { display: flex; align-items: center; gap: 8px; margin-top: 5px; min-height: 50px; box-sizing: border-box; padding: 10px; background: var(--app-primary); color: #fff; font-size: 15px; font-weight: 700; }
+        .ticket-action img { width: 19px; height: 19px; object-fit: contain; }
+        .ticket-action .action-arrow { width: 9px; height: 14px; margin-left: auto; }
+        .ticket-tools { position: absolute; right: 8px; bottom: 66px; left: 8px; z-index: 4; display: flex; gap: 8px; justify-content: space-between; }
+        .ticket-tool { flex: 1; min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 5px 8px; border: 1px solid #eee; border-radius: 18px; background: rgba(255,255,255,.96); color: var(--app-primary); font: 600 10px 'SF Pro Text', sans-serif; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+        .ticket-tool img { width: 15px; height: 15px; object-fit: contain; }
+        .nav-bar { position: absolute; right: 0; bottom: 0; left: 0; display: flex; justify-content: space-around; min-height: 59px; padding: 5px 3px 6px; box-sizing: border-box; background: rgba(255,255,255,.98); box-shadow: 0 -2px 8px rgba(0,0,0,.08); font-size: 8px; font-weight: 500; text-align: center; }
+        .nav-bar div { display: grid; flex: 1 1 0; justify-items: center; gap: 1px; min-width: 0; cursor: pointer; color: #1f2525; }
+        .nav-icon { position: relative; display: grid; width: 38px; height: 28px; place-items: center; line-height: 1; }
+        .nav-icon img { width: 21px; height: 21px; display: block; }
+        .nav-bar div.is-active .nav-icon { border-radius: 18px; background: #f0f1f1; }
+        .nav-badge { position: absolute; top: -2px; right: 1px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; border-radius: 8px; background: #e63857; color: #fff; font-size: 9px; line-height: 13px; }
+        .home-header { height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 15px; border-bottom: 1px solid #eee; color: #212121; }
+        .home-menu-icon { width: 24px; height: 24px; }
+        .home-logo { width: 42px; height: 26px; }
+        .home-search { position: relative; flex: 1; min-width: 0; height: 32px; display: flex; align-items: center; padding: 0 34px 0 30px; box-sizing: border-box; border-radius: 16px; background: #f3f3f3; color: rgba(117,117,117,.5); font-size: 10px; font-weight: 700; }
+        .home-search-leading { position: absolute; left: 14px; width: 12px; height: 12px; opacity: .5; }
+        .home-search-button { position: absolute; right: 3px; width: 26px; height: 26px; }
+        .home-content { overflow: auto; padding: 0 8px 76px; color: #212121; }
+        .home-banner { position: relative; padding: 7px; background: var(--app-pink); color: #fff; text-align: center; font-size: 12px; font-weight: 700; }
+        .home-banner img { position: absolute; top: 50%; right: 12px; width: 8px; height: 12px; transform: translateY(-50%); }
+        .home-notices { padding: 6px 12px; border-bottom: 1px solid #eee; color: #212121; font-size: 11px; line-height: 1.9; }
+        .home-notice-row { display: flex; align-items: center; gap: 13px; min-height: 24px; }
+        .home-notice-row img { width: 14px; height: 14px; object-fit: contain; }
+        .home-row-arrow { width: 7px !important; height: 11px !important; margin-left: auto; }
+        .home-heading { margin: 12px 0 7px; font-size: 14px; font-weight: 700; }
+        .pickup-image { width: 100%; height: 98px; object-fit: cover; border-radius: 2px; }
+        .history-row { display: flex; gap: 8px; overflow: hidden; }
+        .history-tile { min-width: 48%; border: 1px solid #eee; font-size: 11px; }
+        .history-blank { height: 74px; display: grid; place-items: center; background: #fafafa; color: #ddd; font-size: 28px; font-weight: 700; }
+        .history-label { padding: 6px; }
+        .trend-row { display: flex; gap: 8px; }
+        .trend-card { flex: 1; font-size: 10px; line-height: 1.4; }
+        .trend-cover { height: 105px; background: linear-gradient(135deg, #66bad0, #e9f6fb 55%, #93b9d2); }
+        .history-screen-content { overflow: auto; padding: 16px 8px 80px; background: #f7f7f7; }
+        .history-switches { display: flex; gap: 8px; margin-bottom: 14px; }
+        .history-switch { flex: 1; padding: 9px; border: 1px solid #ddd; background: #fff; color: #359e9b; text-align: center; font-size: 12px; }
+        .history-switch.active { background: #36aaa7; color: #fff; font-weight: 700; }
+        .application-entry { margin: 0 -8px 9px; padding: 12px 8px; background: #fff; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; color: #555; font-size: 12px; line-height: 1.7; }
+        .application-entry h3 { margin: 0 0 5px; color: #339b99; font-size: 14px; }
+        .application-status { display: flex; margin-top: 8px; border: 1px solid #e5b9ba; }
+        .application-status b { padding: 8px 12px; background: #ed7778; color: #fff; }
+        .application-status span { padding: 8px; color: #d56a6c; }
+        .detail-header { height: 56px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; padding: 0 10px 0 6px; border-bottom: 1px solid #ddd; }
+        .detail-back { width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; }
+        .detail-back img { width: 10px; height: 18px; }
+        .enter-button { width: 170px; height: 36px; border: 0; padding: 0; background: transparent; cursor: pointer; }
+        .enter-button img { width: 170px; height: 36px; display: block; }
+        .detail-scroll { overflow: auto; padding-bottom: 22px; background: #fff; font-family: 'SF Pro Text', sans-serif; }
+        .event-summary { padding: 12px 15px; border-bottom: 1px solid #ddd; font-size: 12px; }
+        .event-summary .date { font-size: 24px; font-weight: 700; }
+        .ticket-owner { margin: 10px 8px 0; overflow: hidden; border-radius: 5px; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+        .ticket-owner-title { display: flex; justify-content: space-between; padding: 8px 10px; background: var(--app-pink); color: #fff; font-weight: 700; font-size: 16px; }
+        .ticket-owner-title small { font-size: 11px; font-weight: 400; }
+        .ticket-owner-content { padding: 10px; background: #fdedf5; font-size: 13px; }
+        .ticket-seat { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+        .ticket-seat img { width: 48px; height: 48px; object-fit: contain; }
+        .ticket-seat strong { font-size: 17px; }
+        .unused-badge { display: inline-block; margin-top: 5px; padding: 2px 8px; border: 1px solid var(--app-pink); border-radius: 2px; color: var(--app-pink); background: #fff; }
+        .detail-notes { margin: 9px 10px; font-size: 10px; line-height: 1.45; color: #333; }
+
+        /* iPhone reference flow */
+        .prelude-screen { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Hiragino Sans', 'Noto Sans JP', sans-serif; }
+        .home-header { height: 60px; gap: 7px; padding: 0 9px; box-sizing: border-box; }
+        .home-menu-icon { width: 16px; height: 16px; }
+        .home-search { margin-left: 2px; padding-right: 31px; white-space: nowrap; overflow: hidden; }
+        .home-search-button { right: 2px; width: 28px; height: 28px; }
+        .home-content { padding: 0 6px 76px; }
+        .home-banner { margin: 7px 0 0; border-radius: 2px; }
+        .home-notices { padding: 7px 10px; }
+        .home-heading { margin: 13px 0 8px; font-size: 14px; }
+        .horizontal-cards { display: flex; gap: 7px; overflow: hidden; }
+        .pickup-card { flex: 0 0 92%; }
+        .pickup-image { height: 118px; }
+        .history-tile { position: relative; flex: 0 0 48%; background: #fff; }
+        .history-tile img { width: 100%; height: 92px; object-fit: cover; display: block; }
+        .history-remove { position: absolute; right: 3px; bottom: 4px; color: #aaa; font-size: 14px; }
+        .trend-row { overflow: hidden; }
+        .trend-card { min-width: 47%; flex: 0 0 47%; }
+        .trend-cover { height: 113px; background-position: center; background-size: cover; }
+        .trend-meta { color: #68797c; font-size: 9px; margin-top: 4px; }
+        .sale-tag { display: inline-block; float: right; margin-top: 4px; padding: 2px 6px; border: 1px solid #ef4f89; color: #ef4f89; font-size: 8px; }
+        .nav-bar { min-height: 63px; padding-top: 5px; border-radius: 18px 18px 0 0; }
+        .nav-bar div { font-size: 8px; }
+        .nav-bar div.is-active .nav-icon { background: #e7e8e8; }
+        .app-header { height: 51px; }
+        .app-header-item { gap: 6px; font-size: 11px; }
+        .app-header-item.active::before { right: 9px; left: 9px; height: 23px; }
+        .app-header-item img { width: 16px; height: 16px; }
+        .ticket-tabs { height: 41px; background: #f6f6f6; }
+        .ticket-tab { color: #c3c3c3; background: #eee; }
+        .ticket-tab.active { color: #222; background: #fff; border-bottom: 0; font-weight: 600; }
+        .ticket-list { padding: 10px 6px 124px; }
+        .ticket-filter { margin-bottom: 8px; padding: 5px; border-radius: 7px; font-size: 10px; }
+        .ticket-section-label { margin: 8px 0; padding: 5px; border-radius: 5px; background: #888; color: #fff; text-align: center; font-size: 10px; font-weight: 700; }
+        .ticket-card { margin-bottom: 8px; border-radius: 6px; }
+        .ticket-visual { position: relative; height: auto; aspect-ratio: 2 / 1; padding: 5px; font-size: 11px; }
+        .ticket-details { padding: 6px 7px 0; color: #272727; font-size: 10px; line-height: 1.22; }
+        .ticket-year { font-size: 9px; }
+        .ticket-date-line { display: flex; align-items: baseline; gap: 4px; }
+        .ticket-date-line strong { display: inline; font-size: 29px; line-height: 1.05; font-weight: 500; }
+        .ticket-date-line small { font-size: 10px; font-weight: 700; }
+        .ticket-event { display: block; margin: 2px 0; font-size: 12px; line-height: 1.15; font-weight: 700; }
+        .ticket-action { min-height: 43px; margin-top: 4px; padding: 8px; font-size: 12px; }
+        .ticket-tools { bottom: 64px; gap: 4px; }
+        .ticket-tool { min-height: 39px; padding: 4px 6px; border-color: #ef4f89; color: #e85298; font-size: 9px; }
+        .history-screen-content { padding: 10px 6px 72px; }
+        .history-switches { gap: 6px; margin-bottom: 10px; }
+        .history-switch { padding: 8px 2px; font-size: 10px; }
+        .application-entry { margin: 0 -6px 8px; padding: 10px 8px; font-size: 10px; line-height: 1.55; }
+        .application-entry h3 { font-size: 12px; line-height: 1.3; }
+        .application-status { align-items: stretch; }
+        .application-status b { display: grid; place-items: center; min-width: 42px; padding: 7px 5px; font-size: 10px; }
+        .application-status span { flex: 1; padding: 7px; font-size: 9px; }
+        .history-detail-button { margin-top: 7px; padding: 5px; background: #ed95bd; color: #fff; text-align: center; }
+        .detail-header { height: 54px; }
+        .detail-scroll { background: #f4f4f4; }
+        .event-summary { margin: 6px; padding: 7px; border: 0; border-radius: 5px; background: #fff; font-size: 10px; line-height: 1.25; }
+        .event-summary .date { font-size: 27px; font-weight: 500; }
+        .ticket-owner { margin: 7px 6px 0; border-radius: 5px; }
+        .ticket-owner-title { padding: 7px 9px; font-size: 14px; }
+        .ticket-owner-content { padding: 9px; background: #f8dce9; }
+        .ticket-seat { align-items: flex-start; gap: 10px; font-size: 11px; line-height: 1.25; }
+        .ticket-seat img { width: 46px; height: 46px; }
+        .ticket-seat strong { font-size: 14px; }
+        .unused-badge { margin-top: 3px; padding: 1px 6px; font-size: 9px; }
+        .distribution-button { display: inline-flex; align-items: center; margin-top: 5px; padding: 3px 7px; border: 1px solid #168dcc; border-radius: 3px; background: #fff; color: #168dcc; font-size: 9px; font-weight: 700; }
+        .ticket-long-notes { margin-top: 7px; padding-top: 6px; border-top: 1px dashed #bfa7b1; font-size: 7.5px; line-height: 1.4; }
+        .ticket-number { position: relative; margin: 7px -9px -9px; padding: 7px 30px 7px 9px; background: #f6d6e5; color: #168dcc; font-size: 9px; }
+        .ticket-collapse { position: absolute; right: 10px; bottom: 10px; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
+        .ticket-collapse img { display: block; width: 20px; height: 20px; }
+        .ticket-owner.secondary .ticket-owner-title { background: #aab3b9; }
+        .ticket-owner.secondary .ticket-owner-content { min-height: 55px; background: #e7eaec; }
+        .detail-header { position: relative; height: 49px; min-height: 49px; padding: 0 8px 0 5px; background: #fff; }
+        .detail-back { width: 28px; height: 36px; padding: 0; border: 0; border-radius: 0; background: transparent; appearance: none; }
+        .detail-back img { width: 8px; height: 16px; }
+        .enter-button, .enter-button img { width: 136px; height: 29px; }
+        .detail-more { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+        .detail-more img { display: block; width: 30px; height: 30px; }
+        .event-summary { position: relative; margin: 10px 7px; padding: 10px 50px 15px 10px; font-size: 10px; line-height: 1.3; }
+        .ticket-owner { margin: 6px 6px 0; box-shadow: 0 1px 4px rgba(0,0,0,.22); }
+        .ticket-owner-title { padding: 8px 10px; font-size: 15px; }
+        .ticket-owner-content { padding: 10px 11px; }
+        .ticket-seat { gap: 15px; font-size: 12px; line-height: 1.28; }
+        .ticket-seat img { width: 68px; height: 68px; }
+        .ticket-seat strong { font-size: 16px; }
+        .distribution-button { width: 120px; height: 29px; margin: 7px 0 6px; padding: 0; border: 0; background: transparent; }
+        .distribution-button img { width: 120px; height: 29px; display: block; }
+        .ticket-long-notes { min-height: 350px; margin-top: 0; padding: 9px 30px 0 0; font-size: 8.5px; line-height: 1.48; color: #444; }
+        .ticket-number { margin: 8px -11px -10px; padding: 8px 32px 8px 10px; font-size: 10px; }
+        .ticket-owner.secondary .ticket-owner-content { min-height: 112px; }
+
+        /* Typography mapped from APK textSize/fontFamily resources. */
+        #prelude-layer { color: #212121; }
+        .app-header-item { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 12px; font-weight: 700; }
+        .ticket-tab { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 11px; font-weight: 400; }
+        .ticket-tab.active { font-weight: 600; }
+        .ticket-filter, .ticket-section-label { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 11px; font-weight: 600; }
+        .ticket-details { color: #212121; font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 12px; line-height: 1.3; }
+        .ticket-year { font-size: 12px; font-weight: 700; }
+        .ticket-date-line strong { font-size: 30px; font-weight: 400; }
+        .ticket-date-line small { font-size: 12px; font-weight: 700; }
+        .ticket-event { font-size: 16px; line-height: 1.25; font-weight: 700; }
+        .ticket-action { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 15px; font-weight: 700; }
+        .ticket-tool { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 11px; font-weight: 700; }
+        .detail-scroll { color: #212121; font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; }
+        .event-summary { font-size: 12px; line-height: 1.35; }
+        .event-summary .ticket-year { font-size: 12px; }
+        .event-summary .date { font-size: 30px; font-weight: 400; }
+        .event-summary b { font-size: 12px; font-weight: 700; }
+        .ticket-owner-title { font-family: 'SF Pro Text', -apple-system, 'Hiragino Sans', sans-serif; font-size: 20px; font-weight: 700; }
+        .ticket-owner-title small { font-size: 12px; font-weight: 400; }
+        .ticket-seat { color: #212121; font-size: 15px; line-height: 1.25; }
+        .ticket-seat strong { font-size: 18px; font-weight: 700; }
+        .ticket-long-notes { min-height: 440px; color: #424242; font-size: 12px; line-height: 1.42; font-weight: 400; }
+        .ticket-number { color: #007fff; font-size: 14px; font-weight: 400; }
+        .history-screen-content { color: #424242; font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; }
+        .history-switch { font-family: inherit; font-size: 11px; font-weight: 400; }
+        .application-entry { font-size: 11px; }
+        .application-entry h3 { font-size: 14px; font-weight: 600; }
+        .application-status b, .application-status span { font-size: 11px; }
+        .home-header, .home-content, .nav-bar { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; }
+        .home-notices { color: #424242; }
+        .home-notice-row { font-size: 12px; font-weight: 400; }
+        .home-heading { color: #212121; font-size: 14px; font-weight: 700; }
+
+        /* APK: edsdk_view_smart_ticket_detail_header/detail_cell */
+        .event-summary { position: relative; width: calc(100% - 14px); margin: 10px 7px; padding: 10px 50px 15px 10px; box-sizing: border-box; border-radius: 8px; background: #f7f7f7; box-shadow: 0 1px 2px rgba(0,0,0,.18); }
+        .event-summary .ticket-year { font-size: 16px; font-weight: 700; }
+        .detail-date-row { display: flex; align-items: flex-end; gap: 3px; margin-top: 8px; }
+        .detail-times { display: grid; gap: 1px; margin: 0 0 1px 8px; font-size: 16px; font-weight: 700; line-height: 1.05; }
+        .detail-event-name { display: block; margin-top: 8px; font-size: 16px; line-height: 1.25; font-weight: 700; }
+        .detail-event-name, .ticket-long-notes { overflow-wrap: anywhere; }
+        .detail-event-place { display: block; margin-top: 2px; font-size: 12px; }
+        .ticket-owner { margin: 0 7px 10px; overflow: visible; border-radius: 0; background: transparent; box-shadow: none; }
+        .ticket-owner-title { padding: 10px; border-radius: 8px 8px 0 0; background: #e85298; font-size: 20px; }
+        .ticket-owner-content { position: relative; padding: 0; background: transparent; }
+        .ticket-info-main { padding: 10px 10px 10px 12px; background: #fbebf3; }
+        .ticket-seat { align-items: flex-start; gap: 20px; color: #212121; font-size: 15px; line-height: 1.25; }
+        .ticket-seat img { width: 80px; height: 80px; }
+        .ticket-seat strong { font-size: 18px; font-weight: 700; }
+        .distribution-wrap { padding: 0 12px 10px; background: #fbebf3; }
+        .distribution-button { width: 120px; height: 29px; margin: 0; }
+        .ticket-footer { position: relative; padding-bottom: 10px; border-top: 1px dashed #424242; border-radius: 0 0 8px 8px; background: #f3d2e2; color: #424242; }
+        .ticket-description { min-height: calc(3 * 1.42em); margin: 10px 40px 0 10px; font-size: 12px; line-height: 1.42; font-weight: 400; overflow-wrap: anywhere; }
+        .ticket-expandable { overflow: hidden; max-height: 2000px; opacity: 1; transition: max-height .24s ease, opacity .18s ease; }
+        .ticket-owner.is-collapsed .ticket-expandable { max-height: 0; opacity: 0; }
+        .ticket-description2 { margin: 0 40px 0 10px; font-size: 12px; line-height: 1.42; font-weight: 400; overflow-wrap: anywhere; }
+        .ticket-number-divider { height: 1px; margin: 8px 0 10px; background: #bdbdbd; }
+        .ticket-number { margin: 0 40px 0 10px; padding: 0; border: 0; background: transparent; color: #007fff; font-size: 14px; line-height: 1.4; }
+        .ticket-owner.secondary .ticket-owner-title { background: #aab3b9; }
+        .ticket-owner.secondary .ticket-info-main, .ticket-owner.secondary .distribution-wrap { background: #f1f3f4; }
+        .ticket-back-info { display: block; margin: 2px 10px 0; color: #007fff; font-size: 12px; line-height: 1.4; }
+        .prelude-screen, .home-header, .home-content, .nav-bar, .app-header-item, .ticket-tab, .ticket-list, .ticket-details, .ticket-action, .ticket-tool, .history-screen-content, .detail-scroll, .event-summary, .ticket-owner { font-family: 'SF Pro Text', 'Eplus Japanese', sans-serif; font-kerning: normal; letter-spacing: 0; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+        .ticket-owner-title { font-size: 20px; line-height: 1.2; font-weight: 700; }
+        .ticket-owner-title small { font-size: 12px; line-height: 1.2; font-weight: 400; }
+        .ticket-seat strong { font-size: 18px; line-height: 1.25; font-weight: 700; }
+        .ticket-seat { font-size: 15px; line-height: 1.25; font-weight: 400; }
+        .ticket-description, .ticket-description2, .ticket-back-info { font-size: 12px; line-height: 1.42; font-weight: 400; }
+        .ticket-number { font-size: 14px; line-height: 1.4; font-weight: 400; }
+
+        /* Final APK dp mapping: one CSS pixel represents one Android dp. */
+        .detail-header { height: 56px; min-height: 56px; padding: 0 10px 0 6px; }
+        .detail-back { width: 36px; height: 36px; padding: 11px 14px; box-sizing: border-box; }
+        .detail-back img { width: 8px; height: 14px; }
+        .enter-button, .enter-button img { width: 170px; height: 36px; }
+        .event-summary { margin: 10px 7px; padding: 10px 50px 15px 10px; border-radius: 8px; }
+        .detail-date-row .date { font-size: 30px; }
+        .detail-date-row > b { color: #e63857; font-size: 12px; }
+        .ticket-owner { margin: 0 7px 10px; }
+        .ticket-owner-title { padding: 10px; border-radius: 8px 8px 0 0; }
+        .ticket-info-main { padding: 10px 10px 10px 12px; }
+        .distribution-wrap { padding: 0 12px 10px; }
+        .ticket-collapse { right: 10px; bottom: 10px; width: 20px; height: 20px; }
+
+        @media (max-width: 360px) {
+            .app-header-item { font-size: 11px; }
+            .home-search { padding-left: 27px; font-size: 9px; }
+            .ticket-tool { padding-inline: 3px; font-size: 9px; }
+        }
+
+        @media (max-width: 450px) {
+            #smartphone-container { width: 100vw; max-width: none; flex-basis: 100vw; border-radius: 0; }
+        }
+
+        @media (min-width: 451px) {
+            body { padding: 16px 0; box-sizing: border-box; }
+            #smartphone-container { height: calc(100dvh - 32px); border-radius: 16px; }
+        }
+
+        /* Authoritative APK typography and color values. */
+        #prelude-layer {
+            --edsdk-black: #212121;
+            --edsdk-description: #424242;
+            --edsdk-link: #007fff;
+            --edsdk-list-pink: #f16baa;
+            --edsdk-detail-pink: #e85298;
+            --edsdk-ticket-main: #fbebf3;
+            --edsdk-ticket-footer: #f3d2e2;
+        }
+        .app-header { background: var(--edsdk-list-pink); }
+        .app-header-item { color: #fff; font-size: 12px; font-weight: 700; }
+        .app-header-item.active { color: var(--edsdk-list-pink); }
+        .ticket-tab { color: #bdbdbd; font-size: 11px; font-weight: 400; }
+        .ticket-tab.active { color: var(--edsdk-black); font-weight: 600; }
+        .ticket-details { color: var(--edsdk-black); font-size: 12px; font-weight: 400; }
+        .ticket-details .ticket-year { color: var(--edsdk-black); font-size: 12px; font-weight: 700; }
+        .ticket-date-line strong { color: var(--edsdk-black); font-size: 30px; font-weight: 400; }
+        .ticket-date-line small { color: var(--edsdk-black); font-size: 12px; font-weight: 700; }
+        .ticket-event { color: var(--edsdk-black); font-size: 16px; font-weight: 700; }
+        .ticket-action { min-height: 50px; background: var(--edsdk-list-pink); color: #fff; font-size: 15px; font-weight: 700; }
+        .event-summary { color: var(--edsdk-black); }
+        .event-summary .ticket-year { color: var(--edsdk-black); font-size: 16px; font-weight: 700; }
+        .event-summary .date { color: var(--edsdk-black); font-size: 30px; font-weight: 400; }
+        .detail-times, .detail-event-name { color: var(--edsdk-black); font-size: 16px; font-weight: 700; }
+        .detail-event-place { color: var(--edsdk-black); font-size: 12px; font-weight: 400; }
+        .ticket-owner-title { background: var(--edsdk-detail-pink); color: #fff; font-size: 20px; font-weight: 700; }
+        .ticket-owner-title small { color: #fff; font-size: 12px; font-weight: 400; }
+        .ticket-info-main, .distribution-wrap { background: var(--edsdk-ticket-main); }
+        .ticket-seat { color: var(--edsdk-black); font-size: 15px; font-weight: 400; }
+        .ticket-seat strong { color: var(--edsdk-black); font-size: 18px; font-weight: 700; }
+        .ticket-footer { background: var(--edsdk-ticket-footer); color: var(--edsdk-description); }
+        .ticket-description, .ticket-description2 { color: var(--edsdk-description); font-size: 12px; font-weight: 400; }
+        .ticket-back-info { color: var(--edsdk-link); font-size: 12px; font-weight: 400; }
+        .ticket-number { color: var(--edsdk-link); font-size: 14px; font-weight: 400; }
+
+        /* --- 初期画面 --- */
+        #initial-screen {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .top-bar .close-btn {
+            font-size: 24px;
+            font-weight: 300;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .timestamp-bar {
+            background-color: #26a69a; /* ティール色 */
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        /* --- 注意書き表示エリア --- */
+        .warning-container {
+            height: 50px;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            gap: 8px;
+            z-index: 11;
+        }
+
+        .warning-badge {
+            background-color: #d32f2f;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 6px;
+            border-radius: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            line-height: 1.2;
+        }
+
+        .warning-text {
+            color: #d32f2f;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.2px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background-color: #fff;
+            padding: 15px 10px; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #swipe-touch-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 15;
+        }
+
+        .date-time-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-date {
+            font-size: 32px; 
+            font-weight: 500;
+            color: #333;
+            line-height: 1;
+        }
+        .main-date span {
+            font-size: 16px;
+        }
+
+        .times {
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+            line-height: 1.3;
+        }
+
+        .stars-block {
+            display: flex;
+            justify-content: center;
+            gap: 130px; 
+            margin-top: 10px;
+        }
+
+        .venue-artist {
+            text-align: left;
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        .venue {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+        .artist {
+            font-size: 11px;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        .ticket-info {
+            background-color: #e85298; 
+            color: white;
+            margin: 20px 0 0 0; 
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 0;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .ticket-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: repeating-linear-gradient(to right, black 0, black 3px, white 3px, white 6px);
+        }
+
+        .checkmark-container {
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 32px;
+            border: solid #e85298; 
+            border-width: 0 8px 8px 0;
+            transform: rotate(45deg);
+        }
+
+        .seat-info {
+            text-align: left;
+        }
+        
+        .name {
+            font-size: 20px;
+            font-weight: 700;
+            flex-basis: 100%;
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            flex-basis: 100%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .ticket-type {
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+        .block-number {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .queue-number {
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .star {
+            width: 50px;
+            height: 50px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 38px;
+            line-height: 1;
+            position: relative;
+        }
+
+        /* --- GATEスライド演出 --- */
+        #swipe-container {
+            position: absolute;
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+            background-color: #d7625c;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .overlay-screen {
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #gate-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #0d47a1;
+        }
+        .gate-content-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .gate-instructions {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            top: 115px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffee58;
+            color: red;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            text-align: center;
+            line-height: 1.4;
+            z-index: 25;
+            width: 280px;
+        }
+        .gate-text {
+            font-size: 50px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #bbdefb;
+        }
+        .gate-arrow {
+            font-size: 30px;
+        }
+        .gate-arrow.yellow {
+            color: #ffee58;
+        }
+        .arrow-left { animation: move-left 1.5s ease-in-out infinite; }
+        .arrow-right { animation: move-right 1.5s ease-in-out infinite; }
+        .gate-arrow.delay {
+            animation-delay: -0.5s;
+        }
+        @keyframes move-left {
+            0%, 100% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+        }
+        @keyframes move-right {
+            0%, 100% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* --- 使用済み画面 --- */
+        #used-screen {
+            opacity: 0;
+            z-index: 30;
+            pointer-events: none;
+        }
+        #used-screen .main-content {
+            background-color: #f8f8f8;
+            padding: 0;
+        }
+
+        .used-used-banner {
+            background-color: #d43b60;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            padding: 71px 20px;
+            margin: 15px 10px 0 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        /* バーと下の名前部分（点線）の間隔を3pxに変更 */
+        .used-ticket-stub {
+            background-color: #f8f8f8;
+            margin: 3px 10px 0 10px; 
+        }
+        
+        .used-name-bar {
+            background-color: #e85298;
+            color: white;
+            padding: 12px 20px;
+            font-size: 20px;
+            font-weight: 700;
+            position: relative;
+        }
+        .used-name-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: repeating-linear-gradient(to right, black 0, black 3px, white 3px, white 6px);
+        }
+        .used-ticket-details {
+            padding: 15px 5px 10px 5px;
+            position: relative;
+        }
+        .used-info-area {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .used-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #b0bec5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .used-icon svg {
+            width: 32px;
+            height: 20px;
+        }
+        .used-icon-label {
+            position: absolute;
+            bottom: -3px;
+            background-color: #ffffff;
+            border: 1px solid #b0bec5;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 0px 4px;
+            color: #90a4ae;
+        }
+
+        .used-ticket-type {
+            font-size: 17px;
+            color: #1a1a1a;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+        
+        .used-time-display {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .used-stamp {
+            position: absolute;
+            top: 15px;
+            right: 5px;
+            color: #e51212;
+            border: 3.5px solid #e51212;
+            border-radius: 8px;
+            padding: 2px 8px;
+            font-size: 24px;
+            font-weight: 900;
+            transform: rotate(-10deg);
+            background-color: transparent;
+            line-height: 1.2;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="smartphone-container">
+        <div id="prelude-layer">
+            <section id="splash-screen" class="prelude-screen splash-screen is-active" aria-label="e+ splash screen">
+                <img src="assets/ic-eplus-framed-logo.svg" alt="e+">
+            </section>
+            <section id="home-screen" class="prelude-screen" aria-label="ホーム">
+                <header class="home-header"><img class="home-menu-icon" src="assets/ic-menu.svg" alt="メニュー"><img class="home-logo" src="assets/ic-eplus-logo.svg" alt="e+"><div class="home-search"><img class="home-search-leading" src="assets/ic-search.svg" alt="">ここから検索をスタート<img class="home-search-button" src="assets/ic-search-pink.svg" alt="検索"></div></header>
+                <main class="home-content">
+                    <div class="home-banner">本日公演の <b>スマチケ</b> はこちら<img src="assets/ic-home-smtk-arrow-forward.svg" alt=""></div>
+                    <div class="home-notices"><div class="home-notice-row"><img src="assets/ic-important-notices.svg" alt="">重要なお知らせ<img class="home-row-arrow" src="assets/ic-home-arrow-right-small.svg" alt=""></div><div class="home-notice-row"><img src="assets/ic-notification-small.svg" alt="">未読の通知があります<img class="home-row-arrow" src="assets/ic-home-arrow-right-small.svg" alt=""></div></div>
+                    <div class="home-heading">PICK UP！</div><img class="pickup-image" src="assets/pickup-banner.jpg" alt="おすすめ公演">
+                    <div class="home-heading">閲覧履歴</div><div class="history-row"><div class="history-tile"><div class="history-blank">e+</div><div class="history-label">YOASOBI</div></div><div class="history-tile"><div class="history-blank">e+</div><div class="history-label">THE IDOLM@STER</div></div></div>
+                    <div class="home-heading">週間トレンド（全国版）</div><div class="trend-row"><div class="trend-card"><div class="trend-cover"></div><b>『時をかける少女』20周年記念</b><br>6/20(土)-8/31(月)</div><div class="trend-card"><div class="trend-cover" style="background:linear-gradient(135deg,#111,#777)"></div><b>BUMP OF CHICKEN</b><br>東京ドーム</div></div>
+                </main>
+                <nav class="nav-bar"><div><span class="nav-icon">⌂</span>ホーム</div><div><span class="nav-icon">▧</span>ニュース</div><div><span class="nav-icon">♡</span>お気に入り</div><div><span class="nav-icon">♧</span>通知</div><div data-show-tickets><span class="nav-icon">▰</span>チケット</div></nav>
+            </section>
+            <section id="application-history-screen" class="prelude-screen" aria-label="申込み履歴">
+                <header class="app-header"><div class="app-header-item active"><img src="assets/ic-list-bulleted-pink.svg" alt="">申込み履歴</div><div class="app-header-item" data-show-tickets><img src="assets/ic-ticket-white.svg" alt="">スマチケ</div><div class="app-header-item">QRチケット</div></header>
+                <main class="history-screen-content"><div class="history-switches"><div class="history-switch active">● すべて</div><div class="history-switch">○ 未入金・未発券</div></div><article class="application-entry"><h3>SHELTER 35th Anniversary “ZeppがSHELTERになりま す” DAY1</h3>2026/11/01(日) 16:30開場 17:30開演<br>Zepp Diver City(Tokyo)（東京都）<div class="application-status"><b>抽選前</b><span>抽選結果発表:2026/08/13 13:00 ～ 2026/08/14 18:00</span></div></article><article class="application-entry"><h3>京 Premium Live 2026</h3>2026/12/12(土)－2026/12/13(日)<br>ロームシアター京都 メインホール（京都府）<div class="application-status"><b>当選</b><span>ダウンロード開始日:2026/12/05 15:00～</span></div></article></main>
+                <nav class="nav-bar"><div><span class="nav-icon">⌂</span>ホーム</div><div><span class="nav-icon">▧</span>ニュース</div><div><span class="nav-icon">♡</span>お気に入り</div><div><span class="nav-icon">♧</span>通知</div><div data-show-tickets><span class="nav-icon">▰</span>チケット</div></nav>
+            </section>
+            <section id="ticket-list-screen" class="prelude-screen" aria-label="チケット一覧">
+                <header class="app-header">
+                    <div class="app-header-item" data-show-history><img src="assets/ic-list-bulleted-white.svg" alt="">申込み履歴</div>
+                    <div class="app-header-item active"><img src="assets/ic-ticket-pink.svg" alt="">スマチケ</div>
+                    <div class="app-header-item">QRチケット</div>
+                </header>
+                <div class="ticket-tabs"><div class="ticket-tab active">未使用</div><div class="ticket-tab">使用済み・無効</div></div>
+                <main class="ticket-list">
+                    <div class="ticket-filter">入場できるチケット</div>
+                    <article class="ticket-card" data-open-ticket>
+                        <div class="ticket-visual">スマチケ</div>
+                        <div class="ticket-details">2024年<strong>6/23 <small>(日) 19:00 開演</small></strong><b>TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会</b><br>鶴岡八幡宮</div>
+                        <div class="ticket-action"><img src="assets/edsdk-ic-main-ticket.svg" alt="">チケットはこちら<img class="action-arrow" src="assets/edsdk-smart-ticket-bundle-arow-right.svg" alt=""></div>
+                    </article>
+                    <article class="ticket-card">
+                        <div class="ticket-visual">スマチケ</div>
+                        <div class="ticket-details">2024年<strong>8/10 <small>(土) 18:00 開演</small></strong><b>NACK5 35th LIVE TOUR JUMP IN！！</b><br>DUO MUSIC EXCHANGE</div>
+                        <div class="ticket-action"><img src="assets/edsdk-ic-main-ticket.svg" alt="">チケットはこちら<img class="action-arrow" src="assets/edsdk-smart-ticket-bundle-arow-right.svg" alt=""></div>
+                    </article>
+                </main>
+                <div class="ticket-tools"><button class="ticket-tool"><img src="assets/edsdk-ic-reload.svg" alt="">チケット更新</button><button class="ticket-tool"><img src="assets/edsdk-ic-help-pink.svg" alt="">よくある質問</button><button class="ticket-tool"><img src="assets/edsdk-ic-change-mode-enable.svg" alt="">機種変更時の<br>チケット移行</button></div>
+                <nav class="nav-bar"><div><span class="nav-icon">⌂</span>ホーム</div><div><span class="nav-icon">▧</span>ニュース</div><div><span class="nav-icon">♡</span>お気に入り</div><div><span class="nav-icon">♧</span>通知</div><div><span class="nav-icon">▰</span>チケット</div></nav>
+            </section>
+            <section id="ticket-detail-screen" class="prelude-screen" aria-label="チケット詳細">
+                <header class="detail-header"><span class="detail-back" data-back-ticket><img src="assets/edsdk-ic-arrow-left.svg" alt="戻る"></span><button class="enter-button" data-enter-gate aria-label="入場画面に進む"><img src="assets/edsdk-btn-goto-gatepass.png" alt="入場画面に進む"></button></header>
+                <main class="detail-scroll">
+                    <div class="event-summary">2024年<br><span class="date">6/23</span> (日)　18:30 開場　19:00 開演<br><b>TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会</b><br>鶴岡八幡宮</div>
+                    <article class="ticket-owner"><div class="ticket-owner-title">久賀 澤也 様 <small>1枚目</small></div><div class="ticket-owner-content"><div class="ticket-seat"><img src="assets/ticket-gatepass.png" alt="チケット"><div><strong>全席指定</strong><br>Aブロック<br>6列 6番<br>￥1,100(税込)<br><span class="unused-badge">未使用</span></div></div></div></article>
+                    <article class="ticket-owner" style="opacity:.55"><div class="ticket-owner-title" style="background:#8e989e">久賀 澤也 様 <small>2枚目</small></div></article>
+                    <p class="detail-notes">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会。注意事項、チケットの利用方法および入場に関する案内が表示されます。入場画面へ進むと、係員の指示に従ってチケットをご利用いただけます。</p>
+                </main>
+            </section>
+        </div>
+        
+        <!-- 画面1: 初期チケット -->
+        <div id="initial-screen" class="screen">
+            <div class="top-bar">
+                <span><span style="color: #e85298; font-weight: bold;">1/1</span> 枚 選択中</span>
+                <span class="close-btn">×</span>
+            </div>
+            <div class="timestamp-bar" id="realtime-clock"></div>
+            
+            <div class="warning-container" id="init-warning">
+                <div class="warning-badge">警告</div>
+                <div class="warning-text">
+                    本画面の録画・複製・加工および偽造画面による入場は、犯罪です。不正行為が確認された場合は、刑事上・民事上を含む法的措置を取る場合があります。
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="swipe-touch-area"></div>
+                <div class="date-time-block">
+                    <div class="main-date">8/11<span>(火)</span></div>
+                    <div class="times">
+                        14:00 開場<br>14:30 開演
+                    </div>
+                </div>
+                <div class="stars-block">
+                    <div class="star">★</div>
+                    <div class="star">★</div>
+                </div>
+                <div class="venue-artist">
+                    <div class="venue">「信州サマーフェスティバル2026」</div>
+                    <div class="artist">長野 CLUB JUNK BOX</div>
+                </div>
+                <div class="ticket-info">
+                    <div class="name">内田 風朗 様</div>
+                    <div class="separator"></div>
+                    <div class="checkmark-container">
+                        <div class="checkmark"></div>
+                    </div>
+                    <div class="seat-info">
+                        <div class="ticket-type">スタンディング</div>
+                        <div class="block-number">整理番号</div>
+                        <div class="queue-number">7番</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gate-instructions">スライドすると使用済になります。<br>使用済チケットは、入場・再発行不可</div>
+        <div id="swipe-container">
+            <div id="gate-screen" class="overlay-screen">
+                <div class="gate-content-wrapper">
+                    <div class="gate-arrow arrow-left yellow delay">◀</div>
+                    <div class="gate-arrow arrow-left yellow">◀</div>
+                    <div class="gate-text">GATE</div>
+                    <div class="gate-arrow arrow-right yellow">▶</div>
+                    <div class="gate-arrow arrow-right yellow delay">▶</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 画面2: 使用済みチケット -->
+        <div id="used-screen" class="screen">
+            <div class="top-bar">
+                <span><span style="color: #d43b60; font-weight: bold;">0/1</span> 枚 選択中</span>
+                <span class="close-btn">×</span>
+            </div>
+            <div class="timestamp-bar" id="used-realtime-clock"></div>
+            
+            <div class="warning-container">
+                <div class="warning-badge">警告</div>
+                <div class="warning-text">
+                    本画面の録画・複製・加工および偽造画面による入場は、犯罪です。不正行為が確認された場合は、刑事上・民事上を含む法的措置を取る場合があります。
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="used-used-banner">
+                    1枚使用しました
+                </div>
+
+                <div class="used-ticket-stub">
+                    <div class="used-name-bar" id="used-name">内田 風朗 様</div>
+                    <div class="used-ticket-details">
+                        <div class="used-info-area">
+                            <div class="used-icon">
+                                <svg viewBox="0 0 32 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0 H24 L25 1 L24 2 L25 3 L24 4 L25 5 V7 C25 7 28 7 28 10 S 25 13 25 13 V15 L24 16 L25 17 L24 18 L25 19 L24 20 H0 Z"/>
+                                </svg>
+                                <div class="used-icon-label">入場済</div>
+                            </div>
+                            <div class="used-ticket-type" id="used-ticket-type">
+                                スタンディング<br>整理番号<br>7番
+                            </div>
+                        </div>
+                        <div class="used-time-display" id="used-time-display">使用日時：2026/08/11(火) 14:00</div>
+                        <div class="used-stamp">使用済</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- リアルタイムクロック ---
+        const clockElement = document.getElementById('realtime-clock');
+        const usedClockElement = document.getElementById('used-realtime-clock');
+        const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+        let clockInterval = setInterval(() => updateClock(clockElement), 10);
+        let usedClockInterval = null;
+
+        function updateClock(element) {
+            if (!element) return;
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const date = now.getDate().toString().padStart(2, '0');
+            const day = dayOfWeek[now.getDay()];
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const centiseconds = Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0');
+            const displayDate = `${year}/${month}/${date}(${day})`;
+            element.textContent = `${displayDate} ${hours}:${minutes}:${seconds}.${centiseconds}`;
+        }
+        updateClock(clockElement);
+
+        // --- フルスクリーン切り替え ---
+        document.querySelectorAll('.close-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (preludeLayer) {
+                    preludeLayer.classList.remove('is-complete');
+                    showPreludeScreen(ticketDetailScreen);
+                    return;
+                }
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.error(`フルスクリーンエラー: ${err.message}`);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        });
+
+        // --- スワイプ動作と画面遷移ロジック ---
+        const swipeTouchArea = document.getElementById('swipe-touch-area');
+        const swipeContainer = document.getElementById('swipe-container');
+        const gateScreen = document.getElementById('gate-screen');
+        const initialScreen = document.getElementById('initial-screen');
+        const usedScreen = document.getElementById('used-screen');
+        const gateInstructions = document.querySelector('.gate-instructions');
+        const warningContainer = document.getElementById('init-warning');
+        
+        let interactionInProgress = false;
+        let startX = 0;
+
+        function setTouchAreaHeight() {
+            const mainContent = document.querySelector('#initial-screen .main-content');
+            const ticketInfo = document.querySelector('#initial-screen .ticket-info');
+            if (mainContent && ticketInfo) {
+                const mainContentRect = mainContent.getBoundingClientRect();
+                const ticketInfoRect = ticketInfo.getBoundingClientRect();
+                swipeTouchArea.style.height = `${ticketInfoRect.top - mainContentRect.top}px`;
+            }
+        }
+        setTouchAreaHeight();
+        window.addEventListener('resize', setTouchAreaHeight);
+
+        function handleInteractionStart(e) {
+            if (e.touches && e.touches.length === 2 && !interactionInProgress) {
+                interactionInProgress = true;
+                
+                const warningRect = warningContainer.getBoundingClientRect();
+                const ticketInfo = document.querySelector('#initial-screen .ticket-info');
+                const topPos = warningRect.bottom;
+                const ticketRect = ticketInfo.getBoundingClientRect();
+                
+                swipeContainer.style.top = `${topPos}px`;
+                swipeContainer.style.left = `${ticketRect.left}px`;
+                swipeContainer.style.width = `${ticketRect.width}px`;
+                swipeContainer.style.height = `${ticketRect.top - topPos - 3}px`;
+                swipeContainer.style.opacity = '1';
+                gateInstructions.style.opacity = '1';
+
+                gateScreen.style.transition = 'none';
+                gateScreen.style.transform = 'translateX(0)';
+
+                startX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                e.preventDefault();
+            }
+        }
+
+        function handleInteractionMove(e) {
+            if (!interactionInProgress || !e.touches || e.touches.length < 2) return;
+            e.preventDefault();
+
+            const currentX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const diffX = currentX - startX;
+
+            gateScreen.style.transform = `translateX(${diffX}px)`;
+
+            if (Math.abs(diffX) > 100) {
+                useTicket();
+            }
+        }
+
+        function handleInteractionEnd(e) {
+            if (interactionInProgress) {
+                swipeContainer.style.opacity = '0';
+                gateInstructions.style.opacity = '0';
+                gateScreen.style.transform = 'translateX(0)';
+            }
+            interactionInProgress = false;
+        }
+
+        function useTicket() {
+            interactionInProgress = false;
+            
+            const finalDiffX = parseFloat(gateScreen.style.transform.match(/-?\d+/)[0] || 0);
+            
+            /* もぎりスライドのアニメーション時間をやや長く(0.5s)変更 */
+            gateScreen.style.transition = 'transform 0.5s ease-in-out';
+            if (finalDiffX > 0) {
+                gateScreen.style.transform = `translateX(${swipeContainer.offsetWidth}px)`;
+            } else {
+                gateScreen.style.transform = `translateX(-${swipeContainer.offsetWidth}px)`;
+            }
+
+            /* アニメーション時間に合わせて待機時間も500msに変更 */
+            setTimeout(() => {
+                swipeContainer.style.opacity = '0';
+                gateInstructions.style.opacity = '0';
+
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const date = now.getDate().toString().padStart(2, '0');
+                const day = dayOfWeek[now.getDay()];
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                
+                const usedTimestamp = `${year}/${month}/${date}(${day}) ${hours}:${minutes}`;
+                document.getElementById('used-time-display').textContent = `使用日時：${usedTimestamp}`;
+
+                initialScreen.style.opacity = '0';
+                initialScreen.style.pointerEvents = 'none';
+
+                usedScreen.style.opacity = '1';
+                usedScreen.style.pointerEvents = 'auto';
+
+                clearInterval(clockInterval);
+                updateClock(usedClockElement);
+                usedClockInterval = setInterval(() => updateClock(usedClockElement), 10);
+            }, 500);
+
+            swipeTouchArea.removeEventListener('touchstart', handleInteractionStart);
+            swipeTouchArea.removeEventListener('touchmove', handleInteractionMove);
+            swipeTouchArea.removeEventListener('touchend', handleInteractionEnd);
+        }
+
+        swipeTouchArea.addEventListener('touchstart', handleInteractionStart, { passive: false });
+        swipeTouchArea.addEventListener('touchmove', handleInteractionMove, { passive: false });
+        swipeTouchArea.addEventListener('touchend', handleInteractionEnd);
+
+        // Launch flow: splash → ticket list → ticket detail → existing gate screen.
+        const preludeLayer = document.getElementById('prelude-layer');
+        const ticketCard = (date, week, time, title, venue, openable) => `<article class="ticket-card" ${openable ? 'data-open-ticket' : ''}><div class="ticket-visual"></div><div class="ticket-details"><span class="ticket-year">2024年</span><div class="ticket-date-line"><strong>${date}</strong><small>${week}　${time}</small></div><span class="ticket-event">${title}</span>${venue}</div><div class="ticket-action"><img src="assets/edsdk-ic-main-ticket.svg" alt="">チケットはこちら<img class="action-arrow" src="assets/edsdk-smart-ticket-bundle-arow-right.svg" alt=""></div></article>`;
+        const ownerTicket = (number, secondary) => { const ticketNumber = secondary ? '1140054981693' : '1140054981692'; return `<article class="ticket-owner ${secondary ? 'secondary' : ''}" data-detail-ticket><div class="ticket-owner-title">久賀 澤也 様 <small>${number}</small></div><div class="ticket-owner-content"><div class="ticket-info-main"><div class="ticket-seat"><img src="assets/edsdk-ticket-unused.png" alt="未使用チケット"><div><strong>全席指定</strong><br>Aブロック<br>6列 ${secondary ? '7' : '6'}番<br>￥1,100(税込)</div></div></div><div class="distribution-wrap"><button class="distribution-button"><img src="assets/edsdk-dist-do.png" alt="同行者へ分配する"></button></div><div class="ticket-footer"><div class="ticket-description">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会<br>登壇者:結川あさき(北条時行役)/矢野妃菜喜(雫役)/中村悠一(諏訪頼重役)<br>お問合せ:ホットスタッフ・プロモーション 050-5211-6077(平日12:00～18:00)</div><div class="ticket-expandable"><div class="ticket-description2">※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行、荒天中止となる場合もございます。中止の場合は公式サイト及び公式Xにてお知らせします。<br>※雨天の際、傘のご利用は他のお客様の視界を妨げる要因となりますので、レインコート等の雨具をご用意ください。<br>※ご来場時にご購入者様の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえお越しください。<br>※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。<br>TVアニメ『逃げ上手の若君』<br>鶴岡八幡宮プレミア上映会<br>＜営利目的の転売禁止＞<br>イープラス 050-3185-6483</div><span class="ticket-back-info">チケット裏面情報 ＞</span><div class="ticket-number-divider"></div><div class="ticket-number">チケット番号：${ticketNumber}</div></div><button class="ticket-collapse" aria-label="詳細を格納" aria-expanded="true"><img src="assets/edsdk-detail-arrow-up.png" alt=""></button></div></div></article>`; };
+        preludeLayer.innerHTML = `
+          <section id="splash-screen" class="prelude-screen splash-screen is-active"><img src="assets/ic-eplus-framed-logo.svg" alt="e+"></section>
+          <section id="home-screen" class="prelude-screen"><header class="home-header"><img class="home-menu-icon" src="assets/ic-menu.svg"><img class="home-logo" src="assets/ic-eplus-logo.svg"><div class="home-search"><img class="home-search-leading" src="assets/ic-search.svg">ここから検索をスタート<img class="home-search-button" src="assets/ic-search-pink.svg"></div></header><main class="home-content"><div class="home-banner">本日公演の <b>スマチケ</b> はこちら <img src="assets/ic-home-smtk-arrow-forward.svg"></div><div class="home-notices"><div class="home-notice-row"><img src="assets/ic-important-notices.svg">重要なお知らせ<img class="home-row-arrow" src="assets/ic-home-arrow-right-small.svg"></div><div class="home-notice-row"><img src="assets/ic-notification-small.svg">未読の通知があります <span style="color:#e85298">（未読 38件）</span><img class="home-row-arrow" src="assets/ic-home-arrow-right-small.svg"></div></div><div class="home-heading">PICK UP！</div><div class="horizontal-cards"><div class="pickup-card"><img class="pickup-image" src="assets/pickup-banner.jpg"></div><div class="pickup-card"><img class="pickup-image" src="assets/ticket-event-hero.jpg"></div></div><div class="home-heading">閲覧履歴</div><div class="history-row"><div class="history-tile"><img src="assets/ticket-thumb.png"><div class="history-label">YOASOBI</div><span class="history-remove">×</span></div><div class="history-tile"><div class="history-blank">e+</div><div class="history-label">THE IDOLM@STER</div><span class="history-remove">×</span></div></div><div class="home-heading">週間トレンド（全国版）</div><div class="trend-row"><div class="trend-card"><div class="trend-cover" style="background-image:url('assets/pickup-banner.jpg')"></div><b>『時をかける少女』20周年記念</b><div class="trend-meta">▣ 2026/6/20(土)～8/31(月)<br>◎ CREATIVE MUSEUM TOKYO</div><span class="sale-tag">受付中</span></div><div class="trend-card"><div class="trend-cover" style="background-image:url('assets/ticket-event-hero.jpg')"></div><b>BUMP OF CHICKEN</b><div class="trend-meta">▣ 2027/2/6(土)～<br>◎ 東京ドーム</div><span class="sale-tag">受付中</span></div></div><div class="home-heading">お気に入り</div><div class="trend-row"><div class="trend-card"><div class="trend-cover" style="background-image:url('assets/ticket-thumb.png')"></div><b>神羅朗読劇「カリギュラ」</b></div><div class="trend-card"><div class="trend-cover" style="background-image:url('assets/pickup-banner.jpg')"></div><b>SAKAMOTO DAYS</b></div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
+          <section id="application-history-screen" class="prelude-screen"><header class="app-header"><div class="app-header-item active"><img src="assets/ic-list-bulleted-pink.svg">申込み履歴</div><div class="app-header-item" data-show-tickets><img src="assets/ic-ticket-white.svg">スマチケ</div><div class="app-header-item">QRチケット</div></header><main class="history-screen-content"><div class="history-switches"><button class="history-switch active">○ すべて</button><button class="history-switch">○ 未入金・未発券</button></div><article class="application-entry"><h3>SHELTER 35th Anniversary “ZeppがSHELTERになります” DAY1</h3>2026/11/01(日) 16:30開場 17:30開演<br>Zepp DiverCity(TOKYO)（東京都）<br><br>プレオーダー受付<div class="application-status"><b>抽選前</b><span>抽選結果発表：2026/08/13 13:00 ～ 2026/08/14 18:00</span></div><div class="history-detail-button">詳細は当選確定後ご確認頂けます</div></article><article class="application-entry"><h3>京 Premium Live 2026</h3>2026/12/12(土) ～ 2026/12/13(日)<br>ロームシアター京都 メインホール（京都府）<div class="application-status"><b>当選</b><span>ダウンロード開始日：2026/12/05 15:00～</span></div><div class="history-detail-button">詳細</div></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
+          <section id="ticket-list-screen" class="prelude-screen"><header class="app-header"><div class="app-header-item" data-show-history><img src="assets/ic-list-bulleted-white.svg">申込み履歴</div><div class="app-header-item active"><img src="assets/ic-ticket-pink.svg">スマチケ</div><div class="app-header-item">QRチケット</div></header><div class="ticket-tabs"><div class="ticket-tab active">未使用</div><div class="ticket-tab">使用済み・無効</div></div><main class="ticket-list"><div class="ticket-filter">入場できるチケット</div>${ticketCard('6/23','(日)','19:00 開演','TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会','鶴岡八幡宮',true)}${ticketCard('7/15','(月)','17:30 開演','梅棒ふちかー THOMARI KUSUNOKI SUMMER LIVE 2024','日比谷公園大音楽堂',false)}<div class="ticket-section-label">開催前の公演チケット</div>${ticketCard('8/10','(土)','18:00 開演','NACK5 35th LIVE TOUR JUMP IN！！','DUO MUSIC EXCHANGE',false)}</main><div class="ticket-tools"><button class="ticket-tool"><img src="assets/edsdk-ic-reload.svg">チケット更新</button><button class="ticket-tool"><img src="assets/edsdk-ic-help-pink.svg">よくある質問</button><button class="ticket-tool"><img src="assets/edsdk-ic-change-mode-enable.svg">機種変更時の<br>チケット移行</button></div><nav class="nav-bar" data-bottom-nav></nav></section>
+          <section id="ticket-detail-screen" class="prelude-screen"><header class="detail-header"><button class="detail-back" data-back-ticket><img src="assets/edsdk-ic-arrow-left.svg"></button><button class="enter-button" data-enter-gate><img id="gatepass-button-image" src="assets/edsdk_btn_goto_gatepass_14.png"></button></header><main class="detail-scroll"><div class="event-summary"><button class="detail-more" aria-label="その他のメニュー"><img src="assets/edsdk-smart-ticket-menu.png" alt=""></button><span class="ticket-year">2024年</span><div class="detail-date-row"><span class="date">6/23</span><b>(日)</b><span class="detail-times"><span>18:30 開場</span><span>19:00 開演</span></span></div><span class="detail-event-name">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会</span><span class="detail-event-place">鶴岡八幡宮</span></div>${ownerTicket('1枚目',false)}${ownerTicket('2枚目',true)}</main></section>`;
+        const splashScreen = document.getElementById('splash-screen');
+        const ticketListScreen = document.getElementById('ticket-list-screen');
+        const ticketDetailScreen = document.getElementById('ticket-detail-screen');
+        function showPreludeScreen(screen) {
+            document.querySelectorAll('.prelude-screen').forEach(item => item.classList.remove('is-active'));
+            screen.classList.add('is-active');
+            const activeTab = screen.id === 'home-screen' ? 'ホーム' : 'チケット';
+            document.querySelectorAll('.nav-bar [data-nav]').forEach(item => {
+                const isActive = item.dataset.nav === activeTab;
+                item.classList.toggle('is-active', isActive);
+                const icon = item.querySelector('[data-nav-icon]');
+                if (icon) icon.src = `assets/ic-tab-${icon.dataset.navIcon}${isActive ? '-on' : ''}.svg`;
+            });
+        }
+        const navIcons = {
+            'ホーム': 'home',
+            'ニュース': 'news',
+            'お気に入り': 'favorite',
+            '通知': 'infomation',
+            'チケット': 'ticket'
+        };
+        document.querySelectorAll('[data-bottom-nav]').forEach(nav => {
+            nav.innerHTML = Object.keys(navIcons).map(label => `<div>${label}</div>`).join('');
+        });
+        document.querySelectorAll('.nav-bar div').forEach(navButton => {
+            const label = Object.keys(navIcons).find(name => navButton.textContent.includes(name));
+            navButton.dataset.nav = label;
+            const badge = label === '通知' ? '<span class="nav-badge">39</span>' : label === 'チケット' ? '<span class="nav-badge">3</span>' : '';
+            navButton.innerHTML = `<span class="nav-icon"><img data-nav-icon="${navIcons[label]}" src="assets/ic-tab-${navIcons[label]}.svg" alt="">${badge}</span><span>${label}</span>`;
+            navButton.addEventListener('click', () => {
+                if (label === 'ホーム') showPreludeScreen(homeScreen);
+                if (label === 'チケット') showPreludeScreen(ticketListScreen);
+            });
+        });
+        const homeScreen = document.getElementById('home-screen');
+        const applicationHistoryScreen = document.getElementById('application-history-screen');
+        const previewScreen = { '#home': homeScreen, '#history': applicationHistoryScreen, '#tickets': ticketListScreen, '#detail': ticketDetailScreen }[location.hash];
+        window.setTimeout(() => showPreludeScreen(previewScreen || homeScreen), location.hash ? 0 : 1400);
+        document.querySelectorAll('[data-show-tickets]').forEach(item => item.addEventListener('click', () => showPreludeScreen(ticketListScreen)));
+        document.querySelectorAll('[data-show-history]').forEach(item => item.addEventListener('click', () => showPreludeScreen(applicationHistoryScreen)));
+        document.querySelector('[data-open-ticket]').addEventListener('click', () => showPreludeScreen(ticketDetailScreen));
+        document.querySelector('[data-back-ticket]').addEventListener('click', () => showPreludeScreen(ticketListScreen));
+        document.querySelectorAll('.ticket-collapse').forEach(button => {
+            button.addEventListener('click', () => {
+                const ticket = button.closest('[data-detail-ticket]');
+                const collapsed = ticket.classList.toggle('is-collapsed');
+                button.setAttribute('aria-expanded', String(!collapsed));
+                button.setAttribute('aria-label', collapsed ? '詳細を表示' : '詳細を格納');
+                button.querySelector('img').src = collapsed ? 'assets/edsdk-detail-arrow-down.png' : 'assets/edsdk-detail-arrow-up.png';
+            });
+        });
+        const gatepassFrames = [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+        const gatepassDurations = [1000, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 500];
+        let gatepassFrameIndex = 0;
+        function animateGatepassButton() {
+            const image = document.getElementById('gatepass-button-image');
+            image.src = `assets/edsdk_btn_goto_gatepass_${String(gatepassFrames[gatepassFrameIndex]).padStart(2, '0')}.png`;
+            const delay = gatepassDurations[gatepassFrameIndex];
+            gatepassFrameIndex = (gatepassFrameIndex + 1) % gatepassFrames.length;
+            window.setTimeout(animateGatepassButton, delay);
+        }
+        animateGatepassButton();
+        document.querySelector('[data-enter-gate]').addEventListener('click', () => {
+            preludeLayer.classList.add('is-complete');
+        });
+
+    </script>
+
+</body>
+</html>
