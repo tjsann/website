@@ -6,11 +6,12 @@
     <meta name="theme-color" content="#e85298">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="イープラス">
     <link rel="apple-touch-icon" sizes="180x180" href="新イープラ7_files/eplus-app-icon-180.png">
     <link rel="icon" type="image/png" sizes="192x192" href="新イープラ7_files/eplus-app-icon-192.png">
     <link rel="manifest" href="新イープラ7_files/manifest.webmanifest">
+    <link rel="preload" as="image" href="新イープラ7_files/ios-loading-logo.png" type="image/png">
     <title>Ticket Display</title>
     <style>
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -49,6 +50,48 @@
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+
+        /* iOS Home Screen web app: draw below the overlaid status bar. */
+        @media (display-mode: standalone) {
+            html, body {
+                width: 100%;
+                height: 100%;
+                min-height: 100%;
+                background: #fff;
+                overflow: hidden;
+            }
+            body { display: block; }
+            #smartphone-container {
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                max-width: none;
+                height: 100%;
+                min-height: -webkit-fill-available;
+                box-shadow: none;
+            }
+            .prelude-screen:not(.splash-screen) {
+                box-sizing: border-box;
+                padding-top: env(safe-area-inset-top, 0px);
+            }
+            #ticket-list-screen,
+            #application-history-screen {
+                background: var(--app-primary);
+            }
+            #home-screen,
+            #ticket-detail-screen {
+                background: #fff;
+            }
+            .splash-screen {
+                inset: 0;
+                padding: 0;
+            }
+            #initial-screen,
+            #used-screen {
+                box-sizing: border-box;
+                padding-top: env(safe-area-inset-top, 0px);
+            }
         }
 
         .screen {
@@ -1254,7 +1297,21 @@
         const homeScreen = document.getElementById('home-screen');
         const applicationHistoryScreen = document.getElementById('application-history-screen');
         const previewScreen = { '#home': homeScreen, '#history': applicationHistoryScreen, '#tickets': ticketListScreen, '#detail': ticketDetailScreen }[location.hash];
-        window.setTimeout(() => showPreludeScreen(previewScreen || homeScreen), 1400);
+        const launchTargetScreen = previewScreen || homeScreen;
+        const splashImage = splashScreen.querySelector('img');
+        let launchScheduled = false;
+        function scheduleLaunchAfterSplash() {
+            if (launchScheduled) return;
+            launchScheduled = true;
+            window.setTimeout(() => showPreludeScreen(launchTargetScreen), 1400);
+        }
+        if (splashImage.complete && splashImage.naturalWidth > 0) {
+            scheduleLaunchAfterSplash();
+        } else {
+            splashImage.addEventListener('load', scheduleLaunchAfterSplash, { once: true });
+            splashImage.addEventListener('error', scheduleLaunchAfterSplash, { once: true });
+            window.setTimeout(scheduleLaunchAfterSplash, 5000);
+        }
         document.querySelectorAll('[data-show-tickets]').forEach(item => item.addEventListener('click', () => showPreludeScreen(ticketListScreen)));
         document.querySelectorAll('[data-show-history]').forEach(item => item.addEventListener('click', () => showPreludeScreen(applicationHistoryScreen)));
         document.querySelector('[data-open-ticket]').addEventListener('click', () => showPreludeScreen(ticketDetailScreen));
