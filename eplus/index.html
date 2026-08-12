@@ -190,16 +190,20 @@
         .home-banner { margin: 7px 0 0; border-radius: 2px; }
         .home-notices { padding: 7px 10px; }
         .home-heading { margin: 13px 0 8px; font-size: 14px; }
-        .horizontal-cards { display: flex; gap: 7px; overflow: hidden; }
+        .horizontal-cards { display: flex; gap: 7px; overflow-x: auto; overflow-y: hidden; padding: 0 14px 2px; margin: 0 -6px; scroll-snap-type: x proximity; scroll-padding-left: 14px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; touch-action: pan-x; }
+        .horizontal-cards::-webkit-scrollbar { display: none; }
         .pickup-card { flex: 0 0 92%; }
+        .pickup-card { scroll-snap-align: start; }
         .pickup-image { height: 118px; }
         .history-tile { position: relative; flex: 0 0 48%; background: #fff; }
         .history-tile > img { width: 100%; height: 92px; object-fit: cover; display: block; }
         .history-tile .history-blank { height: 92px; }
         .history-tile .history-blank img { width: 58px; height: auto; }
         .history-remove { position: absolute; right: 3px; bottom: 4px; color: #aaa; font-size: 14px; }
-        .trend-row { overflow: hidden; }
+        .trend-row { overflow-x: auto; overflow-y: hidden; padding: 0 14px 4px; margin: 0 -6px; scroll-snap-type: x proximity; scroll-padding-left: 14px; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; touch-action: pan-x; }
+        .trend-row::-webkit-scrollbar { display: none; }
         .trend-card { min-width: 47%; flex: 0 0 47%; }
+        .trend-card { scroll-snap-align: start; }
         .trend-cover { height: 113px; background-position: center; background-size: cover; }
         .trend-meta { color: #68797c; font-size: 9px; margin-top: 4px; }
         .sale-tag { display: block; width: max-content; margin-top: 4px; margin-left: auto; padding: 2px 6px; border: 1px solid #ef4f89; color: #ef4f89; font-size: 8px; }
