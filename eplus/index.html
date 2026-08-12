@@ -13,8 +13,13 @@
     <link rel="manifest" href="新イープラ7_files/manifest.webmanifest">
     <link rel="preload" as="image" href="新イープラ7_files/ios-loading-logo.png" type="image/png">
     <title>Ticket Display</title>
+    <script>
+        if (window.navigator.standalone === true) {
+            document.documentElement.classList.add('ios-standalone');
+        }
+    </script>
     <style>
-        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        html { background: #e85298; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-regular.ttf') format('truetype'); font-weight: 400; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-medium.ttf') format('truetype'); font-weight: 500; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-semibold.ttf') format('truetype'); font-weight: 600; }
@@ -92,6 +97,44 @@
                 box-sizing: border-box;
                 padding-top: env(safe-area-inset-top, 0px);
             }
+        }
+
+        html.ios-standalone,
+        html.ios-standalone body {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            min-height: -webkit-fill-available;
+            margin: 0;
+            background: #e85298;
+            overflow: hidden;
+        }
+        html.ios-standalone #smartphone-container,
+        html.ios-standalone #prelude-layer {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            max-width: none;
+            height: 100%;
+            min-height: -webkit-fill-available;
+            margin: 0;
+            box-shadow: none;
+        }
+        html.ios-standalone .prelude-screen:not(.splash-screen),
+        html.ios-standalone #initial-screen,
+        html.ios-standalone #used-screen {
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+        html.ios-standalone .splash-screen {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            min-height: -webkit-fill-available;
+            padding: 0;
+            background: #e85298;
         }
 
         .screen {
@@ -1028,6 +1071,58 @@
         .ticket-action img { width: 17px; height: 17px; }
         .ticket-action .action-arrow { width: 8px; height: 13px; }
         .ticket-visual { background-image: url('新イープラ7_files/ipa-noimage-sptx@3x.jpg'); }
+        .ticket-visual-logo { width: 92px; height: 23px; object-fit: contain; }
+
+        @media (max-width: 600px) {
+            #smartphone-container { max-width: none; flex-basis: 100%; box-shadow: none; }
+        }
+        .home-heading { margin-top: 24px; margin-bottom: 12px; font-size: 16px; font-weight: 600; }
+        .pickup-carousel { position: relative; margin: 0 -6px; }
+        .horizontal-cards { gap: 10px; padding-right: 48px; padding-left: 48px; scroll-padding-left: 48px; }
+        .pickup-card { flex-basis: 82%; }
+        .pickup-image { height: auto; aspect-ratio: 480 / 213; }
+        .pickup-arrow { position: absolute; z-index: 3; top: 50%; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: rgba(45,45,45,.68); color: #fff; font-size: 22px; line-height: 30px; transform: translateY(-50%); }
+        .pickup-arrow.prev { left: 18px; }
+        .pickup-arrow.next { right: 18px; }
+        .history-row { gap: 10px; overflow-x: auto; padding-bottom: 3px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .history-row::-webkit-scrollbar { display: none; }
+        .history-tile { flex-basis: 64%; min-width: 64%; font-size: 13px; }
+        .history-tile .history-blank { height: 170px; }
+        .history-tile .history-blank img { width: 78px; }
+        .history-label { min-height: 42px; box-sizing: border-box; padding: 12px 10px; font-size: 13px; font-weight: 600; }
+        .trend-row { gap: 10px; }
+        .trend-card { min-width: 64%; flex-basis: 64%; font-size: 13px; line-height: 1.45; }
+        .trend-cover { height: 182px; }
+        .trend-meta { margin-top: 7px; font-size: 11px; line-height: 1.5; }
+        .sale-tag { font-size: 10px; }
+
+        .ticket-filter { min-height: 40px; display: grid; place-items: center; box-sizing: border-box; font-size: 13px; }
+        .ticket-card { margin-bottom: 14px; box-shadow: 0 3px 8px rgba(0,0,0,.28); }
+        .ticket-details { padding: 9px 10px 7px; background: #fbe1ee; font-size: 12px; line-height: 1.25; }
+        .ticket-details .ticket-year { font-size: 12px; }
+        .ticket-date-line strong { font-size: 30px; }
+        .ticket-date-line small { font-size: 12px; }
+        .ticket-event { margin: 3px 0; font-size: 16px; line-height: 1.2; }
+        .ticket-action { min-height: 43px; padding: 8px 10px; font-size: 15px; }
+        .ticket-action img { width: 20px; height: 20px; }
+        .ticket-tools { right: 12px; left: 12px; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); gap: 8px; }
+        .ticket-tool { min-height: 44px; padding: 6px 9px; font-size: 10px; }
+
+        @supports (-webkit-touch-callout: none) {
+            .ticket-owner-title { min-height: 60px; padding-right: 16px; padding-left: 16px; }
+            .ticket-info-main { min-height: 98px; padding-right: 16px; padding-left: 16px; }
+            .ticket-seat { gap: 20px; }
+            .distribution-wrap { min-height: 46px; padding: 0 16px 10px; box-sizing: border-box; }
+            .distribution-button { width: 183px; height: 40px; display: flex; align-items: center; justify-content: flex-start; }
+            .distribution-button img { width: 159px; height: 30px; }
+            .ticket-description, .ticket-description2 { margin-right: 48px; margin-left: 12px; font-size: 13px; line-height: 1.42; }
+            .ticket-back-info { margin-left: 12px; font-size: 13px; line-height: 18px; }
+            .ticket-number-divider { margin-top: 10px; margin-bottom: 12px; }
+            .ticket-number { min-height: 24px; margin-right: 48px; margin-left: 12px; font-size: 14px; line-height: 24px; }
+            .ticket-footer { padding-bottom: 14px; }
+            .ticket-collapse { right: 12px; bottom: 12px; width: 28px; height: 28px; }
+            .ticket-collapse img { width: 28px; height: 28px; }
+        }
 
     </style>
 </head>
@@ -1311,6 +1406,43 @@
           <section id="application-history-screen" class="prelude-screen"><header class="app-header"><div class="app-header-item active"><img src="新イープラ7_files/ic-list-bulleted-pink.svg">申込み履歴</div><div class="app-header-item" data-show-tickets><img src="新イープラ7_files/ic-ticket-white.svg">スマチケ</div><div class="app-header-item">QRチケット</div></header><main class="history-screen-content"><div class="history-switches"><button class="history-switch active">○ すべて</button><button class="history-switch">○ 未入金・未発券</button></div><article class="application-entry"><h3>SHELTER 35th Anniversary “ZeppがSHELTERになります” DAY1</h3>2026/11/01(日) 16:30開場 17:30開演<br>Zepp DiverCity(TOKYO)（東京都）<br><br>プレオーダー受付<div class="application-status"><b>抽選前</b><span>抽選結果発表：2026/08/13 13:00 ～ 2026/08/14 18:00</span></div><div class="history-detail-button">詳細は当選確定後ご確認頂けます</div></article><article class="application-entry"><h3>京 Premium Live 2026</h3>2026/12/12(土) ～ 2026/12/13(日)<br>ロームシアター京都 メインホール（京都府）<div class="application-status"><b>当選</b><span>ダウンロード開始日：2026/12/05 15:00～</span></div><div class="history-detail-button">詳細</div></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
           <section id="ticket-list-screen" class="prelude-screen"><header class="app-header"><div class="app-header-item" data-show-history><img src="新イープラ7_files/ic-list-bulleted-white.svg">申込み履歴</div><div class="app-header-item active"><img src="新イープラ7_files/ic-ticket-pink.svg">スマチケ</div><div class="app-header-item">QRチケット</div></header><div class="ticket-tabs"><div class="ticket-tab active">未使用</div><div class="ticket-tab">使用済み・無効</div></div><main class="ticket-list"><div class="ticket-filter">入場できるチケット</div>${ticketCard('6/23','(日)','19:00 開演','TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会','鶴岡八幡宮',true)}${ticketCard('7/15','(月)','17:30 開演','梅棒ふちかー THOMARI KUSUNOKI SUMMER LIVE 2024','日比谷公園大音楽堂',false)}<div class="ticket-section-label">開催前の公演チケット</div>${ticketCard('8/10','(土)','18:00 開演','NACK5 35th LIVE TOUR JUMP IN！！','DUO MUSIC EXCHANGE',false)}</main><div class="ticket-tools"><button class="ticket-tool"><img src="新イープラ7_files/edsdk-ic-reload.svg">チケット更新</button><button class="ticket-tool"><img src="新イープラ7_files/edsdk-ic-help-pink.svg">よくある質問</button><button class="ticket-tool"><img src="新イープラ7_files/edsdk-ic-change-mode-enable.svg">機種変更時の<br>チケット移行</button></div><nav class="nav-bar" data-bottom-nav></nav></section>
           <section id="ticket-detail-screen" class="prelude-screen"><header class="detail-header"><button class="detail-back" data-back-ticket><img src="新イープラ7_files/edsdk-ic-arrow-left.svg"></button><button class="enter-button" data-enter-gate><img id="gatepass-button-image" src="新イープラ7_files/edsdk_btn_goto_gatepass_14.png"></button></header><main class="detail-scroll"><div class="event-summary"><button class="detail-more" aria-label="その他のメニュー"><img src="新イープラ7_files/edsdk-smart-ticket-menu.png" alt=""></button><span class="ticket-year">2024年</span><div class="detail-date-row"><span class="date">6/23</span><b>(日)</b><span class="detail-times"><span>18:30 開場</span><span>19:00 開演</span></span></div><span class="detail-event-name">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会</span><span class="detail-event-place">鶴岡八幡宮</span></div>${ownerTicket('1枚目',false)}${ownerTicket('2枚目',true)}</main></section>`;
+        document.querySelectorAll('.ticket-visual').forEach(visual => {
+            const logo = document.createElement('img');
+            logo.className = 'ticket-visual-logo';
+            logo.src = '新イープラ7_files/ipa-sptx-order-logo.png';
+            logo.alt = 'スマチケ';
+            visual.appendChild(logo);
+        });
+        document.querySelectorAll('.distribution-button img').forEach(image => {
+            image.src = '新イープラ7_files/ipa-ticket-distribute-do.png';
+            image.alt = '同行者へ分配する';
+        });
+        const pickupTrack = document.querySelector('.horizontal-cards');
+        if (pickupTrack) {
+            pickupTrack.innerHTML = `
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-left.jpg" alt=""></div>
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-main-video.jpg" alt=""></div>
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-right.jpg" alt=""></div>`;
+            const carousel = document.createElement('div');
+            carousel.className = 'pickup-carousel';
+            pickupTrack.parentNode.insertBefore(carousel, pickupTrack);
+            carousel.appendChild(pickupTrack);
+            const previous = document.createElement('button');
+            previous.className = 'pickup-arrow prev';
+            previous.type = 'button';
+            previous.setAttribute('aria-label', '前のPICK UP');
+            previous.textContent = '‹';
+            const next = document.createElement('button');
+            next.className = 'pickup-arrow next';
+            next.type = 'button';
+            next.setAttribute('aria-label', '次のPICK UP');
+            next.textContent = '›';
+            carousel.append(previous, next);
+            const movePickup = direction => pickupTrack.scrollBy({ left: direction * pickupTrack.clientWidth * .84, behavior: 'smooth' });
+            previous.addEventListener('click', () => movePickup(-1));
+            next.addEventListener('click', () => movePickup(1));
+            requestAnimationFrame(() => { pickupTrack.scrollLeft = pickupTrack.clientWidth * .84; });
+        }
         const splashScreen = document.getElementById('splash-screen');
         const ticketListScreen = document.getElementById('ticket-list-screen');
         const ticketDetailScreen = document.getElementById('ticket-detail-screen');
