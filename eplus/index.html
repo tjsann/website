@@ -1123,15 +1123,19 @@
             .ticket-collapse { right: 12px; bottom: 12px; width: 28px; height: 28px; }
             .ticket-collapse img { width: 28px; height: 28px; }
         }
-        .home-header { height: 64px; gap: 9px; padding: 0 14px; }
-        .home-menu-icon { width: 22px; height: 22px; margin-left: 3px; }
-        .home-logo { width: 48px; height: 30px; }
-        .home-search { height: 34px; max-width: 270px; flex: 1 1 270px; margin-left: 2px; font-size: 10px; }
+        .home-header { min-height: 72px; height: 72px; gap: 11px; padding: 0 15px 0 17px; box-sizing: border-box; flex-shrink: 0; }
+        .home-menu-icon { width: 26px; height: 26px; margin: 0; object-fit: contain; }
+        .home-logo { width: 54px; height: 34px; object-fit: contain; }
+        .home-search { height: 40px; max-width: none; flex: 1 1 auto; margin: 0; padding: 0 43px 0 34px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+        .home-search-leading { left: 14px; width: 14px; height: 14px; }
+        .home-search-button { right: 3px; width: 34px; height: 34px; }
         .home-content { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); background: #fff; }
         .home-notice-row { min-height: 30px; gap: 14px; }
         .home-notice-row > img:first-child { width: 15px; height: 15px; }
-        .nav-bar { right: 12px; bottom: max(8px, env(safe-area-inset-bottom, 8px)); left: 12px; min-height: 76px; border-radius: 38px; padding: 5px 6px; box-shadow: 0 0 18px rgba(0,0,0,.12); }
+        .nav-bar { right: 12px; bottom: 0; left: 12px; min-height: calc(68px + env(safe-area-inset-bottom, 0px)); border-radius: 34px 34px 0 0; padding: 4px 6px env(safe-area-inset-bottom, 4px); box-shadow: 0 -3px 16px rgba(0,0,0,.12); touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         .nav-bar div { min-height: 64px; gap: 0; border-radius: 32px; }
+        .nav-bar div, .nav-bar img, .nav-bar span { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+        .nav-bar div { pointer-events: auto; }
         .nav-bar div.is-active { background: #e5e6e7; }
         .nav-icon { width: 52px; height: 37px; }
         .nav-icon img { width: 28px; height: 28px; }
@@ -1445,9 +1449,9 @@
         const pickupTrack = document.querySelector('.horizontal-cards');
         if (pickupTrack) {
             pickupTrack.innerHTML = `
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-left.jpg" alt=""></div>
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-main-video.jpg" alt=""></div>
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-right.jpg" alt=""></div>`;
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-stage-banner.png" alt="舞台公演"></div>
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-live-banner.png" alt="ライブ公演"></div>
+                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-exhibition-banner.png" alt="展覧会"></div>`;
             const carousel = document.createElement('div');
             carousel.className = 'pickup-carousel';
             pickupTrack.parentNode.insertBefore(carousel, pickupTrack);
@@ -1468,6 +1472,11 @@
             next.addEventListener('click', () => movePickup(1));
             requestAnimationFrame(() => { pickupTrack.scrollLeft = pickupTrack.clientWidth * .84; });
         }
+        const trendCovers = document.querySelectorAll('.home-content .trend-row .trend-cover');
+        const trendImages = ['event-exhibition-banner.png', 'event-live-banner.png', 'event-stage-banner.png', 'event-live-banner.png'];
+        trendCovers.forEach((cover, index) => {
+            cover.style.backgroundImage = `url('新イープラ7_files/${trendImages[index % trendImages.length]}')`;
+        });
         const tabScreensMarkup = `
           <section id="news-screen" class="prelude-screen"><header class="tab-screen-header">ニュース</header><main class="tab-screen-body"><article class="tab-panel"><h3>イープラスからのお知らせ</h3><p>公演、先行受付、チケットに関する最新情報をお届けします。</p></article><article class="tab-panel"><h3>注目のニュース</h3><p>話題のライブ・舞台・イベント情報を掲載しています。</p></article><article class="tab-panel"><h3>新着情報</h3><p>新しく受付を開始した公演を確認できます。</p></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
           <section id="favorite-screen" class="prelude-screen"><header class="tab-screen-header">お気に入り</header><main class="tab-screen-body"><div class="tab-panel favorite-empty"><div><img src="新イープラ7_files/ic-tab-favorite-on.svg" alt=""><br>お気に入り登録したアーティストや<br>公演がここに表示されます</div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
@@ -1511,7 +1520,24 @@
             navButton.dataset.nav = label;
             const badge = label === '通知' ? '<span class="nav-badge">39</span>' : label === 'チケット' ? '<span class="nav-badge">3</span>' : '';
             navButton.innerHTML = `<span class="nav-icon"><img data-nav-icon="${navIcons[label]}" src="新イープラ7_files/ic-tab-${navIcons[label]}.svg" alt="">${badge}</span><span>${label}</span>`;
-            navButton.addEventListener('click', () => {
+            let navigationTouchStart = null;
+            navButton.addEventListener('touchstart', event => {
+                const touch = event.touches[0];
+                navigationTouchStart = { x: touch.clientX, y: touch.clientY };
+            }, { passive: true });
+            navButton.addEventListener('touchmove', event => {
+                if (!navigationTouchStart) return;
+                const touch = event.touches[0];
+                if (Math.hypot(touch.clientX - navigationTouchStart.x, touch.clientY - navigationTouchStart.y) > 8) navigationTouchStart = null;
+            }, { passive: true });
+            navButton.addEventListener('contextmenu', event => event.preventDefault());
+            navButton.addEventListener('dragstart', event => event.preventDefault());
+            navButton.addEventListener('click', event => {
+                if (event.detail === 0 || navigationTouchStart !== null || !('ontouchstart' in window)) {
+                    navigationTouchStart = null;
+                } else {
+                    return;
+                }
                 if (label === 'ホーム') showPreludeScreen(homeScreen);
                 if (label === 'ニュース') showPreludeScreen(newsScreen);
                 if (label === 'お気に入り') showPreludeScreen(favoriteScreen);
