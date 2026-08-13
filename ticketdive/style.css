@@ -1,0 +1,37 @@
+:root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif; color:#443f3d; }
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:#fff; }
+button { font:inherit; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.header { position:fixed; z-index:20; inset:0 0 auto; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); background:#fff; border-bottom:1px solid #f2eeee; }
+.brand { display:flex; align-items:center; gap:8px; font-size:23px; font-weight:700; letter-spacing:.02em; color:#368dcc; }
+.brand-mark { color:#ef5b66; font-size:34px; line-height:1; transform:rotate(-15deg); }
+.header-actions { display:flex; gap:14px; }
+.icon-button { width:36px; height:44px; padding:0; border:0; background:none; color:#494341; font-size:30px; }
+.menu { font-size:25px; }
+.screen { position:relative; width:min(480px, 100%); min-height:100dvh; margin:0 auto; padding:92px 48px 118px; overflow:hidden; background:#f7c0c6; isolation:isolate; }
+.screen::before { content:"DEMO  DEMO  DEMO\A DEMO  DEMO  DEMO\A DEMO  DEMO  DEMO\A DEMO  DEMO  DEMO"; white-space:pre; position:absolute; inset:15px -20px; z-index:-1; color:rgba(255,255,255,.28); font-size:52px; font-weight:800; line-height:2.5; }
+.demo-ribbon { position:absolute; z-index:5; top:76px; left:50%; width:max-content; max-width:calc(100% - 24px); transform:translateX(-50%); padding:6px 13px; border-radius:999px; background:#24201f; color:#fff; font-size:11px; font-weight:700; letter-spacing:.04em; }
+.visual { position:relative; aspect-ratio:1; overflow:hidden; box-shadow:0 8px 18px rgba(66,32,35,.24); background:#342b5b; }
+.event-backdrop { position:absolute; inset:0; background:radial-gradient(circle at 70% 24%,#ecbf5c 0 9%,transparent 10%),linear-gradient(120deg,#202454,#875175 45%,#25385f 70%,#e02c48); filter:blur(14px); transform:scale(1.08); }
+.qr-placeholder { position:absolute; inset:48px; display:flex; flex-direction:column; align-items:center; justify-content:center; border:16px solid #fff; background:repeating-linear-gradient(45deg,#222 0 8px,#fff 8px 16px); box-shadow:0 4px 14px rgba(0,0,0,.3); }
+.qr-placeholder::before { content:""; position:absolute; inset:22px; background:rgba(255,255,255,.94); }
+.qr-placeholder span,.qr-placeholder small { position:relative; color:#e93747; font-weight:900; text-shadow:0 1px #fff; }
+.qr-placeholder span { font-size:38px; }.qr-placeholder small { font-size:12px; }
+.ticket-card { position:relative; background:#fff; padding:18px 20px 16px; box-shadow:0 8px 18px rgba(66,32,35,.24); }
+.ticket-card h1 { margin:0 0 12px; font-size:20px; color:#35302f; }
+.venue { margin:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:12px; font-weight:600; }
+.schedule { display:flex; align-items:flex-end; gap:15px; margin-top:12px; }
+.date { display:flex; align-items:baseline; gap:7px; padding-right:13px; border-right:1px solid #ddd; }.date strong{font-size:27px}.date span{font-size:16px;font-weight:700}
+.time { display:flex; flex-direction:column; gap:1px; }.time small{font-size:8px;color:#847d7a}.time strong{font-size:15px}
+.perforation { height:1px; margin:16px -20px 12px; border-top:1px dashed #ded9d7; }
+.ticket-card::before,.ticket-card::after { content:""; position:absolute; top:132px; width:22px; height:22px; border-radius:50%; background:#f7c0c6; }.ticket-card::before{left:-11px}.ticket-card::after{right:-11px}
+.holder { display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:center; font-size:11px; }.holder div{display:flex;flex-direction:column;gap:10px}.holder strong{font-size:14px}.holder b{padding:10px 8px;background:#ef3d4d;color:#fff;font-size:22px}
+.action-bar { position:fixed; z-index:20; left:50%; bottom:0; transform:translateX(-50%); width:min(480px,100%); min-height:84px; padding:10px max(16px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); display:grid; grid-template-columns:64px 52px 1fr; gap:8px; align-items:center; background:rgba(255,255,255,.94); backdrop-filter:blur(8px); }
+.minor { display:flex; flex-direction:column; gap:3px; align-items:center; border:0; background:none; font-size:11px; color:#494341; }.minor span{font-size:22px}
+.admit { min-height:57px; border:0; border-radius:999px; background:#ef3d4d; color:white; font-weight:800; font-size:16px; }.admit small{display:block;font-size:10px;margin-top:3px}
+.backdrop { position:fixed; z-index:30; inset:0; background:rgba(0,0,0,.48); }
+.sheet { position:fixed; z-index:31; left:50%; bottom:0; transform:translateX(-50%); width:min(480px,100%); padding:12px 22px calc(18px + env(safe-area-inset-bottom)); border-radius:18px 18px 0 0; background:white; text-align:center; }.sheet h2{font-size:20px}.sheet p{font-size:14px;line-height:1.7}.grabber{width:38px;height:4px;margin:0 auto 12px;border-radius:4px;background:#ccc}.sheet button{width:100%;min-height:50px;border-radius:12px;font-weight:700}.confirm{border:0;background:#ef3d4d;color:#fff}.cancel{margin-top:8px;border:1px solid #ddd;background:#fff;color:#555}
+.entered-panel { position:absolute; z-index:10; inset:68px 0 84px; padding:90px 28px 30px; background:#fff; text-align:center; }.check{width:86px;height:86px;margin:0 auto 26px;border-radius:50%;display:grid;place-items:center;background:#31b67a;color:#fff;font-size:52px}.entered-panel h2{font-size:21px}.entered-panel p{font-size:13px;color:#777}.entered-panel button{margin-top:28px;padding:12px 18px;border:1px solid #bbb;border-radius:10px;background:#fff}
+[hidden] { display:none !important; }
+@media (max-width:420px) { .screen{padding-left:clamp(12px,7vw,28px);padding-right:clamp(12px,7vw,28px)} .qr-placeholder{inset:12.5%}.ticket-card{padding-left:18px;padding-right:18px}.holder{grid-template-columns:1fr 1fr auto}.holder b{font-size:18px}.action-bar{grid-template-columns:58px 48px 1fr;padding-left:10px;padding-right:10px}.admit{font-size:15px} }
+@media (min-width:700px) { .header{padding-inline:calc((100vw - 1160px)/2)} }
