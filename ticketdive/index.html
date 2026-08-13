@@ -20,6 +20,7 @@
     /* 実機では券面が固定バーの直下まで続く。 */
     @media(max-width:600px){.details{min-height:calc(100dvh - 100vw - 7.4rem)!important}}
     .bg-row{font-size:6.4rem!important}
+    .settings-backdrop{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);backdrop-filter:blur(2px)}.settings-panel{position:fixed;z-index:21;top:50%;left:50%;width:min(36rem,calc(100vw - 3.2rem));transform:translate(-50%,-50%);padding:2.4rem 2rem 2rem;border-radius:1.6rem;background:#fff;color:#3f3a39}.settings-panel h2{margin:0 0 2rem;font-size:2rem;font-weight:700}.settings-panel label{display:block;margin:0 0 .8rem;font-size:1.3rem;font-weight:600}.settings-panel input{width:100%;height:4.4rem;padding:0 1.2rem;border:1px solid #d8d8d8;border-radius:.6rem;font:600 1.6rem "Hiragino Sans","Hiragino Kaku Gothic ProN","Helvetica Neue",Arial,Meiryo,sans-serif}.settings-row{margin-bottom:2rem}.number-stepper{display:grid;grid-template-columns:4.4rem 1fr 4.4rem;gap:.8rem}.number-stepper button{border-radius:.6rem;background:#f1f1f1;font-size:2.4rem;line-height:1;color:#3f3a39}.settings-actions{display:flex;justify-content:flex-end;gap:1.2rem;margin-top:2.4rem}.settings-actions button{height:4.4rem;padding:0 1.8rem;border-radius:2.2rem;font-size:1.4rem;font-weight:600}.settings-cancel{background:#f1f1f1;color:#3f3a39}.settings-save{background:#cba232;color:#fff}
     .title-marquee{display:block!important;overflow:hidden!important;white-space:nowrap!important}.title-marquee .title-track{display:flex;width:max-content;gap:1rem;animation:title-scroll 16s linear infinite}.title-marquee .title-track span{display:inline-block;flex:none;animation:none!important}@keyframes title-scroll{from{transform:translateX(0)}to{transform:translateX(calc(-50% - .5rem))}}.side-action .action-icon{display:grid;place-items:center;width:20px;height:20px;font-size:0}.side-action .action-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2}
     /* TicketCard: 添付HTMLと同じ、正方形画像・点線・切り取りノッチ */
     .ticket:before,.ticket:after{display:none!important}.visual{height:auto!important;aspect-ratio:1/1}.poster{inset:0 15%!important}.details{position:relative!important;padding:16px 20px!important;--notch-radius:12px;--notch-center-y:132.5px;--bottom-corner-radius:0px;-webkit-mask-composite:xor,xor,xor,xor,source-over!important;-webkit-mask:radial-gradient(circle var(--notch-radius) at 0 var(--notch-center-y),transparent 99%,#000 100%),radial-gradient(circle var(--notch-radius) at 100% var(--notch-center-y),transparent 99%,#000 100%),radial-gradient(circle var(--bottom-corner-radius) at 0 100%,transparent 99%,#000 100%),radial-gradient(circle var(--bottom-corner-radius) at 100% 100%,transparent 99%,#000 100%),linear-gradient(#000,#000)!important;mask-composite:exclude,exclude,exclude,exclude,add!important;mask:radial-gradient(circle var(--notch-radius) at 0 var(--notch-center-y),transparent 99%,#000 100%),radial-gradient(circle var(--notch-radius) at 100% var(--notch-center-y),transparent 99%,#000 100%),radial-gradient(circle var(--bottom-corner-radius) at 0 100%,transparent 99%,#000 100%),radial-gradient(circle var(--bottom-corner-radius) at 100% 100%,transparent 99%,#000 100%),linear-gradient(#000,#000)!important}.schedule{border-bottom:0!important;padding-bottom:0!important}.timing{position:relative!important;padding-left:16px!important}.timing:before{content:""!important;position:absolute!important;left:0!important;top:0!important;width:1px!important;height:100%!important;background:#f2f2f2!important}.owner{position:relative!important;margin-top:18px!important;padding-top:18px!important;border-top:1px solid transparent!important;background-image:repeating-linear-gradient(to right,#f2f2f2 0,#f2f2f2 4px,transparent 4px,transparent 8px)!important;background-repeat:no-repeat!important;background-size:100% 1px!important;background-position:0 0!important}.owner:before,.owner:after{display:none!important}.ticket{filter:drop-shadow(0 0 12px rgba(0,0,0,.4))!important;box-shadow:none!important}.ticket-wrap{padding-top:24px!important}.visual .stamp{z-index:10!important}
@@ -98,6 +99,32 @@
     if(ticketCode)ticketCode.textContent='VIP-010';
     const purchaser=document.querySelector('.owner-meta > span');
     if(purchaser)purchaser.textContent='内田風朗';
+    const menuButton=document.querySelector('.menu');
+    const ownerName=document.querySelector('.owner-meta > span');
+    const codeValue=document.querySelector('.code');
+    const settingsBackdrop=document.createElement('div');
+    settingsBackdrop.className='settings-backdrop';
+    settingsBackdrop.hidden=true;
+    const settingsPanel=document.createElement('section');
+    settingsPanel.className='settings-panel';
+    settingsPanel.hidden=true;
+    settingsPanel.setAttribute('role','dialog');
+    settingsPanel.setAttribute('aria-modal','true');
+    settingsPanel.setAttribute('aria-labelledby','settingsTitle');
+    settingsPanel.innerHTML='<h2 id="settingsTitle">チケット設定</h2><div class="settings-row"><label for="ownerNameInput">持ち主の名前</label><input id="ownerNameInput" type="text" autocomplete="name"></div><div class="settings-row"><label for="ticketNumberInput">整理番号</label><div class="number-stepper"><button type="button" id="numberDown" aria-label="整理番号を減らす">−</button><input id="ticketNumberInput" type="text" inputmode="numeric" pattern="[0-9]*"><button type="button" id="numberUp" aria-label="整理番号を増やす">＋</button></div></div><div class="settings-actions"><button type="button" class="settings-cancel" id="settingsCancel">キャンセル</button><button type="button" class="settings-save" id="settingsSave">保存</button></div>';
+    document.body.append(settingsBackdrop,settingsPanel);
+    const ownerNameInput=settingsPanel.querySelector('#ownerNameInput');
+    const ticketNumberInput=settingsPanel.querySelector('#ticketNumberInput');
+    const parseTicketNumber=()=>{const found=(codeValue.textContent.match(/(\d+)$/)||['','0'])[1];return Number(found)};
+    const setTicketNumber=value=>{ticketNumberInput.value=String(Math.max(0,value)).padStart(3,'0');};
+    const closeSettings=()=>{settingsBackdrop.hidden=true;settingsPanel.hidden=true;};
+    const openSettings=()=>{ownerNameInput.value=ownerName.textContent;setTicketNumber(parseTicketNumber());settingsBackdrop.hidden=false;settingsPanel.hidden=false;ownerNameInput.focus();};
+    settingsPanel.querySelector('#numberDown').onclick=()=>setTicketNumber((Number(ticketNumberInput.value)||0)-1);
+    settingsPanel.querySelector('#numberUp').onclick=()=>setTicketNumber((Number(ticketNumberInput.value)||0)+1);
+    settingsPanel.querySelector('#settingsCancel').onclick=closeSettings;
+    settingsBackdrop.onclick=closeSettings;
+    settingsPanel.querySelector('#settingsSave').onclick=()=>{ownerName.textContent=ownerNameInput.value.trim()||ownerName.textContent;codeValue.textContent=`VIP-${String(Math.max(0,Number(ticketNumberInput.value)||0)).padStart(3,'0')}`;closeSettings();};
+    if(menuButton){menuButton.setAttribute('role','button');menuButton.setAttribute('tabindex','0');menuButton.setAttribute('aria-label','チケット設定');menuButton.onclick=openSettings;menuButton.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openSettings();}};}
     const logo=document.querySelector('.logo');
     if(logo){logo.replaceChildren();const image=document.createElement('img');image.src='./ticketdive-logo.svg';image.alt='TicketDive';logo.append(image);}
   </script>
