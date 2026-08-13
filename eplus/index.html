@@ -1516,6 +1516,31 @@
             }
         }
         loadStaticHomeData();
+        async function loadStaticHomeSections() {
+            try {
+                const response = await fetch('新イープラ7_files/home-sections.json', { cache: 'no-cache' });
+                if (!response.ok) throw new Error(`home-sections: ${response.status}`);
+                const data = await response.json();
+                const homeContent = document.querySelector('#home-screen .home-content');
+                if (!homeContent || !Array.isArray(data.sections)) return;
+                homeContent.querySelectorAll('[data-dynamic-home-section]').forEach(element => element.remove());
+                data.sections.forEach(section => {
+                    if (!Array.isArray(section.items) || !section.items.length) return;
+                    const heading = document.createElement('div');
+                    heading.className = 'home-heading';
+                    heading.dataset.dynamicHomeSection = section.slug;
+                    heading.textContent = section.title;
+                    const row = document.createElement('div');
+                    row.className = 'trend-row';
+                    row.dataset.dynamicHomeSection = section.slug;
+                    row.innerHTML = section.items.map(renderHomeCard).join('');
+                    homeContent.append(heading, row);
+                });
+            } catch (error) {
+                console.warn('追加ホームデータを読み込めませんでした。', error);
+            }
+        }
+        loadStaticHomeSections();
         const tabScreensMarkup = `
           <section id="news-screen" class="prelude-screen"><header class="tab-screen-header">ニュース</header><main class="tab-screen-body"><article class="tab-panel"><h3>イープラスからのお知らせ</h3><p>公演、先行受付、チケットに関する最新情報をお届けします。</p></article><article class="tab-panel"><h3>注目のニュース</h3><p>話題のライブ・舞台・イベント情報を掲載しています。</p></article><article class="tab-panel"><h3>新着情報</h3><p>新しく受付を開始した公演を確認できます。</p></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
           <section id="favorite-screen" class="prelude-screen"><header class="tab-screen-header">お気に入り</header><main class="tab-screen-body"><div class="tab-panel favorite-empty"><div><img src="新イープラ7_files/ic-tab-favorite-on.svg" alt=""><br>お気に入り登録したアーティストや<br>公演がここに表示されます</div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
