@@ -1,0 +1,58 @@
+{
+  "pickup": [
+    {
+      "name": "GO-AheadZ",
+      "image": "https://material.onlineticket.jp/s/image/B000007097/B000007097.jpg",
+      "url": "https://go-aheadz.com/",
+      "fallback": "新イープラ7_files/event-stage-banner.png"
+    },
+    {
+      "name": "SUMMER SONIC 2026",
+      "image": "https://material.onlineticket.jp/s/image/B000006659/B000006659.jpg",
+      "url": "https://eplus.jp/sf/live/festival/ss",
+      "fallback": "新イープラ7_files/event-live-banner.png"
+    },
+    {
+      "name": "Baycurrent Classic Presented by LEXUS",
+      "image": "https://material.onlineticket.jp/s/image/B000007021/B000007021.jpg",
+      "url": "https://eplus.jp/sf/word/0000160189",
+      "fallback": "新イープラ7_files/event-exhibition-banner.png"
+    }
+  ],
+  "nationalTrend": [
+    {
+      "name": "『時をかける少女』20周年記念 細田守の原点/展",
+      "date": "6/20(土)～8/31(月)",
+      "venue": "CREATIVE MUSEUM TOKYO（東京都）",
+      "status": "先着　受付中",
+      "image": "https://material.onlineticket.jp/s/image/451683/0001/000/list/4516830001_4.jpg",
+      "url": "https://eplus.jp/sf/detail/4516830001-P0030001"
+    },
+    {
+      "name": "RUSH BALL 2026",
+      "date": "8/29(土)～8/30(日)",
+      "venue": "泉大津フェニックス（大阪府）",
+      "status": "先着　受付中",
+      "image": "https://material.onlineticket.jp/s/image/007814/0048/000/list/0078140048_1.jpg",
+      "url": "https://eplus.jp/sf/detail/0078140048-P0030152"
+    }
+  ],
+  "favorite": [
+    {
+      "name": "神聖朗読劇『カリギュラ』",
+      "date": "8/12(水)～8/16(日)",
+      "venue": "東京都内",
+      "status": "受付中",
+      "image": "https://material.onlineticket.jp/s/image/454799/0001/000/list/4547990001_1.jpg",
+      "url": "https://eplus.jp/sf/detail/4547990001-P0030001"
+    },
+    {
+      "name": "氣志團万博2026 ～房総爆音リゾート～",
+      "date": "11/7(土)～11/8(日)",
+      "venue": "幕張メッセ国際展示場（千葉県）",
+      "status": "受付中",
+      "image": "https://material.onlineticket.jp/s/image/075506/0002/000/list/0755060002_10.jpg",
+      "url": "https://eplus.jp/sf/detail/0755060002-P0030080"
+    }
+  ]
+}

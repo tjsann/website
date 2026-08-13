@@ -1080,6 +1080,7 @@
         .pickup-carousel { position: relative; margin: 0 -6px; }
         .horizontal-cards { gap: 10px; padding-right: 48px; padding-left: 48px; scroll-padding-left: 48px; }
         .pickup-card { flex-basis: 82%; }
+        a.pickup-card { display: block; flex-shrink: 0; color: inherit; text-decoration: none; }
         .pickup-image { height: auto; aspect-ratio: 480 / 213; }
         .pickup-arrow { position: absolute; z-index: 3; top: 50%; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: rgba(45,45,45,.68); color: #fff; font-size: 22px; line-height: 30px; transform: translateY(-50%); }
         .pickup-arrow.prev { left: 18px; }
@@ -1092,6 +1093,7 @@
         .history-label { min-height: 42px; box-sizing: border-box; padding: 12px 10px; font-size: 13px; font-weight: 600; }
         .trend-row { gap: 10px; }
         .trend-card { min-width: 64%; flex-basis: 64%; font-size: 13px; line-height: 1.45; }
+        a.trend-card { display: block; flex-shrink: 0; box-sizing: border-box; color: inherit; text-decoration: none; }
         .trend-cover { height: 182px; }
         .trend-meta { margin-top: 7px; font-size: 11px; line-height: 1.5; }
         .sale-tag { font-size: 10px; }
@@ -1129,17 +1131,21 @@
         .home-search { height: 40px; max-width: none; flex: 1 1 auto; margin: 0; padding: 0 43px 0 34px; border-radius: 20px; font-size: 11px; font-weight: 500; }
         .home-search-leading { left: 14px; width: 14px; height: 14px; }
         .home-search-button { right: 3px; width: 34px; height: 34px; }
-        .home-content { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); background: #fff; }
+        .home-content { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); background: #fff; }
         .home-notice-row { min-height: 30px; gap: 14px; }
         .home-notice-row > img:first-child { width: 15px; height: 15px; }
-        .nav-bar { right: 12px; bottom: 0; left: 12px; min-height: calc(68px + env(safe-area-inset-bottom, 0px)); border-radius: 34px 34px 0 0; padding: 4px 6px env(safe-area-inset-bottom, 4px); box-shadow: 0 -3px 16px rgba(0,0,0,.12); touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        .nav-bar { right: 0; bottom: 0; left: 0; min-height: calc(72px + env(safe-area-inset-bottom, 0px)); padding: 4px 12px max(6px, env(safe-area-inset-bottom, 0px)); border-radius: 34px 34px 0 0; box-sizing: border-box; background: #fff; box-shadow: 0 -3px 16px rgba(0,0,0,.12); touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         .nav-bar div { min-height: 64px; gap: 0; border-radius: 32px; }
         .nav-bar div, .nav-bar img, .nav-bar span { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
         .nav-bar div { pointer-events: auto; }
         .nav-bar div.is-active { background: #e5e6e7; }
         .nav-icon { width: 52px; height: 37px; }
         .nav-icon img { width: 28px; height: 28px; }
-        .tab-screen-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 12px 12px calc(96px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: #f7f7f7; -webkit-overflow-scrolling: touch; }
+        .tab-screen-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 12px 12px calc(100px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: #f7f7f7; -webkit-overflow-scrolling: touch; }
+
+        @media (display-mode: standalone) {
+            .nav-bar { padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)); }
+        }
         .tab-screen-header { min-height: 54px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e5e5e5; background: #fff; color: #212121; font-family: "Hiragino Sans", sans-serif; font-size: 17px; font-weight: 600; }
         .tab-panel { margin-bottom: 12px; padding: 14px; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
         .tab-panel h3 { margin: 0 0 8px; font-size: 14px; }
@@ -1449,9 +1455,15 @@
         const pickupTrack = document.querySelector('.horizontal-cards');
         if (pickupTrack) {
             pickupTrack.innerHTML = `
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-stage-banner.png" alt="舞台公演"></div>
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-live-banner.png" alt="ライブ公演"></div>
-                <div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/event-exhibition-banner.png" alt="展覧会"></div>`;
+                <a class="pickup-card" href="https://go-aheadz.com/"><img class="pickup-image" src="https://material.onlineticket.jp/s/image/B000007097/B000007097.jpg" data-fallback="新イープラ7_files/event-stage-banner.png" alt="GO-AheadZ"></a>
+                <a class="pickup-card" href="https://eplus.jp/sf/live/festival/ss"><img class="pickup-image" src="https://material.onlineticket.jp/s/image/B000006659/B000006659.jpg" data-fallback="新イープラ7_files/event-live-banner.png" alt="SUMMER SONIC 2026"></a>
+                <a class="pickup-card" href="https://eplus.jp/sf/word/0000160189"><img class="pickup-image" src="https://material.onlineticket.jp/s/image/B000007021/B000007021.jpg" data-fallback="新イープラ7_files/event-exhibition-banner.png" alt="Baycurrent Classic Presented by LEXUS"></a>`;
+            pickupTrack.querySelectorAll('[data-fallback]').forEach(image => {
+                image.addEventListener('error', () => {
+                    if (image.src.endsWith(image.dataset.fallback)) return;
+                    image.src = image.dataset.fallback;
+                });
+            });
             const carousel = document.createElement('div');
             carousel.className = 'pickup-carousel';
             pickupTrack.parentNode.insertBefore(carousel, pickupTrack);
@@ -1477,6 +1489,33 @@
         trendCovers.forEach((cover, index) => {
             cover.style.backgroundImage = `url('新イープラ7_files/${trendImages[index % trendImages.length]}')`;
         });
+        const escapeHomeText = value => String(value ?? '').replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+        const bindHomeImageFallbacks = root => {
+            root.querySelectorAll('img[data-fallback]').forEach(image => {
+                image.addEventListener('error', () => {
+                    if (image.dataset.fallback && image.src !== new URL(image.dataset.fallback, location.href).href) image.src = image.dataset.fallback;
+                }, { once: true });
+            });
+        };
+        const renderHomeCard = item => `<a class="trend-card" href="${escapeHomeText(item.url)}"><div class="trend-cover" style="background-image:url('${escapeHomeText(item.image)}')"></div><b>${escapeHomeText(item.name)}</b><div class="trend-meta">▣ ${escapeHomeText(item.date)}<br>◎ ${escapeHomeText(item.venue)}</div><span class="sale-tag">${escapeHomeText(item.status)}</span></a>`;
+        async function loadStaticHomeData() {
+            try {
+                const response = await fetch('新イープラ7_files/home-data.json', { cache: 'no-cache' });
+                if (!response.ok) throw new Error(`home-data: ${response.status}`);
+                const data = await response.json();
+                if (pickupTrack && Array.isArray(data.pickup) && data.pickup.length) {
+                    pickupTrack.innerHTML = data.pickup.map(item => `<a class="pickup-card" href="${escapeHomeText(item.url)}"><img class="pickup-image" src="${escapeHomeText(item.image)}" data-fallback="${escapeHomeText(item.fallback)}" alt="${escapeHomeText(item.name)}"></a>`).join('');
+                    bindHomeImageFallbacks(pickupTrack);
+                    requestAnimationFrame(() => { pickupTrack.scrollLeft = pickupTrack.clientWidth * .84; });
+                }
+                const homeRows = document.querySelectorAll('.home-content .trend-row');
+                if (homeRows[0] && Array.isArray(data.nationalTrend)) homeRows[0].innerHTML = data.nationalTrend.map(renderHomeCard).join('');
+                if (homeRows[1] && Array.isArray(data.favorite)) homeRows[1].innerHTML = data.favorite.map(renderHomeCard).join('');
+            } catch (error) {
+                console.warn('静的ホームデータを読み込めませんでした。初期表示を使用します。', error);
+            }
+        }
+        loadStaticHomeData();
         const tabScreensMarkup = `
           <section id="news-screen" class="prelude-screen"><header class="tab-screen-header">ニュース</header><main class="tab-screen-body"><article class="tab-panel"><h3>イープラスからのお知らせ</h3><p>公演、先行受付、チケットに関する最新情報をお届けします。</p></article><article class="tab-panel"><h3>注目のニュース</h3><p>話題のライブ・舞台・イベント情報を掲載しています。</p></article><article class="tab-panel"><h3>新着情報</h3><p>新しく受付を開始した公演を確認できます。</p></article></main><nav class="nav-bar" data-bottom-nav></nav></section>
           <section id="favorite-screen" class="prelude-screen"><header class="tab-screen-header">お気に入り</header><main class="tab-screen-body"><div class="tab-panel favorite-empty"><div><img src="新イープラ7_files/ic-tab-favorite-on.svg" alt=""><br>お気に入り登録したアーティストや<br>公演がここに表示されます</div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
@@ -1544,6 +1583,52 @@
                 if (label === '通知') showPreludeScreen(notificationScreen);
                 if (label === 'チケット') showPreludeScreen(ticketListScreen);
             });
+        });
+        document.querySelectorAll('.nav-bar').forEach(nav => {
+            let trackedButton = null;
+            let tracking = false;
+
+            const buttonAt = touch => {
+                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                const button = element && element.closest('.nav-bar [data-nav]');
+                return button && nav.contains(button) ? button : null;
+            };
+            const previewButton = button => {
+                if (!button || button === trackedButton) return;
+                trackedButton = button;
+                nav.querySelectorAll('[data-nav]').forEach(item => {
+                    const selected = item === button;
+                    item.classList.toggle('is-active', selected);
+                    const icon = item.querySelector('[data-nav-icon]');
+                    if (icon) icon.src = `新イープラ7_files/ic-tab-${icon.dataset.navIcon}${selected ? '-on' : ''}.svg`;
+                });
+            };
+
+            nav.addEventListener('touchstart', event => {
+                if (event.touches.length !== 1) return;
+                tracking = true;
+                previewButton(buttonAt(event.touches[0]));
+                event.preventDefault();
+            }, { passive: false });
+            nav.addEventListener('touchmove', event => {
+                if (!tracking || event.touches.length !== 1) return;
+                previewButton(buttonAt(event.touches[0]));
+                event.preventDefault();
+            }, { passive: false });
+            nav.addEventListener('touchend', event => {
+                if (!tracking) return;
+                tracking = false;
+                const target = trackedButton;
+                trackedButton = null;
+                event.preventDefault();
+                if (target) target.click();
+            }, { passive: false });
+            nav.addEventListener('touchcancel', () => {
+                tracking = false;
+                trackedButton = null;
+                const activeScreen = document.querySelector('.prelude-screen.is-active');
+                if (activeScreen) showPreludeScreen(activeScreen);
+            }, { passive: true });
         });
         const homeScreen = document.getElementById('home-screen');
         const newsScreen = document.getElementById('news-screen');
