@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="ローチケ電子チケット">
 <meta name="mobile-web-app-capable" content="yes">
 <!-- IPA 2.1.47: Payload/ProductName.app/AppIcon60x60@2x.png (120x120) -->
-<link rel="apple-touch-icon" sizes="120x120" href="lawtikemoc2-ipa-assets/app-icon-ios.png">
-<link rel="icon" type="image/png" sizes="120x120" href="lawtikemoc2-ipa-assets/app-icon-ios.png">
+<link rel="apple-touch-icon" sizes="120x120" href="./lawtikemoc2-ipa-assets/app-icon-ios.png">
+<link rel="icon" type="image/png" sizes="120x120" href="./lawtikemoc2-ipa-assets/app-icon-ios.png">
 <!-- Disable mobile browser auto-linking of phone numbers / addresses / emails (real app: phone is plain text #323232, not blue). -->
 <meta name="format-detection" content="telephone=no, address=no, email=no">
 <title>ローソン チケット</title>
@@ -144,7 +144,7 @@ body {
      Layer 1: solid color #039FDC (HeaderBG/Background m_Color, extracted from libil2cpp).
      Layer 2: entry_bg_gradation sprite tinted #000066 (HeaderBG/Background/Gradation m_Color),
               composited over Layer 1 with normal blending. Already baked into the PNG below. */
-  background: url('lawtikemoc2-ipa-assets/ipa-hero-background.png') #039FDC center/100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ipa-hero-background.png') #039FDC center/100% 100% no-repeat;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
@@ -249,7 +249,7 @@ body {
   /* iOS 2.1.47 Texture2D/entry_swipe_gradation (720x312)を直接使用。
      Sprite自体はalpha=255、SwipeImageのUnity UI Image tintは
      RGBA=(1,1,1,0.9019608)＝230/255。 */
-  background: url("Texture2D/entry_swipe_gradation_ios.png") center / 100% 100% no-repeat;
+  background: url("./lawtikemoc2-ipa-assets/entry_swipe_gradation_ios.png") center / 100% 100% no-repeat;
   opacity: 0.9019608;
 }
 
@@ -310,8 +310,8 @@ body {
   /* IPA: logo_O=1265px、基準Canvas幅=720px。1265 / 720 * 100。 */
   width: 175.694444%;
   aspect-ratio: 1265 / 1069;
-  -webkit-mask-image: url('lawtikemoc2-ipa-assets/ticket-card-mask.png');
-          mask-image: url('lawtikemoc2-ipa-assets/ticket-card-mask.png');
+  -webkit-mask-image: url('./lawtikemoc2-ipa-assets/ticket-card-mask.png');
+          mask-image: url('./lawtikemoc2-ipa-assets/ticket-card-mask.png');
   -webkit-mask-size: contain;
           mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -377,8 +377,8 @@ body {
 .wavy-fill {
   width: 100%; height: 100%;
   background: #FF4081;
-  -webkit-mask-image: url(lawtikemoc2-ipa-assets/ticket-wave-mask.png);
-          mask-image: url(lawtikemoc2-ipa-assets/ticket-wave-mask.png);
+  -webkit-mask-image: url('./lawtikemoc2-ipa-assets/ticket-wave-mask.png');
+          mask-image: url('./lawtikemoc2-ipa-assets/ticket-wave-mask.png');
   -webkit-mask-size: contain;   mask-size: contain;
   -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-position: center;  mask-position: center;
@@ -487,11 +487,11 @@ body {
     min(4.166667vw, 17.9167px)
     min(4.166667vw, 17.9167px);
   /* Legacy generated shadow source disabled. The IPA sprite below is authoritative.
-  border-image-source: url('lawtikemoc2-ipa-assets/ticket-border-shadow.png');
+  border-image-source: url('./lawtikemoc2-ipa-assets/ticket-border-shadow.png');
   */
   /* Use the IPA sprite itself for the root Image. This supplies its native
      face alpha and baked shadow; no generated shadow channel is needed. */
-  border-image-source: url('Texture2D/ticket_base_white.png');
+  border-image-source: url('./lawtikemoc2-ipa-assets/ticket_base_white.png');
   border-image-slice: 30 141 30 30 fill;
   border-image-repeat: stretch;
 }
@@ -501,7 +501,7 @@ body {
    that texture rectangle. Keep the IPA normal frame/shadow here and apply the
    used-state face colour through the same serialized mask below. */
 .ticket-card.entered::before {
-  border-image-source: url('Texture2D/ticket_base_white.png');
+  border-image-source: url('./lawtikemoc2-ipa-assets/ticket_base_white.png');
 }
 /* inner clip for background color */
 .ticket-inner {
@@ -511,7 +511,7 @@ body {
   background: transparent;
   z-index: 1;
   /* IPA EnterTicketItem/Mask Image reference: ticket_base_mask. */
-  -webkit-mask-box-image-source: url('Texture2D/ticket_base_mask.png');
+  -webkit-mask-box-image-source: url('./lawtikemoc2-ipa-assets/ticket_base_mask.png');
   -webkit-mask-box-image-slice: 30 141 30 30 fill;
   -webkit-mask-box-image-width:
     min(4.166667vw, 17.9167px)
@@ -928,10 +928,10 @@ body {
 }
 /* ===== IPA-direct UI sprite overrides ===== */
 .ticket-card:active::before {
-  border-image-source: url('Texture2D/ticket_base_white_top_press.png');
+  border-image-source: url('./lawtikemoc2-ipa-assets/ticket_base_white_top_press.png');
 }
 .ticket-card.entered:active::before {
-  border-image-source: url('Texture2D/ticket_base_white_top_press.png');
+  border-image-source: url('./lawtikemoc2-ipa-assets/ticket_base_white_top_press.png');
 }
 
 .avatar-circle {
@@ -942,12 +942,12 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('Texture2D/ticket_icon_oval_ol_005186.png') center / 100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ticket_icon_oval_ol_005186.png') center / 100% 100% no-repeat;
   z-index: 1;
   pointer-events: none;
 }
 .ticket-card.selected .avatar-circle::before {
-  background-image: url('Texture2D/ticket_icon_oval_ol.png');
+  background-image: url('./lawtikemoc2-ipa-assets/ticket_icon_oval_ol.png');
 }
 
 .checkbox {
@@ -964,7 +964,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('Texture2D/ticket_icon_check_box_c5c5c5.png') center / 100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ticket_icon_check_box_c5c5c5.png') center / 100% 100% no-repeat;
   z-index: 1;
 }
 .ticket-card.selected .checkbox {
@@ -972,7 +972,7 @@ body {
   background: transparent !important;
 }
 .ticket-card.selected .checkbox::before {
-  background-image: url('Texture2D/ticket_icon_check_box_006493.png');
+  background-image: url('./lawtikemoc2-ipa-assets/ticket_icon_check_box_006493.png');
 }
 .checkbox.checked::after {
   inset: 0;
@@ -980,7 +980,7 @@ body {
   height: 100%;
   border: 0;
   border-radius: 0;
-  background: url('Texture2D/ticket_icon_check_ff4081.png') center / 100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ticket_icon_check_ff4081.png') center / 100% 100% no-repeat;
   transform: none;
   z-index: 2;
 }
@@ -995,7 +995,7 @@ body {
   width: min(6.666667vw, 28.6667px);
   height: min(6.666667vw, 28.6667px);
   transform: translateY(-50%);
-  background: url('Texture2D/ticket_icon_open_8e8e8e.png') center / 100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ticket_icon_open_8e8e8e.png') center / 100% 100% no-repeat;
 }
 
 /* ===== IPA 2.1.47 ENTRY SCREEN GEOMETRY =====
@@ -1011,7 +1011,7 @@ body {
 .ripple-ring {
   -webkit-mask-image: none;
   mask-image: none;
-  background: url('Texture2D/logo_O.png') center / contain no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/logo_O.png') center / contain no-repeat;
 }
 
 /* HeaderBG 720x400; Header 720x88. The hero remains behind the iOS safe area,
@@ -1060,8 +1060,8 @@ body {
   fill: transparent;
   background: center / 100% 100% no-repeat;
 }
-#reloadBtn { right: min(12.638889vw, 54.347222px); background-image: url('Texture2D/header_icon_reload.png'); }
-#menuBtn   { right: min(1.805556vw, 7.763889px); background-image: url('Texture2D/header_icon_menu.png'); }
+#reloadBtn { right: min(12.638889vw, 54.347222px); background-image: url('./lawtikemoc2-ipa-assets/header_icon_reload.png'); }
+#menuBtn   { right: min(1.805556vw, 7.763889px); background-image: url('./lawtikemoc2-ipa-assets/header_icon_menu.png'); }
 
 /* TicketHeader is 720x312 at y=88. */
 .event-title {
@@ -1172,7 +1172,7 @@ body {
   right: min(1.805556vw, 7.763889px);
   width: min(47.222222vw, 203.055556px);
   height: min(15.555556vw, 66.888889px);
-  background: url('Texture2D/ticket_icon_entered_ff4081_a128.png') center / 100% 100% no-repeat;
+  background: url('./lawtikemoc2-ipa-assets/ticket_icon_entered_ff4081_a128.png') center / 100% 100% no-repeat;
 }
 
 /* Kenmen footer uses x=114 for text and OpenClose 48x48 at right=57. */
@@ -1197,7 +1197,7 @@ body {
   <div class="header">
     <div class="header-left">
       <div class="logo-area">
-        <img class="header-logo" src="lawtikemoc2-ipa-assets/header-logo.png" alt="ローチケ">
+        <img class="header-logo" src="./lawtikemoc2-ipa-assets/header-logo.png" alt="ローチケ">
       </div>
       <span class="header-title">入場／引換</span>
     </div>
@@ -1209,7 +1209,7 @@ body {
 
   <div class="network-check-bar" id="networkCheckBar" role="status" aria-live="polite" aria-hidden="true">
     <div class="network-check-message">
-      <img src="Texture2D/offline_exclamation.png" alt="">
+      <img src="./lawtikemoc2-ipa-assets/offline-exclamation.png" alt="">
       <span>ネットワークに接続していません</span>
     </div>
   </div>
@@ -1230,11 +1230,11 @@ body {
     </div>
     <div class="event-title" id="eventTitle">ＳＭＩＬＥ　ＧＡＲＤＥＮ／Ｉブロック／１９：４５～２０：４５</div>
     <div class="event-date">
-      <img src="lawtikemoc2-ipa-assets/calendar-icon.png" alt="">
+      <img src="./lawtikemoc2-ipa-assets/calendar-icon.png" alt="">
       <span id="eventDate">2026.08.02(Sun)</span>
     </div>
     <div class="event-time">
-      <img src="lawtikemoc2-ipa-assets/clock-icon.png" alt="">
+      <img src="./lawtikemoc2-ipa-assets/clock-icon.png" alt="">
       開場 <span id="eventOpenTime">19:25</span> 開演 <span id="eventStartTime">19:45</span>
     </div>
   </div>
@@ -1253,7 +1253,7 @@ body {
 
     <div class="ticket-card" id="ticketCard">
 <div class="ticket-inner" id="ticketInner">
-        <img class="nyujozumi-stamp" id="nyujozumi" src="lawtikemoc2-ipa-assets/entered-stamp.png" alt="入場済">
+      <img class="nyujozumi-stamp" id="nyujozumi" src="./lawtikemoc2-ipa-assets/entered-stamp.png" alt="入場済">
 
         <!-- Top: Zashu (1F全自由) — Unity pos.x=114 width=512 in 712-wide card, text-align center within rect.
              Half-row at top of card, before the avatar/info/checkbox row. -->
@@ -1288,11 +1288,11 @@ body {
   <div class="bottom-nav-outer">
     <div class="bottom-nav">
       <div class="nav-back">
-        <span class="nav-icon"><img src="lawtikemoc2-ipa-assets/navigation-arrow.png" alt="戻る"></span>
+        <span class="nav-icon"><img src="./lawtikemoc2-ipa-assets/navigation-arrow.png" alt="戻る"></span>
       </div>
       <div class="nav-next">
         <span>チケット詳細／分配／受取</span>
-        <span class="nav-icon"><img src="lawtikemoc2-ipa-assets/navigation-arrow.png" alt="次へ"></span>
+        <span class="nav-icon"><img src="./lawtikemoc2-ipa-assets/navigation-arrow.png" alt="次へ"></span>
       </div>
     </div>
   </div>
