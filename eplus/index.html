@@ -1171,8 +1171,10 @@
         .settings-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .settings-field { display: grid; gap: 6px; min-width: 0; color: #666; font-size: 11px; }
         .settings-field.is-wide { grid-column: 1 / -1; }
-        .settings-field input { width: 100%; height: 40px; min-width: 0; padding: 0 11px; border: 1px solid #d6d6d6; border-radius: 7px; box-sizing: border-box; background: #fff; color: #222; font: 14px -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; -webkit-user-select: text; user-select: text; }
-        .settings-field input:focus { border-color: #e85298; outline: 2px solid rgba(232,82,152,.14); }
+        .settings-field input, .settings-field textarea { width: 100%; min-width: 0; padding: 0 11px; border: 1px solid #d6d6d6; border-radius: 7px; box-sizing: border-box; background: #fff; color: #222; font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; -webkit-user-select: text; user-select: text; }
+        .settings-field input { height: 40px; }
+        .settings-field textarea { min-height: 190px; padding-top: 10px; padding-bottom: 10px; resize: vertical; }
+        .settings-field input:focus, .settings-field textarea:focus { border-color: #e85298; outline: 2px solid rgba(232,82,152,.14); }
         .ticket-face-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
         .ticket-face-option { min-width: 0; padding: 12px 4px 10px; border: 2px solid transparent; border-radius: 9px; background: #f5f5f5; color: #333; font-size: 12px; }
         .ticket-face-option.is-selected { border-color: #e85298; background: #fff0f7; color: #e33d8c; font-weight: 700; }
@@ -1588,6 +1590,18 @@
         const ticketDetailScreen = document.getElementById('ticket-detail-screen');
         const ticketSettingsScreen = document.getElementById('ticket-settings-screen');
         const sideMenu = document.getElementById('home-side-menu');
+        const notesSettingsCard = document.createElement('section');
+        notesSettingsCard.className = 'settings-card';
+        notesSettingsCard.innerHTML = `<div class="settings-title">注意事項・券面情報</div><div class="settings-fields"><label class="settings-field is-wide">表示する文章<textarea data-ticket-field="notes">※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行、荒天中止となる場合もございます。中止の場合は公式サイト及び公式Xにてお知らせします。
+※雨天の際、傘のご利用は他のお客様の視界を妨げる要因となりますので、レインコート等の雨具をご用意ください。
+※ご来場時にご購入者様の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえお越しください。
+※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。
+TVアニメ『逃げ上手の若君』
+鶴岡八幡宮プレミア上映会
+＜営利目的の転売禁止＞
+イープラス 050-3185-6483</textarea></label></div>`;
+        const faceSettingsCard = ticketSettingsScreen.querySelector('.ticket-face-options').closest('.settings-card');
+        faceSettingsCard.before(notesSettingsCard);
         let configuredTicketFace = 'unused';
         let configuredTicketCount = 2;
         document.querySelector('.home-menu-icon').addEventListener('click', () => sideMenu.classList.add('is-open'));
@@ -1631,6 +1645,9 @@
                 const breakPosition = description.innerHTML.indexOf('<br>');
                 const remainder = breakPosition >= 0 ? description.innerHTML.slice(breakPosition) : '';
                 description.innerHTML = `${escapeHomeText(ticketValues.eventName)}${remainder}`;
+            });
+            detail.querySelectorAll('.ticket-description2').forEach(description => {
+                description.innerHTML = escapeHomeText(ticketValues.notes).replace(/\r?\n/g, '<br>');
             });
             detail.querySelectorAll('.ticket-seat img').forEach(image => image.alt = configuredTicketFace === 'unused' ? '未使用チケット' : configuredTicketFace === 'used' ? '使用済みチケット' : '無効チケット');
             detail.querySelectorAll('.distribution-button img').forEach(image => { image.src = '新イープラ7_files/ipa-ticket-distribute-do.png'; });
