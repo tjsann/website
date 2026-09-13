@@ -1126,7 +1126,7 @@
             .ticket-collapse img { width: 28px; height: 28px; }
         }
         .home-header { min-height: 72px; height: 72px; gap: 11px; padding: 0 15px 0 17px; box-sizing: border-box; flex-shrink: 0; }
-        .home-menu-icon { width: 26px; height: 26px; margin: 0; object-fit: contain; }
+        .home-menu-icon { width: 44px; height: 44px; margin: 0 0 0 -9px; padding: 9px; box-sizing: border-box; object-fit: contain; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
         .home-logo { width: 54px; height: 34px; object-fit: contain; }
         .home-search { height: 40px; max-width: none; flex: 1 1 auto; margin: 0; padding: 0 43px 0 34px; border-radius: 20px; font-size: 11px; font-weight: 500; }
         .home-search-leading { left: 14px; width: 14px; height: 14px; }
@@ -1134,8 +1134,8 @@
         .home-content { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); background: #fff; }
         .home-notice-row { min-height: 30px; gap: 14px; }
         .home-notice-row > img:first-child { width: 15px; height: 15px; }
-        .nav-bar { right: 0; bottom: 0; left: 0; min-height: calc(72px + env(safe-area-inset-bottom, 0px)); padding: 4px 12px max(6px, env(safe-area-inset-bottom, 0px)); border-radius: 34px 34px 0 0; box-sizing: border-box; background: #fff; box-shadow: 0 -3px 16px rgba(0,0,0,.12); touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-        .nav-bar div { min-height: 64px; gap: 0; border-radius: 32px; }
+        .nav-bar { position: absolute; right: 0; bottom: 0; left: 0; height: calc(74px + env(safe-area-inset-bottom, 0px)); min-height: 0; align-items: flex-start; padding: 5px 12px env(safe-area-inset-bottom, 0px); border-radius: 34px 34px 0 0; box-sizing: border-box; background: #fff; box-shadow: 0 -3px 16px rgba(0,0,0,.12); touch-action: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        .nav-bar div { height: 64px; min-height: 64px; gap: 0; border-radius: 32px; touch-action: none; -webkit-tap-highlight-color: transparent; }
         .nav-bar div, .nav-bar img, .nav-bar span { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
         .nav-bar div { pointer-events: auto; }
         .nav-bar div.is-active { background: #e5e6e7; }
@@ -1144,7 +1144,7 @@
         .tab-screen-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 12px 12px calc(100px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: #f7f7f7; -webkit-overflow-scrolling: touch; }
 
         @media (display-mode: standalone) {
-            .nav-bar { padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)); }
+            .nav-bar { height: calc(74px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px); }
         }
         .tab-screen-header { min-height: 54px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e5e5e5; background: #fff; color: #212121; font-family: "Hiragino Sans", sans-serif; font-size: 17px; font-weight: 600; }
         .tab-panel { margin-bottom: 12px; padding: 14px; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
@@ -1646,42 +1646,27 @@
         document.querySelectorAll('[data-bottom-nav]').forEach(nav => {
             nav.innerHTML = Object.keys(navIcons).map(label => `<div>${label}</div>`).join('');
         });
+        function activateNavigation(label) {
+            if (label === 'ホーム') showPreludeScreen(homeScreen);
+            if (label === 'ニュース') showPreludeScreen(newsScreen);
+            if (label === 'お気に入り') showPreludeScreen(favoriteScreen);
+            if (label === '通知') showPreludeScreen(notificationScreen);
+            if (label === 'チケット') showPreludeScreen(ticketListScreen);
+        }
         document.querySelectorAll('.nav-bar div').forEach(navButton => {
             const label = Object.keys(navIcons).find(name => navButton.textContent.includes(name));
             navButton.dataset.nav = label;
             const badge = label === '通知' ? '<span class="nav-badge">39</span>' : label === 'チケット' ? '<span class="nav-badge">3</span>' : '';
             navButton.innerHTML = `<span class="nav-icon"><img data-nav-icon="${navIcons[label]}" src="新イープラ7_files/ic-tab-${navIcons[label]}.svg" alt="">${badge}</span><span>${label}</span>`;
-            let navigationTouchStart = null;
-            navButton.addEventListener('touchstart', event => {
-                const touch = event.touches[0];
-                navigationTouchStart = { x: touch.clientX, y: touch.clientY };
-            }, { passive: true });
-            navButton.addEventListener('touchmove', event => {
-                if (!navigationTouchStart) return;
-                const touch = event.touches[0];
-                if (Math.hypot(touch.clientX - navigationTouchStart.x, touch.clientY - navigationTouchStart.y) > 8) navigationTouchStart = null;
-            }, { passive: true });
             navButton.addEventListener('contextmenu', event => event.preventDefault());
             navButton.addEventListener('dragstart', event => event.preventDefault());
-            navButton.addEventListener('click', event => {
-                if (event.detail === 0 || navigationTouchStart !== null || !('ontouchstart' in window)) {
-                    navigationTouchStart = null;
-                } else {
-                    return;
-                }
-                if (label === 'ホーム') showPreludeScreen(homeScreen);
-                if (label === 'ニュース') showPreludeScreen(newsScreen);
-                if (label === 'お気に入り') showPreludeScreen(favoriteScreen);
-                if (label === '通知') showPreludeScreen(notificationScreen);
-                if (label === 'チケット') showPreludeScreen(ticketListScreen);
-            });
         });
         document.querySelectorAll('.nav-bar').forEach(nav => {
             let trackedButton = null;
             let tracking = false;
 
-            const buttonAt = touch => {
-                const element = document.elementFromPoint(touch.clientX, touch.clientY);
+            const buttonAt = (clientX, clientY) => {
+                const element = document.elementFromPoint(clientX, clientY);
                 const button = element && element.closest('.nav-bar [data-nav]');
                 return button && nav.contains(button) ? button : null;
             };
@@ -1696,31 +1681,32 @@
                 });
             };
 
-            nav.addEventListener('touchstart', event => {
-                if (event.touches.length !== 1) return;
+            nav.addEventListener('pointerdown', event => {
+                if (!event.isPrimary) return;
                 tracking = true;
-                previewButton(buttonAt(event.touches[0]));
+                nav.setPointerCapture(event.pointerId);
+                previewButton(buttonAt(event.clientX, event.clientY));
                 event.preventDefault();
-            }, { passive: false });
-            nav.addEventListener('touchmove', event => {
-                if (!tracking || event.touches.length !== 1) return;
-                previewButton(buttonAt(event.touches[0]));
+            });
+            nav.addEventListener('pointermove', event => {
+                if (!tracking || !event.isPrimary) return;
+                previewButton(buttonAt(event.clientX, event.clientY));
                 event.preventDefault();
-            }, { passive: false });
-            nav.addEventListener('touchend', event => {
+            });
+            nav.addEventListener('pointerup', event => {
                 if (!tracking) return;
                 tracking = false;
                 const target = trackedButton;
                 trackedButton = null;
                 event.preventDefault();
-                if (target) target.click();
-            }, { passive: false });
-            nav.addEventListener('touchcancel', () => {
+                if (target) activateNavigation(target.dataset.nav);
+            });
+            nav.addEventListener('pointercancel', () => {
                 tracking = false;
                 trackedButton = null;
                 const activeScreen = document.querySelector('.prelude-screen.is-active');
                 if (activeScreen) showPreludeScreen(activeScreen);
-            }, { passive: true });
+            });
         });
         const homeScreen = document.getElementById('home-screen');
         const newsScreen = document.getElementById('news-screen');
