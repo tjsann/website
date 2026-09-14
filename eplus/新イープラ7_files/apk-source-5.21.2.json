@@ -1,0 +1,23 @@
+{
+  "packageName": "jp.eplus.android.all.app",
+  "versionName": "5.21.2",
+  "versionCode": 413,
+  "minSdkVersion": 29,
+  "targetSdkVersion": 36,
+  "source": "eplus_5.21.2.xapk",
+  "verifiedUnchanged": [
+    "splash layout",
+    "home layout",
+    "bottom navigation dimensions",
+    "smart-ticket typography and dimensions",
+    "eplus and navigation vector assets"
+  ],
+  "implementedChanges": [
+    "smart-ticket detail seat information masking ribbon",
+    "gate screen vertical seat information container",
+    "gate screen swipe-to-reveal seat masking",
+    "gate-pass timer, warning and ticket dimensions",
+    "gate-pass star, GATE, arrow, close, check and used-ticket assets",
+    "directional gate swipe colors and used-ticket result layout"
+  ]
+}

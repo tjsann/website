@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#e85298">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="eplus-source-version" content="Android 5.21.2 (versionCode 413)">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="イープラス">
     <link rel="apple-touch-icon" sizes="180x180" href="新イープラ7_files/eplus-app-icon-180.png">
@@ -764,7 +765,14 @@
 
         .seat-info {
             text-align: left;
+            min-width: 0;
+            flex: 1;
         }
+        .gate-seat-lines { display: block; }
+        .gate-masking-ribbon { display: none; position: relative; width: fit-content; max-width: calc(100% - 12px); margin-top: 4px; padding: 6px 16px 6px 12px; background: rgba(245,229,46,.95); color: #212121; font-size: 12px; line-height: 12px; font-weight: 500; }
+        .gate-masking-ribbon::after { content: ''; position: absolute; right: 0; bottom: -10px; border-width: 10px 10px 0 0; border-style: solid; border-color: #dcc900 transparent transparent transparent; }
+        .ticket-info.is-seat-masked .gate-seat-lines { display: none; }
+        .ticket-info.is-seat-masked .gate-masking-ribbon { display: block; }
         
         .name {
             font-size: 20px;
@@ -1171,8 +1179,9 @@
         .settings-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .settings-field { display: grid; gap: 6px; min-width: 0; color: #666; font-size: 11px; }
         .settings-field.is-wide { grid-column: 1 / -1; }
-        .settings-field input, .settings-field textarea { width: 100%; min-width: 0; padding: 0 11px; border: 1px solid #d6d6d6; border-radius: 7px; box-sizing: border-box; background: #fff; color: #222; font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; -webkit-user-select: text; user-select: text; }
+        .settings-field input, .settings-field textarea, .settings-field select { width: 100%; min-width: 0; padding: 0 11px; border: 1px solid #d6d6d6; border-radius: 7px; box-sizing: border-box; background: #fff; color: #222; font: 14px/1.55 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; -webkit-user-select: text; user-select: text; }
         .settings-field input { height: 40px; }
+        .settings-field select { height: 40px; }
         .settings-field textarea { min-height: 190px; padding-top: 10px; padding-bottom: 10px; resize: vertical; }
         .settings-field input:focus, .settings-field textarea:focus { border-color: #e85298; outline: 2px solid rgba(232,82,152,.14); }
         .ticket-face-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
@@ -1190,6 +1199,59 @@
         .ticket-owner.ticket-state-used .ticket-info-main, .ticket-owner.ticket-state-used .ticket-footer { background: #eef1f3; }
         .ticket-owner.ticket-state-invalid .ticket-owner-title { background: #777; }
         .ticket-owner.ticket-state-invalid .ticket-info-main, .ticket-owner.ticket-state-invalid .ticket-footer { background: #eee; filter: grayscale(1); }
+        .seat-masking-ribbon { display: none; position: relative; width: fit-content; max-width: calc(100% - 21px); margin: 4px 0; padding: 6px 16px 6px 12px; background: rgba(245,229,46,.95); color: #212121; font-size: 12px; line-height: 12px; font-weight: 500; }
+        .seat-masking-ribbon::after { content: ''; position: absolute; right: 0; bottom: -10px; border-width: 10px 10px 0 0; border-style: solid; border-color: #dcc900 transparent transparent transparent; }
+        .ticket-owner.is-seat-masked .seat-lines { display: none; }
+        .ticket-owner.is-seat-masked .seat-masking-ribbon { display: block; }
+
+        /* eplus Android 5.21.2: smart-ticket gate-pass layout values. */
+        #initial-screen, #used-screen { background: #f7f7f7; font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; }
+        #initial-screen .top-bar, #used-screen .top-bar { min-height: 56px; padding: 0 15px; box-sizing: border-box; border-bottom: 0; font-size: 16px; font-weight: 700; }
+        .top-bar .close-btn { width: 42px; height: 36px; display: grid; place-items: center; margin-right: -9px; padding: 0; border: 0; background: transparent url('新イープラ7_files/edsdk-close-big.svg') center / 15px 15px no-repeat; }
+        .top-bar .close-btn img { width: 15px; height: 15px; display: block; opacity: 1; }
+        .timestamp-bar { min-height: 36px; display: grid; place-items: center; padding: 8px 7px; box-sizing: border-box; background: #2fa8b3; font-size: 16px; line-height: 20px; font-weight: 700; letter-spacing: 0; }
+        .warning-container { height: auto; min-height: 43px; align-items: stretch; margin: 10px 8px 0; padding: 0; gap: 8px; background: transparent; }
+        .warning-badge { width: 31px; display: grid; place-items: center; padding: 0; border-radius: 0; background: #ff2525; font-size: 10px; line-height: 1; letter-spacing: .02em; }
+        .warning-text { flex: 1; min-width: 0; align-self: center; color: #ff2525; font-size: 12px; line-height: 1; font-weight: 700; letter-spacing: .02em; overflow-wrap: anywhere; }
+        #initial-screen .main-content { padding: 10px 8px 0; background: #f7f7f7; }
+        #initial-screen .date-time-block { min-height: 62px; box-sizing: border-box; gap: 14px; padding: 12px 12px 0; border-radius: 8px 8px 0 0; background: #fff; }
+        #initial-screen .main-date { color: #212121; font-size: 36px; line-height: 1; font-weight: 400; }
+        #initial-screen .main-date span { font-size: 14px; font-weight: 400; }
+        #initial-screen .times { color: #212121; font-size: 15px; line-height: 1.15; font-weight: 700; }
+        #initial-screen .stars-block { height: 40px; gap: 120px; margin: 0; background: #fff; }
+        #initial-screen .star { width: 40px; height: 40px; background: transparent; border-radius: 0; animation: gate-star-pulse 1.2s ease-in-out infinite alternate; }
+        #initial-screen .star:nth-child(2) { animation-delay: -.6s; }
+        @keyframes gate-star-pulse { from { opacity: .72; transform: scale(.92) rotate(-8deg); } to { opacity: 1; transform: scale(1) rotate(8deg); } }
+        #initial-screen .venue-artist { min-height: 59px; margin: 0; padding: 6px 12px 12px; box-sizing: border-box; background: #fff; }
+        #initial-screen .venue { color: #212121; font-size: 14px; line-height: 1.25; font-weight: 700; }
+        #initial-screen .artist { color: #212121; font-size: 12px; line-height: 1.25; }
+        #initial-screen .ticket-info { min-height: 120px; align-content: flex-start; margin: 0; padding: 10px 12px 12px; box-sizing: border-box; background: #e85298; }
+        #initial-screen .ticket-info::before { height: 1px; }
+        #initial-screen .name { margin-bottom: 10px; font-size: 20px; line-height: 24px; }
+        #initial-screen .separator { margin: 0 0 8px; }
+        #initial-screen .checkmark-container { width: 60px; height: 60px; margin-right: 20px; background: transparent; }
+        #initial-screen .checkmark { width: 60px; height: 60px; border: 0; transform: none; }
+        #initial-screen .ticket-type { font-size: 18px; line-height: 22px; font-weight: 400; }
+        #initial-screen .block-number { font-size: 15px; line-height: 18px; font-weight: 700; }
+        #initial-screen .queue-number { color: #fff; font-size: 18px; line-height: 22px; font-weight: 700; }
+        #swipe-container { border-radius: 0; background: linear-gradient(90deg, #e75958 0 50%, #449f89 50% 100%); }
+        #gate-screen { background: #0050aa; }
+        .gate-content-wrapper { position: relative; width: 100%; height: 100%; gap: 0; }
+        .gate-logo { position: absolute; top: 50%; left: 50%; width: 126px; height: auto; transform: translate(-50%, -50%); }
+        .gate-arrow-animation { position: absolute; top: 50%; left: 50%; width: 189px; height: auto; transform: translate(-50%, -50%); }
+        .gate-instructions { top: 56px; width: auto; max-width: calc(100% - 16px); padding: 5px 8px; border-radius: 5px; box-sizing: border-box; background: #fcff00; color: #ef2525; font-size: 18px; line-height: 1.18; font-weight: 400; }
+        #used-screen .main-content { padding: 10px 8px 0; background: #f7f7f7; }
+        .used-used-banner { height: 160px; margin: 0; padding: 0; border-radius: 5px 5px 0 0; background: #d94972; font-size: 18px; font-weight: 400; }
+        .used-ticket-stub { margin: 0; padding: 0 8px 9px; background: #fff; }
+        .used-name-bar { margin: 0 -8px; padding: 10px 12px; background: #e85298; font-size: 20px; line-height: 24px; }
+        .used-name-bar::before { height: 1px; }
+        .used-ticket-details { min-height: 102px; padding: 8px 12px 9px; background: #fff; }
+        .used-info-area { min-height: 68px; }
+        .used-icon { width: 60px; height: 60px; margin: 0 20px 0 0; border-radius: 0; background: transparent; }
+        .used-icon img { width: 60px; height: 60px; object-fit: contain; }
+        .used-ticket-type { color: #212121; font-size: 15px; line-height: 18px; font-weight: 700; }
+        .used-time-display { margin-top: 4px; color: #424242; font-size: 12px; line-height: 15px; font-weight: 400; }
+        .used-stamp { z-index: 2; top: 12px; right: 8px; width: 90px; height: 57px; display: block; padding: 0; border: 0; border-radius: 0; object-fit: contain; transform: none; }
 
     </style>
 </head>
@@ -1202,8 +1264,8 @@
         <!-- 画面1: 初期チケット -->
         <div id="initial-screen" class="screen">
             <div class="top-bar">
-                <span><span style="color: #e85298; font-weight: bold;">1/1</span> 枚 選択中</span>
-                <span class="close-btn">×</span>
+                <span><span style="color: #e85298; font-weight: bold;">1/1</span>枚 選択中</span>
+                <button class="close-btn" type="button" aria-label="閉じる"><img src="新イープラ7_files/edsdk-close-big.svg" alt=""></button>
             </div>
             <div class="timestamp-bar" id="realtime-clock"></div>
             
@@ -1223,8 +1285,8 @@
                     </div>
                 </div>
                 <div class="stars-block">
-                    <div class="star">★</div>
-                    <div class="star">★</div>
+                    <img class="star" src="新イープラ7_files/edsdk-v3-icon-gate-star.png" alt="">
+                    <img class="star" src="新イープラ7_files/edsdk-v3-icon-gate-star.png" alt="">
                 </div>
                 <div class="venue-artist">
                     <div class="venue">「信州サマーフェスティバル2026」</div>
@@ -1234,12 +1296,15 @@
                     <div class="name">内田 風朗 様</div>
                     <div class="separator"></div>
                     <div class="checkmark-container">
-                        <div class="checkmark"></div>
+                        <img class="checkmark" src="新イープラ7_files/edsdk-check-selected-pink.svg" alt="選択中">
                     </div>
                     <div class="seat-info">
                         <div class="ticket-type">スタンディング</div>
-                        <div class="block-number">整理番号</div>
-                        <div class="queue-number">7番</div>
+                        <div class="gate-seat-lines">
+                            <div class="block-number">整理番号</div>
+                            <div class="queue-number">7番</div>
+                        </div>
+                        <div class="gate-masking-ribbon">チケット使用時に席種詳細を表示</div>
                     </div>
                 </div>
             </div>
@@ -1249,11 +1314,8 @@
         <div id="swipe-container">
             <div id="gate-screen" class="overlay-screen">
                 <div class="gate-content-wrapper">
-                    <div class="gate-arrow arrow-left yellow delay">◀</div>
-                    <div class="gate-arrow arrow-left yellow">◀</div>
-                    <div class="gate-text">GATE</div>
-                    <div class="gate-arrow arrow-right yellow">▶</div>
-                    <div class="gate-arrow arrow-right yellow delay">▶</div>
+                    <img class="gate-logo" src="新イープラ7_files/edsdk-v3-icon-gate.png" alt="GATE">
+                    <img class="gate-arrow-animation" src="新イープラ7_files/edsdk-v3-anim-gate-01.png" alt="">
                 </div>
             </div>
         </div>
@@ -1261,8 +1323,8 @@
         <!-- 画面2: 使用済みチケット -->
         <div id="used-screen" class="screen">
             <div class="top-bar">
-                <span><span style="color: #d43b60; font-weight: bold;">0/1</span> 枚 選択中</span>
-                <span class="close-btn">×</span>
+                <span><span style="color: #e85298; font-weight: bold;">0/1</span>枚 選択中</span>
+                <button class="close-btn" type="button" aria-label="閉じる"><img src="新イープラ7_files/edsdk-close-big.svg" alt=""></button>
             </div>
             <div class="timestamp-bar" id="used-realtime-clock"></div>
             
@@ -1283,17 +1345,14 @@
                     <div class="used-ticket-details">
                         <div class="used-info-area">
                             <div class="used-icon">
-                                <svg viewBox="0 0 32 20" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0 0 H24 L25 1 L24 2 L25 3 L24 4 L25 5 V7 C25 7 28 7 28 10 S 25 13 25 13 V15 L24 16 L25 17 L24 18 L25 19 L24 20 H0 Z"/>
-                                </svg>
-                                <div class="used-icon-label">入場済</div>
+                                <img src="新イープラ7_files/edsdk-v3-ticket-gatepass.png" alt="入場済みチケット">
                             </div>
                             <div class="used-ticket-type" id="used-ticket-type">
                                 スタンディング<br>整理番号<br>7番
                             </div>
                         </div>
                         <div class="used-time-display" id="used-time-display">使用日時：2026/08/11(火) 14:00</div>
-                        <div class="used-stamp">使用済</div>
+                        <img class="used-stamp" src="新イープラ7_files/edsdk-v3-ticket-used-stamp.png" alt="使用済">
                     </div>
                 </div>
             </div>
@@ -1351,6 +1410,12 @@
         const usedScreen = document.getElementById('used-screen');
         const gateInstructions = document.querySelector('.gate-instructions');
         const warningContainer = document.getElementById('init-warning');
+        const gateArrowAnimation = document.querySelector('.gate-arrow-animation');
+        let gateArrowFrame = 1;
+        window.setInterval(() => {
+            gateArrowFrame = gateArrowFrame % 6 + 1;
+            gateArrowAnimation.src = `新イープラ7_files/edsdk-v3-anim-gate-${String(gateArrowFrame).padStart(2, '0')}.png`;
+        }, 100);
         
         let interactionInProgress = false;
         let startX = 0;
@@ -1366,6 +1431,21 @@
         }
         setTouchAreaHeight();
         window.addEventListener('resize', setTouchAreaHeight);
+
+        const gateTicketInfo = document.querySelector('#initial-screen .ticket-info');
+        let seatRevealStartY = null;
+        gateTicketInfo.addEventListener('touchstart', event => {
+            if (event.touches.length === 1 && gateTicketInfo.classList.contains('is-seat-masked')) {
+                seatRevealStartY = event.touches[0].clientY;
+            }
+        }, { passive: true });
+        gateTicketInfo.addEventListener('touchmove', event => {
+            if (seatRevealStartY !== null && event.touches.length === 1 && event.touches[0].clientY - seatRevealStartY >= 36) {
+                gateTicketInfo.classList.remove('is-seat-masked');
+                seatRevealStartY = null;
+            }
+        }, { passive: true });
+        gateTicketInfo.addEventListener('touchend', () => { seatRevealStartY = null; }, { passive: true });
 
         function handleInteractionStart(e) {
             if (e.touches && e.touches.length === 2 && !interactionInProgress) {
@@ -1441,7 +1521,7 @@
                 const minutes = now.getMinutes().toString().padStart(2, '0');
                 
                 const usedTimestamp = `${year}/${month}/${date}(${day}) ${hours}:${minutes}`;
-                document.getElementById('used-time-display').textContent = `使用日時：${usedTimestamp}`;
+                document.getElementById('used-time-display').textContent = `使用日時 : ${usedTimestamp}`;
 
                 initialScreen.style.opacity = '0';
                 initialScreen.style.pointerEvents = 'none';
@@ -1602,8 +1682,36 @@ TVアニメ『逃げ上手の若君』
 イープラス 050-3185-6483</textarea></label></div>`;
         const faceSettingsCard = ticketSettingsScreen.querySelector('.ticket-face-options').closest('.settings-card');
         faceSettingsCard.before(notesSettingsCard);
+        const maskingSettingsCard = document.createElement('section');
+        maskingSettingsCard.className = 'settings-card';
+        maskingSettingsCard.innerHTML = `<div class="settings-title">座席情報の表示（5.21.2）</div><div class="settings-fields"><label class="settings-field is-wide">表示方法<select data-ticket-field="seatMasking"><option value="off">座席情報を表示</option><option value="reserved">使用時に座席番号を表示</option><option value="numbered">使用時に整理番号を表示</option><option value="generic">使用時に席種詳細を表示</option><option value="unreserved">使用時に詳細を表示</option></select></label></div>`;
+        faceSettingsCard.before(maskingSettingsCard);
         let configuredTicketFace = 'unused';
         let configuredTicketCount = 2;
+        let configuredSeatMasking = 'off';
+        function syncGateTicket(ticketValues) {
+            configuredSeatMasking = ticketValues.seatMasking || 'off';
+            document.querySelector('#initial-screen .main-date').innerHTML = `${escapeHomeText(ticketValues.date)}<span>(${escapeHomeText(ticketValues.weekday)})</span>`;
+            document.querySelector('#initial-screen .times').innerHTML = `${escapeHomeText(ticketValues.openTime)} 開場<br>${escapeHomeText(ticketValues.startTime)} 開演`;
+            document.querySelector('#initial-screen .venue').textContent = ticketValues.eventName;
+            document.querySelector('#initial-screen .artist').textContent = ticketValues.venue;
+            document.querySelector('#initial-screen .name').textContent = `${ticketValues.ownerName} 様`;
+            document.querySelector('#initial-screen .ticket-type').textContent = ticketValues.seatType;
+            document.querySelector('#initial-screen .block-number').textContent = ticketValues.block;
+            document.querySelector('#initial-screen .queue-number').textContent = `${ticketValues.row}列 ${Number.parseInt(ticketValues.seatNumber, 10) || 1}番`;
+            document.getElementById('used-name').textContent = `${ticketValues.ownerName} 様`;
+            document.getElementById('used-ticket-type').innerHTML = `${escapeHomeText(ticketValues.seatType)}<br>${escapeHomeText(ticketValues.block)}<br>${escapeHomeText(ticketValues.row)}列 ${Number.parseInt(ticketValues.seatNumber, 10) || 1}番`;
+            const maskingLabels = {
+                reserved: 'チケット使用時に下へスワイプして座席番号を表示',
+                numbered: 'チケット使用時に下へスワイプして整理番号を表示',
+                generic: 'チケット使用時に席種詳細を表示',
+                unreserved: 'チケット使用時に下へスワイプして詳細を表示'
+            };
+            const gateTicket = document.querySelector('#initial-screen .ticket-info');
+            gateTicket.classList.toggle('is-seat-masked', configuredSeatMasking !== 'off');
+            gateTicket.querySelector('.gate-masking-ribbon').textContent = maskingLabels[configuredSeatMasking] || '';
+        }
+        syncGateTicket(Object.fromEntries(Array.from(document.querySelectorAll('[data-ticket-field]'), input => [input.dataset.ticketField, input.value.trim()])));
         document.querySelector('.home-menu-icon').addEventListener('click', () => sideMenu.classList.add('is-open'));
         sideMenu.addEventListener('click', event => { if (event.target === sideMenu) sideMenu.classList.remove('is-open'); });
         document.querySelector('[data-open-ticket-settings]').addEventListener('click', () => {
@@ -1621,6 +1729,7 @@ TVアニメ『逃げ上手の若君』
         }));
         document.querySelector('[data-save-ticket-settings]').addEventListener('click', () => {
             const ticketValues = Object.fromEntries(Array.from(document.querySelectorAll('[data-ticket-field]'), input => [input.dataset.ticketField, input.value.trim()]));
+            syncGateTicket(ticketValues);
             const firstSeatNumber = Number.parseInt(ticketValues.seatNumber, 10) || 1;
             const detail = ticketDetailScreen.querySelector('.detail-scroll');
             detail.querySelectorAll('[data-detail-ticket]').forEach(ticket => ticket.remove());
@@ -1639,7 +1748,14 @@ TVアニメ『逃げ上手の若君』
                 title.querySelector('small').textContent = `${index + 1}枚目`;
             });
             detail.querySelectorAll('.ticket-seat > div').forEach((seat, index) => {
-                seat.innerHTML = `<strong>${escapeHomeText(ticketValues.seatType)}</strong><br>${escapeHomeText(ticketValues.block)}<br>${escapeHomeText(ticketValues.row)}列 ${firstSeatNumber + index}番<br>${escapeHomeText(ticketValues.price)}`;
+                const maskingLabels = {
+                    reserved: 'チケット使用時に下へスワイプして座席番号を表示',
+                    numbered: 'チケット使用時に下へスワイプして整理番号を表示',
+                    generic: 'チケット使用時に席種詳細を表示',
+                    unreserved: 'チケット使用時に下へスワイプして詳細を表示'
+                };
+                seat.innerHTML = `<strong>${escapeHomeText(ticketValues.seatType)}</strong><span class="seat-lines"><br>${escapeHomeText(ticketValues.block)}<br>${escapeHomeText(ticketValues.row)}列 ${firstSeatNumber + index}番</span><span class="seat-masking-ribbon">${maskingLabels[ticketValues.seatMasking] || ''}</span><br>${escapeHomeText(ticketValues.price)}`;
+                seat.closest('[data-detail-ticket]').classList.toggle('is-seat-masked', ticketValues.seatMasking !== 'off');
             });
             detail.querySelectorAll('.ticket-description').forEach(description => {
                 const breakPosition = description.innerHTML.indexOf('<br>');
@@ -1808,7 +1924,9 @@ TVアニメ『逃げ上手の若君』
         }
         animateGatepassButton();
         document.querySelector('[data-enter-gate]').addEventListener('click', () => {
+            gateTicketInfo.classList.toggle('is-seat-masked', configuredSeatMasking !== 'off');
             preludeLayer.classList.add('is-complete');
+            setTouchAreaHeight();
         });
 
     </script>
