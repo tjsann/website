@@ -163,6 +163,7 @@
             --app-text: #2f3032;
         }
         #prelude-layer.is-complete { opacity: 0; pointer-events: none; }
+        #prelude-layer:not(.is-complete) { z-index: 40; }
         .prelude-screen {
             position: absolute;
             inset: 0;
@@ -1395,8 +1396,7 @@
         document.querySelectorAll('.close-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (preludeLayer) {
-                    preludeLayer.classList.remove('is-complete');
-                    showPreludeScreen(ticketDetailScreen);
+                    closeGatePassScreen();
                     return;
                 }
                 if (!document.fullscreenElement) {
@@ -1437,6 +1437,19 @@
             if (positionPercent < 0.4) return gatePluckColors[3];
             if (positionPercent < 0.55) return gatePluckColors[4];
             return gatePluckColors[5];
+        }
+
+        function closeGatePassScreen() {
+            interactionInProgress = false;
+            currentOffsetX = 0;
+            swipeContainer.classList.remove('is-finishing');
+            swipeContainer.style.opacity = '0';
+            swipeContainer.style.backgroundColor = gatePluckColors[0];
+            gateScreen.style.transition = 'none';
+            gateScreen.style.transform = 'translateX(0)';
+            gateInstructions.style.opacity = '0';
+            preludeLayer.classList.remove('is-complete');
+            showPreludeScreen(ticketDetailScreen);
         }
 
         function setTouchAreaHeight() {
