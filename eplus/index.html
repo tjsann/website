@@ -18,6 +18,12 @@
         if (window.navigator.standalone === true) {
             document.documentElement.classList.add('ios-standalone');
         }
+        try {
+            const savedDisplaySettings = JSON.parse(localStorage.getItem('eplus-ticket-settings') || '{}');
+            document.documentElement.dataset.eplusPlatform = savedDisplaySettings.platform === 'android' ? 'android' : 'ios';
+        } catch (error) {
+            document.documentElement.dataset.eplusPlatform = 'ios';
+        }
     </script>
     <style>
         html { background: #e85298; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -1196,6 +1202,11 @@
         .ticket-count-stepper button { width: 36px; height: 36px; border: 1px solid #e85298; border-radius: 50%; background: #fff; color: #e85298; font-size: 24px; line-height: 1; }
         .ticket-count-value { min-width: 30px; font-size: 19px; font-weight: 700; text-align: center; }
         .ticket-settings-save { width: 100%; height: 48px; border: 0; border-radius: 24px; background: #e85298; color: #fff; font-size: 16px; font-weight: 700; }
+        .platform-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
+        .platform-option { min-height: 74px; padding: 10px 8px; border: 2px solid transparent; border-radius: 9px; background: #f5f5f5; color: #333; font: 500 13px/1.35 -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+        .platform-option strong { display: block; margin-bottom: 4px; font-size: 15px; }
+        .platform-option small { display: block; color: #777; font-size: 10px; font-weight: 400; }
+        .platform-option.is-selected { border-color: #e85298; background: #fff0f7; color: #e33d8c; }
         .ticket-owner.ticket-state-used .ticket-owner-title { background: #aeb8c1; }
         .ticket-owner.ticket-state-used .ticket-info-main, .ticket-owner.ticket-state-used .ticket-footer { background: #eef1f3; }
         .ticket-owner.ticket-state-invalid .ticket-owner-title { background: #777; }
@@ -1259,6 +1270,101 @@
         .used-time-display { margin-top: 4px; color: #424242; font-size: 14px; line-height: 18px; font-weight: 400; }
         .used-stamp { z-index: 2; top: 12px; right: 8px; width: 90px; height: 57px; display: block; padding: 0; border: 0; border-radius: 0; object-fit: contain; transform: none; }
 
+        /* Platform display modes: iPhone uses the IPA presentation; Android uses APK 5.21.2 values. */
+        html[data-eplus-platform="ios"] #prelude-layer,
+        html[data-eplus-platform="ios"] .screen { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+        html[data-eplus-platform="ios"] .prelude-screen,
+        html[data-eplus-platform="ios"] .home-header,
+        html[data-eplus-platform="ios"] .home-content,
+        html[data-eplus-platform="ios"] .nav-bar,
+        html[data-eplus-platform="ios"] .app-header-item,
+        html[data-eplus-platform="ios"] .ticket-tab,
+        html[data-eplus-platform="ios"] .ticket-list,
+        html[data-eplus-platform="ios"] .ticket-details,
+        html[data-eplus-platform="ios"] .ticket-action,
+        html[data-eplus-platform="ios"] .ticket-tool,
+        html[data-eplus-platform="ios"] .history-screen-content,
+        html[data-eplus-platform="ios"] .detail-scroll,
+        html[data-eplus-platform="ios"] .event-summary,
+        html[data-eplus-platform="ios"] .ticket-owner { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
+        html[data-eplus-platform="ios"] #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
+        html[data-eplus-platform="ios"] .nav-bar {
+            position: absolute; right: 0; bottom: 0; left: 0;
+            height: calc(74px + env(safe-area-inset-bottom, 0px)); min-height: 0;
+            align-items: flex-start; padding: 5px 12px env(safe-area-inset-bottom, 0px);
+            border-radius: 0; box-sizing: border-box; background: #fff;
+            box-shadow: 0 -3px 16px rgba(0, 0, 0, .12);
+        }
+        html[data-eplus-platform="ios"] .nav-bar > div {
+            height: 64px; min-height: 64px; align-content: center; border-radius: 32px;
+            color: #1f2525; font-size: 10px; font-weight: 500;
+        }
+        html[data-eplus-platform="ios"] .nav-bar > div.is-active { background: #e5e6e7; }
+        html[data-eplus-platform="ios"] .nav-icon { width: 52px; height: 37px; }
+        html[data-eplus-platform="ios"] .nav-icon img { width: 28px; height: 28px; }
+        html[data-eplus-platform="ios"] .home-content { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="ios"] .tab-screen-body { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="ios"] .ticket-tools { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="ios"] .event-summary .date { font-family: "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500; }
+
+        html[data-eplus-platform="android"] #prelude-layer,
+        html[data-eplus-platform="android"] .screen { font-family: Roboto, "Noto Sans JP", sans-serif; }
+        html[data-eplus-platform="android"] .prelude-screen,
+        html[data-eplus-platform="android"] .home-header,
+        html[data-eplus-platform="android"] .home-content,
+        html[data-eplus-platform="android"] .nav-bar,
+        html[data-eplus-platform="android"] .app-header-item,
+        html[data-eplus-platform="android"] .ticket-tab,
+        html[data-eplus-platform="android"] .ticket-list,
+        html[data-eplus-platform="android"] .ticket-details,
+        html[data-eplus-platform="android"] .ticket-action,
+        html[data-eplus-platform="android"] .ticket-tool,
+        html[data-eplus-platform="android"] .history-screen-content,
+        html[data-eplus-platform="android"] .detail-scroll,
+        html[data-eplus-platform="android"] .event-summary,
+        html[data-eplus-platform="android"] .ticket-owner,
+        html[data-eplus-platform="android"] .ticket-owner-title,
+        html[data-eplus-platform="android"] .ticket-seat,
+        html[data-eplus-platform="android"] .ticket-description,
+        html[data-eplus-platform="android"] .ticket-description2,
+        html[data-eplus-platform="android"] .ticket-back-info,
+        html[data-eplus-platform="android"] .ticket-number { font-family: Roboto, "Noto Sans JP", sans-serif; }
+        html[data-eplus-platform="android"] #prelude-layer { --edsdk-link: #007fff; --edsdk-ticket-main: #fbebf3; --edsdk-ticket-footer: #f3d2e2; }
+        html[data-eplus-platform="android"] .nav-bar {
+            position: absolute; right: 0; bottom: 0; left: 0;
+            height: calc(56px + env(safe-area-inset-bottom, 0px)); min-height: 0;
+            align-items: flex-start; justify-content: center; padding: 0 0 env(safe-area-inset-bottom, 0px);
+            border-radius: 0; box-sizing: border-box; background: #fff;
+            box-shadow: 0 -1px 8px rgba(0, 0, 0, .14);
+        }
+        html[data-eplus-platform="android"] .nav-bar > div {
+            position: relative; display: block; height: 56px; min-height: 56px; padding: 0; border-radius: 0;
+            color: #747474; font-family: Roboto, "Noto Sans JP", sans-serif; font-size: 9px; line-height: 11px; font-weight: 400;
+        }
+        html[data-eplus-platform="android"] .nav-bar > div.is-active { background: transparent; color: #e85298; font-weight: 700; }
+        html[data-eplus-platform="android"] .nav-icon { width: 24px; height: 24px; margin: 8px auto 0; }
+        html[data-eplus-platform="android"] .nav-bar > div.is-active .nav-icon { margin-top: 6px; background: transparent; }
+        html[data-eplus-platform="android"] .nav-icon img { width: 24px; height: 24px; }
+        html[data-eplus-platform="android"] .nav-bar > div > span:last-child { position: absolute; right: 0; bottom: 7px; left: 0; text-align: center; }
+        html[data-eplus-platform="android"] .nav-badge {
+            top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px;
+            background: #f63d2b; font-size: 9px; line-height: 16px;
+        }
+        html[data-eplus-platform="android"] .home-content { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="android"] .tab-screen-body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="android"] .ticket-tools { bottom: calc(62px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="android"] .event-summary .date { font-family: Roboto, "Noto Sans JP", sans-serif; font-weight: 400; }
+        html[data-eplus-platform="android"] #splash-screen img { width: 40%; content: url('新イープラ7_files/ic-eplus-framed-logo.svg'); }
+        html[data-eplus-platform="android"] #splash-screen::before {
+            content: ''; position: absolute; bottom: 43px; left: 50%; width: 24px; height: 24px; margin-left: -15px;
+            border: 3px solid rgba(255, 255, 255, .4); border-top-color: #fff; border-radius: 50%;
+            animation: android-loading-spin .8s linear infinite;
+        }
+        html[data-eplus-platform="android"] #splash-screen::after {
+            content: 'Now Loading...'; position: absolute; right: 0; bottom: 14px; left: 0;
+            color: #fff; font: 13px Roboto, sans-serif; text-align: center;
+        }
+        @keyframes android-loading-spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -1707,13 +1813,17 @@
           <section id="notification-screen" class="prelude-screen"><header class="tab-screen-header">通知</header><main class="tab-screen-body"><div class="tab-panel"><div class="notification-row"><img src="新イープラ7_files/ipa-home-notice-important.png" alt=""><p><b>重要なお知らせ</b><br>チケットに関する重要なお知らせを確認してください。</p></div><div class="notification-row"><img src="新イープラ7_files/ipa-home-notice-unread.png" alt=""><p><b>未読の通知があります</b><br>公演 1件・申込み 38件</p></div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>`;
         preludeLayer.insertAdjacentHTML('beforeend', tabScreensMarkup);
         preludeLayer.insertAdjacentHTML('beforeend', `
-          <div class="menu-scrim" id="home-side-menu"><aside class="side-menu"><img class="side-menu-logo" src="新イープラ7_files/ic-eplus-logo.svg" alt="eplus"><button class="side-menu-item" type="button" data-open-ticket-settings><img src="新イープラ7_files/ic-tab-ticket.svg" alt="">チケット設定</button><button class="side-menu-item" type="button"><img src="新イープラ7_files/ic-tab-infomation.svg" alt="">アプリ設定</button><button class="side-menu-item" type="button"><img src="新イープラ7_files/ic-tab-news.svg" alt="">ヘルプ・お問い合わせ</button></aside></div>
+          <div class="menu-scrim" id="home-side-menu"><aside class="side-menu"><img class="side-menu-logo" src="新イープラ7_files/ic-eplus-logo.svg" alt="eplus"><button class="side-menu-item" type="button" data-open-ticket-settings><img src="新イープラ7_files/ic-tab-ticket.svg" alt="">チケット設定</button><button class="side-menu-item" type="button" data-open-app-settings><img src="新イープラ7_files/ic-tab-infomation.svg" alt="">アプリ設定</button><button class="side-menu-item" type="button"><img src="新イープラ7_files/ic-tab-news.svg" alt="">ヘルプ・お問い合わせ</button></aside></div>
           <section id="ticket-settings-screen" class="prelude-screen"><header class="ticket-settings-header"><button class="ticket-settings-back" type="button" data-close-ticket-settings>‹</button><span>チケット設定</span><span></span></header><main class="ticket-settings-body"><section class="settings-card"><div class="settings-title">公演情報</div><div class="settings-fields"><label class="settings-field is-wide">公演名<input data-ticket-field="eventName" value="TVアニメ『逃げ上手の若君』鶴岡八幡宮プレミア上映会"></label><label class="settings-field is-wide">会場名<input data-ticket-field="venue" value="鶴岡八幡宮"></label><label class="settings-field">年<input data-ticket-field="year" inputmode="numeric" value="2024"></label><label class="settings-field">日付<input data-ticket-field="date" value="6/23"></label><label class="settings-field">曜日<input data-ticket-field="weekday" value="日"></label><label class="settings-field">開場<input data-ticket-field="openTime" value="18:30"></label><label class="settings-field">開演<input data-ticket-field="startTime" value="19:00"></label></div></section><section class="settings-card"><div class="settings-title">券面情報</div><div class="settings-fields"><label class="settings-field is-wide">所有者名<input data-ticket-field="ownerName" value="久賀 澤也"></label><label class="settings-field">席種<input data-ticket-field="seatType" value="全席指定"></label><label class="settings-field">ブロック<input data-ticket-field="block" value="Aブロック"></label><label class="settings-field">列<input data-ticket-field="row" inputmode="numeric" value="6"></label><label class="settings-field">開始番号<input data-ticket-field="seatNumber" inputmode="numeric" value="6"></label><label class="settings-field is-wide">価格（税込）<input data-ticket-field="price" value="￥1,100(税込)"></label></div></section><section class="settings-card"><div class="settings-title">券面の状態</div><div class="ticket-face-options"><button class="ticket-face-option is-selected" type="button" data-face="unused"><span class="ticket-face-preview">券</span>未使用</button><button class="ticket-face-option" type="button" data-face="used"><span class="ticket-face-preview">済</span>使用済み</button><button class="ticket-face-option" type="button" data-face="invalid"><span class="ticket-face-preview">×</span>無効</button></div></section><section class="settings-card"><div class="settings-title">チケット枚数</div><div class="ticket-count-row"><span>表示する枚数</span><div class="ticket-count-stepper"><button type="button" data-ticket-count="-1">−</button><span class="ticket-count-value">2</span><button type="button" data-ticket-count="1">＋</button></div></div></section><button class="ticket-settings-save" type="button" data-save-ticket-settings>設定を反映</button></main></section>`);
         const splashScreen = document.getElementById('splash-screen');
         const ticketListScreen = document.getElementById('ticket-list-screen');
         const ticketDetailScreen = document.getElementById('ticket-detail-screen');
         const ticketSettingsScreen = document.getElementById('ticket-settings-screen');
         const sideMenu = document.getElementById('home-side-menu');
+        const platformSettingsCard = document.createElement('section');
+        platformSettingsCard.className = 'settings-card';
+        platformSettingsCard.innerHTML = `<div class="settings-title">表示モード</div><div class="platform-options"><button class="platform-option" type="button" data-platform-option="ios"><strong>iPhone</strong><small>IPA 5.20.0・iPhone実機準拠</small></button><button class="platform-option" type="button" data-platform-option="android"><strong>Android</strong><small>APK 5.21.2準拠</small></button></div>`;
+        ticketSettingsScreen.querySelector('.ticket-settings-body').prepend(platformSettingsCard);
         const notesSettingsCard = document.createElement('section');
         notesSettingsCard.className = 'settings-card';
         notesSettingsCard.innerHTML = `<div class="settings-title">注意事項・券面情報</div><div class="settings-fields"><label class="settings-field is-wide">表示する文章<textarea data-ticket-field="notes">※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行、荒天中止となる場合もございます。中止の場合は公式サイト及び公式Xにてお知らせします。
@@ -1733,6 +1843,18 @@ TVアニメ『逃げ上手の若君』
         let configuredTicketFace = 'unused';
         let configuredTicketCount = 2;
         let configuredSeatMasking = 'off';
+        let configuredPlatform = document.documentElement.dataset.eplusPlatform === 'android' ? 'android' : 'ios';
+        function applyPlatformMode(platform) {
+            configuredPlatform = platform === 'android' ? 'android' : 'ios';
+            document.documentElement.dataset.eplusPlatform = configuredPlatform;
+            document.getElementById('smartphone-container').dataset.platform = configuredPlatform;
+            document.querySelectorAll('[data-platform-option]').forEach(option => {
+                const selected = option.dataset.platformOption === configuredPlatform;
+                option.classList.toggle('is-selected', selected);
+                option.setAttribute('aria-pressed', String(selected));
+            });
+        }
+        applyPlatformMode(configuredPlatform);
         function syncGateTicket(ticketValues) {
             configuredSeatMasking = ticketValues.seatMasking || 'off';
             document.querySelector('#initial-screen .main-date').innerHTML = `${escapeHomeText(ticketValues.date)}<span>(${escapeHomeText(ticketValues.weekday)})</span>`;
@@ -1762,7 +1884,17 @@ TVアニメ『逃げ上手の若君』
             sideMenu.classList.remove('is-open');
             showPreludeScreen(ticketSettingsScreen);
         });
+        document.querySelector('[data-open-app-settings]').addEventListener('click', () => {
+            sideMenu.classList.remove('is-open');
+            showPreludeScreen(ticketSettingsScreen);
+        });
         document.querySelector('[data-close-ticket-settings]').addEventListener('click', () => showPreludeScreen(document.getElementById('home-screen')));
+        document.querySelectorAll('[data-platform-option]').forEach(option => option.addEventListener('click', () => {
+            applyPlatformMode(option.dataset.platformOption);
+            let savedSettings = {};
+            try { savedSettings = JSON.parse(localStorage.getItem('eplus-ticket-settings') || '{}'); } catch (error) { savedSettings = {}; }
+            localStorage.setItem('eplus-ticket-settings', JSON.stringify({ ...savedSettings, platform: configuredPlatform }));
+        }));
         document.querySelectorAll('.ticket-face-option').forEach(option => option.addEventListener('click', () => {
             configuredTicketFace = option.dataset.face;
             document.querySelectorAll('.ticket-face-option').forEach(item => item.classList.toggle('is-selected', item === option));
@@ -1827,7 +1959,7 @@ TVアニメ『逃げ上手の若君』
                 const venueNode = Array.from(details.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
                 if (venueNode) venueNode.nodeValue = ticketValues.venue;
             }
-            localStorage.setItem('eplus-ticket-settings', JSON.stringify({ ...ticketValues, face: configuredTicketFace, count: configuredTicketCount }));
+            localStorage.setItem('eplus-ticket-settings', JSON.stringify({ ...ticketValues, face: configuredTicketFace, count: configuredTicketCount, platform: configuredPlatform }));
             showPreludeScreen(ticketDetailScreen);
         });
         function showPreludeScreen(screen) {
@@ -1877,6 +2009,7 @@ TVアニメ『逃げ上手の若君』
         });
         document.querySelectorAll('.nav-bar').forEach(nav => {
             let trackedButton = null;
+            let pressedButton = null;
             let tracking = false;
 
             const buttonAt = (clientX, clientY) => {
@@ -1898,26 +2031,29 @@ TVアニメ『逃げ上手の若君』
             nav.addEventListener('pointerdown', event => {
                 if (!event.isPrimary) return;
                 tracking = true;
+                pressedButton = buttonAt(event.clientX, event.clientY);
                 nav.setPointerCapture(event.pointerId);
-                previewButton(buttonAt(event.clientX, event.clientY));
+                if (configuredPlatform === 'ios') previewButton(pressedButton);
                 event.preventDefault();
             });
             nav.addEventListener('pointermove', event => {
                 if (!tracking || !event.isPrimary) return;
-                previewButton(buttonAt(event.clientX, event.clientY));
+                if (configuredPlatform === 'ios') previewButton(buttonAt(event.clientX, event.clientY));
                 event.preventDefault();
             });
             nav.addEventListener('pointerup', event => {
                 if (!tracking) return;
                 tracking = false;
-                const target = trackedButton;
+                const target = configuredPlatform === 'ios' ? trackedButton : pressedButton === buttonAt(event.clientX, event.clientY) ? pressedButton : null;
                 trackedButton = null;
+                pressedButton = null;
                 event.preventDefault();
                 if (target) activateNavigation(target.dataset.nav);
             });
             nav.addEventListener('pointercancel', () => {
                 tracking = false;
                 trackedButton = null;
+                pressedButton = null;
                 const activeScreen = document.querySelector('.prelude-screen.is-active');
                 if (activeScreen) showPreludeScreen(activeScreen);
             });
