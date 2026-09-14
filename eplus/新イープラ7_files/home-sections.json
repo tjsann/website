@@ -1,32 +1,33 @@
 {
+  "updatedAt": "2026-09-14",
   "sections": [
     { "title": "これも好きかも", "slug": "score", "items": [
-      { "name": "SUMMER SONIC 2026", "date": "8/14(金)～8/16(日)", "venue": "幕張メッセ（千葉県）", "status": "受付中", "image": "https://material.onlineticket.jp/s/image/B000006659/B000006659.jpg", "url": "https://eplus.jp/sf/live/festival/ss" },
-      { "name": "LIVE AZUMA 2026", "date": "10月開催", "venue": "福島県", "status": "先着 受付中", "image": "https://material.onlineticket.jp/s/image/B000007092/B000007092.jpg", "url": "https://eplus.jp/sf/word/0000154744" }
+      { "name": "FAVOY OSAKA", "date": "最終先着受付中", "venue": "大阪府", "status": "先着 受付中", "image": "新イープラ7_files/home-B000007130.jpg", "url": "https://eplus.jp/sf/word/0000169895" },
+      { "name": "いしがきMUSIC FESTIVAL", "date": "公演日程を確認", "venue": "岩手県", "status": "受付中", "image": "新イープラ7_files/home-B000007163.jpg", "url": "https://eplus.jp/sf/detail/0200950001" }
     ]},
-    { "title": "全国 音楽フェス大特集！", "slug": "feature1", "items": [
-      { "name": "RUSH BALL 2026", "date": "8/29(土)～8/30(日)", "venue": "泉大津フェニックス（大阪府）", "status": "先着 受付中", "image": "https://material.onlineticket.jp/s/image/007814/0048/000/list/0078140048_1.jpg", "url": "https://eplus.jp/sf/detail/0078140048-P0030152" },
-      { "name": "氣志團万博2026 ～房総爆音リゾート～", "date": "11/7(土)～11/8(日)", "venue": "幕張メッセ（千葉県）", "status": "受付中", "image": "https://material.onlineticket.jp/s/image/075506/0002/000/list/0755060002_10.jpg", "url": "https://eplus.jp/sf/detail/0755060002-P0030080" }
+    { "title": "注目のライブ・コンサート", "slug": "feature1", "items": [
+      { "name": "RADIOHEAD 2027 JAPAN", "date": "2027/6/8(火)～6/13(日)", "venue": "GMOアリーナさいたま（埼玉県）", "status": "抽選 受付中", "image": "新イープラ7_files/home-B000007151.jpg", "url": "https://eplus.jp/sf/word/0000001172" },
+      { "name": "WEEZER", "date": "公演日程を確認", "venue": "公演情報を確認", "status": "受付中", "image": "新イープラ7_files/home-B000007162.jpg", "url": "https://eplus.jp/sf/detail/0233910001" }
     ]},
-    { "title": "夏のイベント特集", "slug": "feature2", "items": [
-      { "name": "全国花火大会・夏祭り特集", "date": "7月～10月開催", "venue": "全国各地", "status": "チケットを探す", "image": "新イープラ7_files/event-exhibition-banner.png", "url": "https://eplus.jp/" },
-      { "name": "夏のおでかけイベント特集", "date": "開催中", "venue": "全国各地", "status": "受付中", "image": "新イープラ7_files/event-stage-banner.png", "url": "https://eplus.jp/" }
+    { "title": "スポーツ・イベント特集", "slug": "feature2", "items": [
+      { "name": "Baycurrent Classic Presented by LEXUS", "date": "10月開催", "venue": "横浜カントリークラブ（神奈川県）", "status": "早割 受付中", "image": "新イープラ7_files/home-B000007021.jpg", "url": "https://eplus.jp/sf/word/0000160189" },
+      { "name": "KORAKUEN JAMBULL", "date": "9/27(日)", "venue": "後楽園ホール（東京都）", "status": "受付中", "image": "新イープラ7_files/home-B000007079.jpg", "url": "https://eplus.jp/sf/word/0000180612" }
     ]},
-    { "title": "注目の舞台・アニメイベント", "slug": "feature3", "items": [
-      { "name": "ミュージカル『新テニスの王子様』The Final Stage", "date": "10/2(金)～11/15(日)", "venue": "東京・大阪・岐阜", "status": "受付中", "image": "https://material.onlineticket.jp/s/image/B000007108/B000007108.jpg", "url": "https://eplus.jp/sf/detail/0473460021" },
-      { "name": "アニメーション 呪術廻戦展", "date": "開催日程を確認", "venue": "全国各地", "status": "受付中", "image": "https://material.onlineticket.jp/s/image/B000006807/B000006807.jpg", "url": "https://eplus.jp/sf/word/0000150809" }
+    { "title": "注目のアニメ・展示イベント", "slug": "feature3", "items": [
+      { "name": "高橋和希原画展 YU-GI-OH! ART WORKS", "date": "9/14(月)～9/27(日) 抽選販売", "venue": "開催会場を確認", "status": "抽選 受付中", "image": "新イープラ7_files/home-B000007166.jpg", "url": "https://eplus.jp/sf/word/0000182530" },
+      { "name": "アニメーション 呪術廻戦展", "date": "開催日程を確認", "venue": "開催会場を確認", "status": "受付中", "image": "新イープラ7_files/home-B000006807.jpg", "url": "https://eplus.jp/sf/word/0000150809" }
     ]},
     { "title": "ただいま受付中", "slug": "entry", "items": [
-      { "name": "GO-AheadZ", "date": "8/16(日)まで受付", "venue": "公演情報を確認", "status": "最速先着", "image": "https://material.onlineticket.jp/s/image/B000007097/B000007097.jpg", "url": "https://go-aheadz.com/" },
-      { "name": "Baycurrent Classic Presented by LEXUS", "date": "10/8(木)～", "venue": "神奈川県", "status": "早割 受付中", "image": "https://material.onlineticket.jp/s/image/B000007021/B000007021.jpg", "url": "https://eplus.jp/sf/word/0000160189" }
+      { "name": "離婚伝説", "date": "9/27(日)まで先行受付", "venue": "公演情報を確認", "status": "抽選 受付中", "image": "新イープラ7_files/home-B000007158.jpg", "url": "https://eplus.jp/sf/word/0000157038" },
+      { "name": "FORCE FESTIVAL", "date": "9/30(水)まで先行受付", "venue": "公演情報を確認", "status": "先着 受付中", "image": "新イープラ7_files/home-B000007145.jpg", "url": "https://eplus.jp/sf/detail/4587730001" }
     ]},
-    { "title": "申込み履歴からのおすすめ", "slug": "genre", "items": [
-      { "name": "おすすめのライブ・コンサート", "date": "近日開催", "venue": "東京都ほか", "status": "受付中", "image": "新イープラ7_files/event-live-banner.png", "url": "https://eplus.jp/sf/live" },
-      { "name": "おすすめの舞台・演劇", "date": "近日開催", "venue": "全国各地", "status": "受付中", "image": "新イープラ7_files/event-stage-banner.png", "url": "https://eplus.jp/sf/play" }
+    { "title": "おすすめの公演", "slug": "genre", "items": [
+      { "name": "LIVE AZUMA", "date": "チケット発売中", "venue": "福島県", "status": "受付中", "image": "新イープラ7_files/home-B000007092.jpg", "url": "https://eplus.jp/sf/word/0000154744" },
+      { "name": "FAVOY OSAKA", "date": "最終先着受付中", "venue": "大阪府", "status": "先着 受付中", "image": "新イープラ7_files/home-B000007130.jpg", "url": "https://eplus.jp/sf/word/0000169895" }
     ]},
     { "title": "お住まいの地域の公演", "slug": "area", "items": [
-      { "name": "東京都で開催される公演", "date": "今週・今月", "venue": "東京都", "status": "公演を探す", "image": "新イープラ7_files/event-live-banner.png", "url": "https://eplus.jp/" },
-      { "name": "関東で開催される公演", "date": "今週・今月", "venue": "関東", "status": "公演を探す", "image": "新イープラ7_files/event-exhibition-banner.png", "url": "https://eplus.jp/" }
+      { "name": "関東で開催される公演", "date": "今週・今月", "venue": "関東", "status": "公演を探す", "image": "新イープラ7_files/home-B000007151.jpg", "url": "https://eplus.jp/sf/area/kanto" },
+      { "name": "関西で開催される公演", "date": "今週・今月", "venue": "関西", "status": "公演を探す", "image": "新イープラ7_files/home-B000007130.jpg", "url": "https://eplus.jp/sf/area/kansai" }
     ]}
   ]
 }
