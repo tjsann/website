@@ -1205,9 +1205,10 @@
         .ticket-owner.is-seat-masked .seat-masking-ribbon { display: block; }
 
         /* eplus Android 5.21.2: smart-ticket gate-pass layout values. */
-        #initial-screen, #used-screen { background: #f7f7f7; font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; }
+        #initial-screen, #used-screen { transition: none; background: #f7f7f7; font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; }
         #initial-screen .top-bar, #used-screen .top-bar { min-height: 56px; padding: 0 15px; box-sizing: border-box; border-bottom: 0; font-size: 16px; font-weight: 700; }
-        .top-bar .close-btn { width: 42px; height: 36px; display: grid; place-items: center; margin-right: -9px; padding: 0; border: 0; background: transparent url('新イープラ7_files/edsdk-close-big.svg') center / 15px 15px no-repeat; }
+        #initial-screen .top-bar, #used-screen .top-bar { position: relative; }
+        .top-bar .close-btn { position: absolute; top: 10px; right: 6px; width: 42px; height: 36px; display: grid; place-items: center; padding: 0; border: 0; background: transparent url('新イープラ7_files/edsdk-close-big.svg') center / 15px 15px no-repeat; }
         .top-bar .close-btn img { width: 15px; height: 15px; display: block; opacity: 1; }
         .timestamp-bar { min-height: 36px; display: grid; place-items: center; padding: 8px 7px; box-sizing: border-box; background: #2fa8b3; font-size: 16px; line-height: 20px; font-weight: 700; letter-spacing: 0; }
         .warning-container { height: auto; min-height: 43px; align-items: stretch; margin: 10px 8px 0; padding: 0; gap: 8px; background: transparent; }
@@ -1234,23 +1235,27 @@
         #initial-screen .ticket-type { font-size: 18px; line-height: 22px; font-weight: 400; }
         #initial-screen .block-number { font-size: 15px; line-height: 18px; font-weight: 700; }
         #initial-screen .queue-number { color: #fff; font-size: 18px; line-height: 22px; font-weight: 700; }
-        #swipe-container { border-radius: 0; background: linear-gradient(90deg, #e75958 0 50%, #449f89 50% 100%); }
+        #swipe-container { border-radius: 8px 8px 0 0; background: #3689c2; }
+        #swipe-container.is-finishing { background: #d94972; }
         #gate-screen { background: #0050aa; }
         .gate-content-wrapper { position: relative; width: 100%; height: 100%; gap: 0; }
         .gate-logo { position: absolute; top: 50%; left: 50%; width: 126px; height: auto; transform: translate(-50%, -50%); }
-        .gate-arrow-animation { position: absolute; top: 50%; left: 50%; width: 189px; height: auto; transform: translate(-50%, -50%); }
-        .gate-instructions { top: 56px; width: auto; max-width: calc(100% - 16px); padding: 5px 8px; border-radius: 5px; box-sizing: border-box; background: #fcff00; color: #ef2525; font-size: 18px; line-height: 1.18; font-weight: 400; }
+        .gate-arrow-animation { position: absolute; top: 50%; left: 50%; width: min(320px, calc(100% - 24px)); height: auto; transform: translate(-50%, -50%); }
+        .gate-instructions { top: 56px; right: 8px; left: 8px; width: fit-content; max-width: calc(100% - 16px); margin: 0 auto; padding: 5px 8px; border-radius: 5px; box-sizing: border-box; background: #fcff00; color: #ef2525; font-size: 18px; line-height: 1.18; font-weight: 400; transform: none; }
         #used-screen .main-content { padding: 10px 8px 0; background: #f7f7f7; }
         .used-used-banner { height: 160px; margin: 0; padding: 0; border-radius: 5px 5px 0 0; background: #d94972; font-size: 18px; font-weight: 400; }
         .used-ticket-stub { margin: 0; padding: 0 8px 9px; background: #fff; }
         .used-name-bar { margin: 0 -8px; padding: 10px 12px; background: #e85298; font-size: 20px; line-height: 24px; }
         .used-name-bar::before { height: 1px; }
-        .used-ticket-details { min-height: 102px; padding: 8px 12px 9px; background: #fff; }
+        .used-ticket-details { min-height: 102px; padding: 8px 12px 9px; background: rgba(176, 186, 196, .2); }
         .used-info-area { min-height: 68px; }
         .used-icon { width: 60px; height: 60px; margin: 0 20px 0 0; border-radius: 0; background: transparent; }
         .used-icon img { width: 60px; height: 60px; object-fit: contain; }
-        .used-ticket-type { color: #212121; font-size: 15px; line-height: 18px; font-weight: 700; }
-        .used-time-display { margin-top: 4px; color: #424242; font-size: 12px; line-height: 15px; font-weight: 400; }
+        .used-ticket-type { min-width: 0; color: #212121; }
+        .used-ticket-type-main { display: block; margin-top: 0; font-size: 18px; line-height: 22px; font-weight: 400; }
+        .used-ticket-seat { display: block; font-size: 15px; line-height: 18px; font-weight: 700; }
+        .used-ticket-row { display: block; margin-top: 4px; font-size: 18px; line-height: 22px; font-weight: 700; }
+        .used-time-display { margin-top: 4px; color: #424242; font-size: 14px; line-height: 18px; font-weight: 400; }
         .used-stamp { z-index: 2; top: 12px; right: 8px; width: 90px; height: 57px; display: block; padding: 0; border: 0; border-radius: 0; object-fit: contain; transform: none; }
 
     </style>
@@ -1348,7 +1353,9 @@
                                 <img src="新イープラ7_files/edsdk-v3-ticket-gatepass.png" alt="入場済みチケット">
                             </div>
                             <div class="used-ticket-type" id="used-ticket-type">
-                                スタンディング<br>整理番号<br>7番
+                                <span class="used-ticket-type-main">スタンディング</span>
+                                <span class="used-ticket-seat">整理番号</span>
+                                <span class="used-ticket-row">7番</span>
                             </div>
                         </div>
                         <div class="used-time-display" id="used-time-display">使用日時：2026/08/11(火) 14:00</div>
@@ -1409,7 +1416,6 @@
         const initialScreen = document.getElementById('initial-screen');
         const usedScreen = document.getElementById('used-screen');
         const gateInstructions = document.querySelector('.gate-instructions');
-        const warningContainer = document.getElementById('init-warning');
         const gateArrowAnimation = document.querySelector('.gate-arrow-animation');
         let gateArrowFrame = 1;
         window.setInterval(() => {
@@ -1419,6 +1425,19 @@
         
         let interactionInProgress = false;
         let startX = 0;
+        let currentOffsetX = 0;
+        const gateOpenRatio = 0.55;
+        const gateAnimationTime = 200;
+        const gatePluckColors = ['#3689c2', '#459ca7', '#449f89', '#95c47f', '#f6ee73', '#e75958'];
+
+        function getGatePluckColor(positionPercent) {
+            if (positionPercent < 0.1) return gatePluckColors[0];
+            if (positionPercent < 0.2) return gatePluckColors[1];
+            if (positionPercent < 0.3) return gatePluckColors[2];
+            if (positionPercent < 0.4) return gatePluckColors[3];
+            if (positionPercent < 0.55) return gatePluckColors[4];
+            return gatePluckColors[5];
+        }
 
         function setTouchAreaHeight() {
             const mainContent = document.querySelector('#initial-screen .main-content');
@@ -1448,12 +1467,12 @@
         gateTicketInfo.addEventListener('touchend', () => { seatRevealStartY = null; }, { passive: true });
 
         function handleInteractionStart(e) {
-            if (e.touches && e.touches.length === 2 && !interactionInProgress) {
+            if (e.touches && e.touches.length >= 1 && !interactionInProgress) {
                 interactionInProgress = true;
                 
-                const warningRect = warningContainer.getBoundingClientRect();
+                const topViewRect = document.querySelector('#initial-screen .date-time-block').getBoundingClientRect();
                 const ticketInfo = document.querySelector('#initial-screen .ticket-info');
-                const topPos = warningRect.bottom;
+                const topPos = topViewRect.top;
                 const ticketRect = ticketInfo.getBoundingClientRect();
                 
                 swipeContainer.style.top = `${topPos}px`;
@@ -1461,54 +1480,65 @@
                 swipeContainer.style.width = `${ticketRect.width}px`;
                 swipeContainer.style.height = `${ticketRect.top - topPos - 3}px`;
                 swipeContainer.style.opacity = '1';
+                swipeContainer.classList.remove('is-finishing');
+                swipeContainer.style.backgroundColor = gatePluckColors[0];
                 gateInstructions.style.opacity = '1';
 
                 gateScreen.style.transition = 'none';
                 gateScreen.style.transform = 'translateX(0)';
 
-                startX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                startX = e.touches[0].clientX;
+                currentOffsetX = 0;
                 e.preventDefault();
             }
         }
 
         function handleInteractionMove(e) {
-            if (!interactionInProgress || !e.touches || e.touches.length < 2) return;
+            if (!interactionInProgress || !e.touches || e.touches.length < 1) return;
             e.preventDefault();
 
-            const currentX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const currentX = e.touches[0].clientX;
             const diffX = currentX - startX;
+            currentOffsetX = Math.max(-swipeContainer.offsetWidth, Math.min(swipeContainer.offsetWidth, diffX));
+            const positionPercent = Math.min(1, Math.abs(currentOffsetX) / swipeContainer.offsetWidth);
 
-            gateScreen.style.transform = `translateX(${diffX}px)`;
-
-            if (Math.abs(diffX) > 100) {
-                useTicket();
-            }
+            gateScreen.style.transform = `translateX(${currentOffsetX}px)`;
+            swipeContainer.style.backgroundColor = getGatePluckColor(positionPercent);
         }
 
         function handleInteractionEnd(e) {
-            if (interactionInProgress) {
+            if (!interactionInProgress) return;
+            if (e.touches && e.touches.length > 0) return;
+            const shouldUseTicket = Math.abs(currentOffsetX) >= swipeContainer.offsetWidth * gateOpenRatio;
+            if (shouldUseTicket) {
+                useTicket();
+                return;
+            }
+
+            interactionInProgress = false;
+            gateScreen.style.transition = `transform ${gateAnimationTime}ms ease-out`;
+            gateScreen.style.transform = 'translateX(0)';
+            window.setTimeout(() => {
                 swipeContainer.style.opacity = '0';
                 gateInstructions.style.opacity = '0';
-                gateScreen.style.transform = 'translateX(0)';
-            }
-            interactionInProgress = false;
+                swipeContainer.style.backgroundColor = gatePluckColors[0];
+                currentOffsetX = 0;
+            }, gateAnimationTime);
         }
 
         function useTicket() {
             interactionInProgress = false;
+            swipeContainer.style.backgroundColor = gatePluckColors[5];
             
-            const finalDiffX = parseFloat(gateScreen.style.transform.match(/-?\d+/)[0] || 0);
-            
-            /* もぎりスライドのアニメーション時間をやや長く(0.5s)変更 */
-            gateScreen.style.transition = 'transform 0.5s ease-in-out';
-            if (finalDiffX > 0) {
+            gateScreen.style.transition = `transform ${gateAnimationTime}ms ease-out`;
+            if (currentOffsetX > 0) {
                 gateScreen.style.transform = `translateX(${swipeContainer.offsetWidth}px)`;
             } else {
                 gateScreen.style.transform = `translateX(-${swipeContainer.offsetWidth}px)`;
             }
 
-            /* アニメーション時間に合わせて待機時間も500msに変更 */
             setTimeout(() => {
+                swipeContainer.classList.add('is-finishing');
                 swipeContainer.style.opacity = '0';
                 gateInstructions.style.opacity = '0';
 
@@ -1521,7 +1551,7 @@
                 const minutes = now.getMinutes().toString().padStart(2, '0');
                 
                 const usedTimestamp = `${year}/${month}/${date}(${day}) ${hours}:${minutes}`;
-                document.getElementById('used-time-display').textContent = `使用日時 : ${usedTimestamp}`;
+                document.getElementById('used-time-display').textContent = `使用日時：${usedTimestamp}`;
 
                 initialScreen.style.opacity = '0';
                 initialScreen.style.pointerEvents = 'none';
@@ -1532,7 +1562,7 @@
                 clearInterval(clockInterval);
                 updateClock(usedClockElement);
                 usedClockInterval = setInterval(() => updateClock(usedClockElement), 10);
-            }, 500);
+            }, gateAnimationTime);
 
             swipeTouchArea.removeEventListener('touchstart', handleInteractionStart);
             swipeTouchArea.removeEventListener('touchmove', handleInteractionMove);
@@ -1542,6 +1572,7 @@
         swipeTouchArea.addEventListener('touchstart', handleInteractionStart, { passive: false });
         swipeTouchArea.addEventListener('touchmove', handleInteractionMove, { passive: false });
         swipeTouchArea.addEventListener('touchend', handleInteractionEnd);
+        swipeTouchArea.addEventListener('touchcancel', handleInteractionEnd);
 
         // Launch flow: splash → ticket list → ticket detail → existing gate screen.
         const preludeLayer = document.getElementById('prelude-layer');
@@ -1700,7 +1731,7 @@ TVアニメ『逃げ上手の若君』
             document.querySelector('#initial-screen .block-number').textContent = ticketValues.block;
             document.querySelector('#initial-screen .queue-number').textContent = `${ticketValues.row}列 ${Number.parseInt(ticketValues.seatNumber, 10) || 1}番`;
             document.getElementById('used-name').textContent = `${ticketValues.ownerName} 様`;
-            document.getElementById('used-ticket-type').innerHTML = `${escapeHomeText(ticketValues.seatType)}<br>${escapeHomeText(ticketValues.block)}<br>${escapeHomeText(ticketValues.row)}列 ${Number.parseInt(ticketValues.seatNumber, 10) || 1}番`;
+            document.getElementById('used-ticket-type').innerHTML = `<span class="used-ticket-type-main">${escapeHomeText(ticketValues.seatType)}</span><span class="used-ticket-seat">${escapeHomeText(ticketValues.block)}</span><span class="used-ticket-row">${escapeHomeText(ticketValues.row)}列 ${Number.parseInt(ticketValues.seatNumber, 10) || 1}番</span>`;
             const maskingLabels = {
                 reserved: 'チケット使用時に下へスワイプして座席番号を表示',
                 numbered: 'チケット使用時に下へスワイプして整理番号を表示',
