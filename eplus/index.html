@@ -29,7 +29,7 @@
         }
     </script>
     <style>
-        html { background: #e85298; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        html { background: #fff; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-regular.ttf') format('truetype'); font-weight: 400; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-medium.ttf') format('truetype'); font-weight: 500; }
         @font-face { font-family: 'SF Pro Text'; src: url('新イープラ7_files/sf-pro-text-semibold.ttf') format('truetype'); font-weight: 600; }
@@ -1350,10 +1350,10 @@
         html[data-eplus-platform="ios"] #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
         html[data-eplus-platform="ios"] .nav-bar {
             position: fixed; z-index: 20; right: 0; bottom: 0; left: 0;
-            height: calc(72px + env(safe-area-inset-bottom, 0px)); min-height: 72px;
-            align-items: flex-start; padding: 4px 24px calc(12px + env(safe-area-inset-bottom, 0px));
+            height: 72px; min-height: 72px;
+            align-items: flex-start; padding: 4px 24px 12px;
             border: 0; border-radius: 0; box-sizing: border-box;
-            background: transparent; box-shadow: none;
+            background: #fff; box-shadow: none;
             isolation: isolate;
         }
         html[data-eplus-platform="ios"] .nav-bar::before {
@@ -1373,9 +1373,9 @@
         html[data-eplus-platform="ios"] .nav-icon img { width: 24px; height: 23px; object-fit: contain; }
         html[data-eplus-platform="ios"] .nav-badge { top: -2px; right: -4px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; font-size: 11px; line-height: 19px; }
         html[data-eplus-platform="ios"] .nav-badge.is-ticket-badge { display: none; }
-        html[data-eplus-platform="ios"] .home-content { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
-        html[data-eplus-platform="ios"] .tab-screen-body { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
-        html[data-eplus-platform="ios"] .ticket-tools { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+        html[data-eplus-platform="ios"] .home-content { padding-bottom: 84px; }
+        html[data-eplus-platform="ios"] .tab-screen-body { padding-bottom: 100px; }
+        html[data-eplus-platform="ios"] .ticket-tools { bottom: 78px; }
         html[data-eplus-platform="ios"] .event-summary .date { font-family: "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500; }
 
         html[data-eplus-platform="android"] #prelude-layer,
