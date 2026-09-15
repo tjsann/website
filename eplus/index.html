@@ -396,8 +396,6 @@
         .ticket-number { position: relative; margin: 7px -9px -9px; padding: 7px 30px 7px 9px; background: #f6d6e5; color: #168dcc; font-size: 9px; }
         .ticket-collapse { position: absolute; right: 10px; bottom: 10px; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
         .ticket-collapse img { display: block; width: 20px; height: 20px; }
-        .ticket-owner.secondary .ticket-owner-title { background: #aab3b9; }
-        .ticket-owner.secondary .ticket-owner-content { min-height: 55px; background: #e7eaec; }
         .detail-header { position: relative; height: 49px; min-height: 49px; padding: 0 8px 0 5px; background: #fff; }
         .detail-back { width: 28px; height: 36px; padding: 0; border: 0; border-radius: 0; background: transparent; appearance: none; }
         .detail-back img { width: 8px; height: 16px; }
@@ -415,7 +413,6 @@
         .distribution-button img { width: 120px; height: 29px; display: block; }
         .ticket-long-notes { min-height: 350px; margin-top: 0; padding: 9px 30px 0 0; font-size: 8.5px; line-height: 1.48; color: #444; }
         .ticket-number { margin: 8px -11px -10px; padding: 8px 32px 8px 10px; font-size: 10px; }
-        .ticket-owner.secondary .ticket-owner-content { min-height: 112px; }
 
         /* Typography mapped from APK textSize/fontFamily resources. */
         #prelude-layer { color: #212121; }
@@ -475,8 +472,6 @@
         .ticket-description2 { margin: 0 40px 0 10px; font-size: 12px; line-height: 1.42; font-weight: 400; overflow-wrap: anywhere; }
         .ticket-number-divider { height: 1px; margin: 8px 0 10px; background: #bdbdbd; }
         .ticket-number { margin: 0 40px 0 10px; padding: 0; border: 0; background: transparent; color: #007fff; font-size: 14px; line-height: 1.4; }
-        .ticket-owner.secondary .ticket-owner-title { background: #aab3b9; }
-        .ticket-owner.secondary .ticket-info-main, .ticket-owner.secondary .distribution-wrap { background: #f1f3f4; }
         .ticket-back-info { display: block; margin: 2px 10px 0; color: #007fff; font-size: 12px; line-height: 1.4; }
         .prelude-screen, .home-header, .home-content, .nav-bar, .app-header-item, .ticket-tab, .ticket-list, .ticket-details, .ticket-action, .ticket-tool, .history-screen-content, .detail-scroll, .event-summary, .ticket-owner { font-family: 'SF Pro Text', 'Eplus Japanese', sans-serif; font-kerning: normal; letter-spacing: 0; font-synthesis: none; -webkit-font-smoothing: antialiased; }
 
@@ -1253,22 +1248,31 @@
         .platform-option strong { display: block; margin-bottom: 4px; font-size: 15px; }
         .platform-option small { display: block; color: #777; font-size: 10px; font-weight: 400; }
         .platform-option.is-selected { border-color: #e85298; background: #fff0f7; color: #e33d8c; }
-        .ticket-owner.ticket-state-used .ticket-owner-title { background: #aeb8c1; }
-        .ticket-owner.ticket-state-used .ticket-info-main, .ticket-owner.ticket-state-used .ticket-footer { background: #eef1f3; }
+        .ticket-owner.ticket-state-unused .ticket-owner-title { background: #e85298; }
+        .ticket-owner.ticket-state-unused .ticket-info-main,
+        .ticket-owner.ticket-state-unused .distribution-wrap { background: var(--edsdk-ticket-main); }
+        .ticket-owner.ticket-state-unused .ticket-footer { background: var(--edsdk-ticket-footer); }
+        .ticket-owner.ticket-state-used .ticket-owner-title { background: #b0bac4; }
+        .ticket-owner.ticket-state-used .ticket-info-main { position: relative; background: #f7f8f9; }
+        .ticket-owner.ticket-state-used .ticket-footer { background: #e0e3e7; }
         .ticket-used-mark { display: none; }
         .ticket-gatepass-timestamp { display: none; }
         .ticket-owner.ticket-state-gatepassed .ticket-owner-title { background: #b0bac4; }
         .ticket-owner.ticket-state-gatepassed .ticket-info-main { position: relative; background: #f7f8f9; }
         .ticket-owner.ticket-state-gatepassed .ticket-footer { background: #e0e3e7; }
+        .ticket-owner.ticket-state-used .distribution-wrap,
         .ticket-owner.ticket-state-gatepassed .distribution-wrap { display: none; }
+        .ticket-owner.ticket-state-used .ticket-used-mark,
         .ticket-owner.ticket-state-gatepassed .ticket-used-mark {
             position: absolute; z-index: 2; top: 10px; right: 10px;
             display: block; width: 112px; height: 70px; object-fit: contain;
         }
+        .ticket-owner.ticket-state-used .ticket-gatepass-timestamp,
         .ticket-owner.ticket-state-gatepassed .ticket-gatepass-timestamp {
             display: block; min-height: 20px; margin: 0 40px 0 10px;
             color: #424242; font-size: 14px; line-height: 20px; font-weight: 400;
         }
+        .ticket-owner .ticket-gatepass-timestamp:empty { display: none; }
         .ticket-owner.ticket-state-invalid .ticket-owner-title { background: #777; }
         .ticket-owner.ticket-state-invalid .ticket-info-main, .ticket-owner.ticket-state-invalid .ticket-footer { background: #eee; filter: grayscale(1); }
         .seat-masking-ribbon { display: none; position: relative; width: fit-content; max-width: calc(100% - 21px); margin: 4px 0; padding: 6px 16px 6px 12px; background: rgba(245,229,46,.95); color: #212121; font-size: 12px; line-height: 12px; font-weight: 500; }
@@ -1350,8 +1354,8 @@
         html[data-eplus-platform="ios"] #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
         html[data-eplus-platform="ios"] .nav-bar {
             position: fixed; z-index: 20; right: 0; bottom: 0; left: 0;
-            height: 72px; min-height: 72px;
-            align-items: flex-start; padding: 4px 24px 12px;
+            height: 64px; min-height: 64px;
+            align-items: flex-start; padding: 4px 24px;
             border: 0; border-radius: 0; box-sizing: border-box;
             background: #fff; box-shadow: none;
             isolation: isolate;
@@ -1373,10 +1377,31 @@
         html[data-eplus-platform="ios"] .nav-icon img { width: 24px; height: 23px; object-fit: contain; }
         html[data-eplus-platform="ios"] .nav-badge { top: -2px; right: -4px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; font-size: 11px; line-height: 19px; }
         html[data-eplus-platform="ios"] .nav-badge.is-ticket-badge { display: none; }
-        html[data-eplus-platform="ios"] .home-content { padding-bottom: 84px; }
-        html[data-eplus-platform="ios"] .tab-screen-body { padding-bottom: 100px; }
-        html[data-eplus-platform="ios"] .ticket-tools { bottom: 78px; }
+        html[data-eplus-platform="ios"] .home-content { padding-bottom: 76px; }
+        html[data-eplus-platform="ios"] .tab-screen-body { padding-bottom: 92px; }
+        html[data-eplus-platform="ios"] .ticket-tools { bottom: 70px; }
         html[data-eplus-platform="ios"] .event-summary .date { font-family: "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 500; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .detail-header { height: 54px; min-height: 54px; padding: 0 11px 0 7px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .enter-button,
+        html[data-eplus-platform="ios"] #ticket-detail-screen .enter-button img { width: 153px; height: 30px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .detail-back { width: 36px; height: 36px; padding: 11px 14px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .detail-back img { width: 8px; height: 14px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .event-summary { width: calc(100% - 18px); margin: 10px 9px; padding: 10px 48px 13px 12px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .detail-more,
+        html[data-eplus-platform="ios"] #ticket-detail-screen .detail-more img { width: 30px; height: 30px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-owner { margin: 0 9px 10px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-owner-title { min-height: 56px; padding: 10px 12px; box-sizing: border-box; font-size: 18px; line-height: 22px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-info-main { min-height: 98px; padding: 10px 12px; box-sizing: border-box; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-seat { gap: 20px; font-size: 13px; line-height: 16px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-seat img { width: 80px; height: 89px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-seat strong { font-size: 15px; line-height: 18px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-description,
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-description2 { margin-right: 40px; margin-left: 10px; font-size: 12px; line-height: 14.333px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-back-info { margin-left: 10px; font-size: 12px; line-height: 14.333px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-number { min-height: 20px; margin-right: 40px; margin-left: 10px; font-size: 14px; line-height: 20px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-footer { padding-bottom: 10px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-collapse { right: 10px; bottom: 10px; width: 20px; height: 20px; }
+        html[data-eplus-platform="ios"] #ticket-detail-screen .ticket-collapse img { width: 20px; height: 20px; }
 
         html[data-eplus-platform="android"] #prelude-layer,
         html[data-eplus-platform="android"] .screen { font-family: Roboto, "Noto Sans JP", sans-serif; }
@@ -1766,7 +1791,7 @@
         // Launch flow: splash → ticket list → ticket detail → existing gate screen.
         const preludeLayer = document.getElementById('prelude-layer');
         const ticketCard = (date, week, time, title, venue, openable) => `<article class="ticket-card" ${openable ? 'data-open-ticket' : ''}><div class="ticket-visual"></div><div class="ticket-details"><span class="ticket-year">2024年</span><div class="ticket-date-line"><strong>${date}</strong><small>${week}　${time}</small></div><span class="ticket-event">${title}</span>${venue}</div><div class="ticket-action"><img src="新イープラ7_files/edsdk-ic-main-ticket.svg" alt="">チケットはこちら<img class="action-arrow" src="新イープラ7_files/edsdk-smart-ticket-bundle-arow-right.svg" alt=""></div></article>`;
-        const ownerTicket = (number, secondary) => { const ticketIndex = Math.max(0, (Number.parseInt(number, 10) || 1) - 1); const ticketNumber = secondary ? `114005498169${ticketIndex + 2}` : '1140054981692'; return `<article class="ticket-owner ${secondary ? 'secondary' : ''}" data-detail-ticket data-ticket-index="${ticketIndex}"><div class="ticket-owner-title">久賀 澤也 様 <small>${number}</small></div><div class="ticket-owner-content"><div class="ticket-info-main"><img class="ticket-used-mark" src="新イープラ7_files/edsdk-v3-ticket-used-stamp.png" alt="使用済"><div class="ticket-seat"><img src="新イープラ7_files/edsdk-ticket-unused.png" alt="未使用チケット"><div><strong>全席指定</strong><br>Aブロック<br>6列 ${secondary ? '7' : '6'}番<br>￥1,100(税込)</div></div></div><div class="distribution-wrap"><button class="distribution-button"><img src="新イープラ7_files/edsdk-dist-do.png" alt="同行者へ分配する"></button></div><div class="ticket-footer"><div class="ticket-description">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会<br>登壇者:結川あさき(北条時行役)/矢野妃菜喜(雫役)/中村悠一(諏訪頼重役)<br>お問合せ:ホットスタッフ・プロモーション 050-5211-6077(平日12:00～18:00)</div><div class="ticket-expandable"><div class="ticket-description2">※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行、荒天中止となる場合もございます。中止の場合は公式サイト及び公式Xにてお知らせします。<br>※雨天の際、傘のご利用は他のお客様の視界を妨げる要因となりますので、レインコート等の雨具をご用意ください。<br>※ご来場時にご購入者様の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえお越しください。<br>※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。<br>TVアニメ『逃げ上手の若君』<br>鶴岡八幡宮プレミア上映会<br>＜営利目的の転売禁止＞<br>イープラス 050-3185-6483</div><span class="ticket-back-info">チケット裏面情報 ＞</span><div class="ticket-number-divider"></div><div class="ticket-number">チケット番号：${ticketNumber}</div><div class="ticket-gatepass-timestamp"></div></div><button class="ticket-collapse" aria-label="詳細を格納" aria-expanded="true"><img src="新イープラ7_files/edsdk-detail-arrow-up.png" alt=""></button></div></div></article>`; };
+        const ownerTicket = (number, secondary) => { const ticketIndex = Math.max(0, (Number.parseInt(number, 10) || 1) - 1); const ticketNumber = secondary ? `114005498169${ticketIndex + 2}` : '1140054981692'; return `<article class="ticket-owner ticket-state-unused ${secondary ? 'secondary' : ''}" data-detail-ticket data-ticket-index="${ticketIndex}"><div class="ticket-owner-title">久賀 澤也 様 <small>${number}</small></div><div class="ticket-owner-content"><div class="ticket-info-main"><img class="ticket-used-mark" src="新イープラ7_files/edsdk-v3-ticket-used-stamp.png" alt="使用済"><div class="ticket-seat"><img src="新イープラ7_files/edsdk-ticket-unused.png" alt="未使用チケット"><div><strong>全席指定</strong><br>Aブロック<br>6列 ${secondary ? '7' : '6'}番<br>￥1,100(税込)</div></div></div><div class="distribution-wrap"><button class="distribution-button"><img src="新イープラ7_files/edsdk-dist-do.png" alt="同行者へ分配する"></button></div><div class="ticket-footer"><div class="ticket-description">TVアニメ「逃げ上手の若君」鶴岡八幡宮プレミア上映会<br>登壇者:結川あさき(北条時行役)/矢野妃菜喜(雫役)/中村悠一(諏訪頼重役)<br>お問合せ:ホットスタッフ・プロモーション 050-5211-6077(平日12:00～18:00)</div><div class="ticket-expandable"><div class="ticket-description2">※登壇者は、予告なく変更となる場合がございます。※開場・開演時間は変更になる可能性がございます。※雨天決行、荒天中止となる場合もございます。中止の場合は公式サイト及び公式Xにてお知らせします。<br>※雨天の際、傘のご利用は他のお客様の視界を妨げる要因となりますので、レインコート等の雨具をご用意ください。<br>※ご来場時にご購入者様の本人確認をさせていただく場合がございますので、有効な身分証をご持参のうえお越しください。<br>※その他本イベントの注意事項等はアニメ公式サイトにてご確認ください。<br>TVアニメ『逃げ上手の若君』<br>鶴岡八幡宮プレミア上映会<br>＜営利目的の転売禁止＞<br>イープラス 050-3185-6483</div><span class="ticket-back-info">チケット裏面情報 ＞</span><div class="ticket-number-divider"></div><div class="ticket-number">チケット番号：${ticketNumber}</div><div class="ticket-gatepass-timestamp"></div></div><button class="ticket-collapse" aria-label="詳細を格納" aria-expanded="true"><img src="新イープラ7_files/edsdk-detail-arrow-up.png" alt=""></button></div></div></article>`; };
         preludeLayer.innerHTML = `
           <section id="splash-screen" class="prelude-screen splash-screen is-active"><img src="新イープラ7_files/ios-loading-logo.png" alt="e+"></section>
           <section id="home-screen" class="prelude-screen"><header class="home-header"><img class="home-menu-icon" src="新イープラ7_files/ic-menu.svg"><img class="home-logo" src="新イープラ7_files/ic-eplus-logo.svg"><div class="home-search"><img class="home-search-leading" src="新イープラ7_files/ic-search.svg">ここから検索をスタート<img class="home-search-button" src="新イープラ7_files/ic-search-pink.svg"></div></header><main class="home-content"><div class="home-banner">本日公演の <b>スマチケ</b> はこちら <img src="新イープラ7_files/ic-home-smtk-arrow-forward.svg"></div><div class="home-notices"><div class="home-notice-row"><img src="新イープラ7_files/ic-important-notices.svg">重要なお知らせ<img class="home-row-arrow" src="新イープラ7_files/ic-home-arrow-right-small.svg"></div><div class="home-notice-row"><img src="新イープラ7_files/ic-notification-small.svg">未読の通知があります <span style="color:#e85298">（未読 38件）</span><img class="home-row-arrow" src="新イープラ7_files/ic-home-arrow-right-small.svg"></div></div><div class="home-heading">PICK UP！</div><div class="horizontal-cards"><div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/pickup-banner.jpg"></div><div class="pickup-card"><img class="pickup-image" src="新イープラ7_files/ticket-event-hero.jpg"></div></div><div class="home-heading">閲覧履歴</div><div class="history-row"><div class="history-tile"><div class="history-blank"><img src="新イープラ7_files/ic-eplus-logo.svg" alt=""></div><div class="history-label">YOASOBI</div><span class="history-remove">×</span></div><div class="history-tile"><div class="history-blank"><img src="新イープラ7_files/ic-eplus-logo.svg" alt=""></div><div class="history-label">THE IDOLM@STER</div><span class="history-remove">×</span></div></div><div class="home-heading">週間トレンド（全国版）</div><div class="trend-row"><div class="trend-card"><div class="trend-cover" style="background-image:url('新イープラ7_files/pickup-banner.jpg')"></div><b>『時をかける少女』20周年記念 細田守の原点/展</b><div class="trend-meta">▣ 6/20(土)～8/31(月)<br>◎ CREATIVE MUSEUM TOKYO(東京都)</div><span class="sale-tag">先着　受付中</span></div><div class="trend-card"><div class="trend-cover" style="background-image:url('新イープラ7_files/ticket-event-hero.jpg')"></div><b>BUMP OF CHICKEN</b><div class="trend-meta">▣ 2027/2/6(土)～<br>◎ 東京ドーム(東京都)</div><span class="sale-tag">受付中</span></div></div><div class="home-heading">お気に入り</div><div class="trend-row"><div class="trend-card"><div class="trend-cover" style="background-image:url('新イープラ7_files/ticket-thumb.png')"></div><b>神羅朗読劇「カリギュラ」</b></div><div class="trend-card"><div class="trend-cover" style="background-image:url('新イープラ7_files/pickup-banner.jpg')"></div><b>SAKAMOTO DAYS</b></div></div></main><nav class="nav-bar" data-bottom-nav></nav></section>
@@ -1900,7 +1925,7 @@
             const gatepassedTicket = ticketDetailScreen.querySelector(`[data-detail-ticket][data-ticket-index="${ticketIndex}"]`);
             if (!gatepassedTicket) return;
             gatepassedTicket.classList.remove('ticket-state-unused', 'ticket-state-used', 'ticket-state-invalid');
-            gatepassedTicket.classList.add('ticket-state-gatepassed');
+            gatepassedTicket.classList.add('ticket-state-used', 'ticket-state-gatepassed');
             const statusIcon = gatepassedTicket.querySelector('.ticket-seat > img');
             statusIcon.src = '新イープラ7_files/edsdk-v3-ticket-gatepass.png';
             statusIcon.alt = '入場済みチケット';
@@ -2089,7 +2114,10 @@ TVアニメ『逃げ上手の若君』
             const detail = ticketDetailScreen.querySelector('.detail-scroll');
             detail.querySelectorAll('[data-detail-ticket]').forEach(ticket => ticket.remove());
             detail.insertAdjacentHTML('beforeend', Array.from({ length: configuredTicketCount }, (_, index) => ownerTicket(`${index + 1}枚目`, index > 0)).join(''));
-            detail.querySelectorAll('[data-detail-ticket]').forEach(ticket => ticket.classList.add(`ticket-state-${configuredTicketFace}`));
+            detail.querySelectorAll('[data-detail-ticket]').forEach(ticket => {
+                ticket.classList.remove('ticket-state-unused', 'ticket-state-used', 'ticket-state-invalid', 'ticket-state-gatepassed');
+                ticket.classList.add(`ticket-state-${configuredTicketFace}`);
+            });
             updateGateEntryButtonState();
             detail.querySelector('.ticket-year').textContent = `${ticketValues.year}年`;
             detail.querySelector('.detail-date-row .date').textContent = ticketValues.date;
@@ -2121,7 +2149,10 @@ TVアニメ『逃げ上手の若君』
             detail.querySelectorAll('.ticket-description2').forEach(description => {
                 description.innerHTML = escapeHomeText(ticketValues.notes).replace(/\r?\n/g, '<br>');
             });
-            detail.querySelectorAll('.ticket-seat img').forEach(image => image.alt = configuredTicketFace === 'unused' ? '未使用チケット' : configuredTicketFace === 'used' ? '使用済みチケット' : '無効チケット');
+            detail.querySelectorAll('.ticket-seat > img').forEach(image => {
+                image.src = configuredTicketFace === 'used' ? '新イープラ7_files/edsdk-v3-ticket-gatepass.png' : '新イープラ7_files/edsdk-ticket-unused.png';
+                image.alt = configuredTicketFace === 'unused' ? '未使用チケット' : configuredTicketFace === 'used' ? '使用済みチケット' : '無効チケット';
+            });
             detail.querySelectorAll('.distribution-button img').forEach(image => { image.src = '新イープラ7_files/ipa-ticket-distribute-do.png'; });
             detail.querySelectorAll('.ticket-collapse').forEach(button => button.addEventListener('click', () => {
                 const ticket = button.closest('[data-detail-ticket]');
