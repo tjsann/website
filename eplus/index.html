@@ -1349,10 +1349,17 @@
         html[data-eplus-platform="ios"] .ticket-owner { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
         html[data-eplus-platform="ios"] #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
         html[data-eplus-platform="ios"] .nav-bar {
-            position: fixed; z-index: 20; right: 20px; bottom: 0; left: 20px;
-            height: calc(64px + env(safe-area-inset-bottom, 0px)); min-height: 64px;
-            align-items: flex-start; padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
-            border: 1px solid rgba(0, 0, 0, .045); border-radius: 32px 32px 0 0; box-sizing: border-box;
+            position: fixed; z-index: 20; right: 0; bottom: 0; left: 0;
+            height: calc(72px + env(safe-area-inset-bottom, 0px)); min-height: 72px;
+            align-items: flex-start; padding: 4px 24px calc(12px + env(safe-area-inset-bottom, 0px));
+            border: 0; border-radius: 0; box-sizing: border-box;
+            background: transparent; box-shadow: none;
+            isolation: isolate;
+        }
+        html[data-eplus-platform="ios"] .nav-bar::before {
+            content: ''; position: absolute; z-index: -1; top: 0; right: 20px; left: 20px;
+            height: 64px; box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, .045); border-radius: 32px;
             background: rgba(255, 255, 255, .94);
             box-shadow: 0 5px 22px rgba(0, 0, 0, .13), 0 0 24px 13px rgba(255, 255, 255, .68);
             -webkit-backdrop-filter: blur(18px) saturate(1.15); backdrop-filter: blur(18px) saturate(1.15);
@@ -1363,7 +1370,7 @@
         }
         html[data-eplus-platform="ios"] .nav-bar > div.is-active { background: #e3e3e3; }
         html[data-eplus-platform="ios"] .nav-icon { width: 34px; height: 31px; }
-        html[data-eplus-platform="ios"] .nav-icon img { width: 27px; height: 24px; object-fit: contain; }
+        html[data-eplus-platform="ios"] .nav-icon img { width: 24px; height: 23px; object-fit: contain; }
         html[data-eplus-platform="ios"] .nav-badge { top: -2px; right: -4px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; font-size: 11px; line-height: 19px; }
         html[data-eplus-platform="ios"] .nav-badge.is-ticket-badge { display: none; }
         html[data-eplus-platform="ios"] .home-content { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
