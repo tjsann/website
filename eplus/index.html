@@ -98,7 +98,7 @@
                 min-height: 100dvh;
                 background: #fff;
             }
-            html[data-eplus-platform="android"] .nav-bar { position: fixed; }
+            html[data-eplus-platform="android"] .nav-bar { position: absolute; }
             .prelude-screen:not(.splash-screen) {
                 box-sizing: border-box;
                 padding-top: env(safe-area-inset-top, 0px);
@@ -178,7 +178,7 @@
             overflow: hidden;
         }
         html.app-standalone #smartphone-container { max-width: none; box-shadow: none; }
-        html.app-standalone[data-eplus-platform="android"] .nav-bar { position: fixed; }
+        html.app-standalone[data-eplus-platform="android"] .nav-bar { position: absolute; }
         html.app-standalone .splash-screen { background: #e85298; }
 
         .screen {
@@ -1353,9 +1353,9 @@
         html[data-eplus-platform="ios"] .ticket-owner { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif; }
         html[data-eplus-platform="ios"] #prelude-layer { --edsdk-link: #007aff; --edsdk-ticket-main: #fbeaf3; --edsdk-ticket-footer: #f3d2e2; }
         html[data-eplus-platform="ios"] .nav-bar {
-            position: fixed; z-index: 20; right: 0; bottom: 0; left: 0;
-            height: 64px; min-height: 64px;
-            align-items: flex-start; padding: 4px 24px;
+            position: absolute; z-index: 20; right: 0; bottom: 0; left: 0;
+            height: calc(64px + env(safe-area-inset-bottom, 0px)); min-height: 64px;
+            align-items: flex-start; padding: 4px 24px env(safe-area-inset-bottom, 0px);
             border: 0; border-radius: 0; box-sizing: border-box;
             background: #fff; box-shadow: none;
             isolation: isolate;
