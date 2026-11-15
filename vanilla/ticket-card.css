@@ -1,0 +1,61 @@
+.edit-form select{width:100%;margin-top:5px;padding:10px;border:1px solid #ddd;border-radius:4px;background:#fff;font:inherit;color:#222}
+
+/* Gate check: spacing and paint order matched against video 18s / 24s. */
+.gate-date{top:45px;font-family:Arial,VanillasJP,sans-serif;font-size:17px;font-weight:600;line-height:22px}
+.gate-time{top:74px;line-height:20px}
+.gate-artist{bottom:40px;top:auto;line-height:24px}
+.gate-venue{bottom:10px;top:auto;line-height:24px;white-space:nowrap;max-width:calc(100% - 40px);overflow:hidden;text-overflow:ellipsis}
+.gate-ticket .gate-seat-type{font-size:13px;line-height:19px;font-weight:700}
+.gate-ticket .gate-person,.gate-ticket.passed .gate-person{font-size:14px;line-height:20px;font-weight:700}
+.gate-ticket>.select-image,.gate-ticket.passed>.select-image{width:52px;height:52px;margin-left:0;padding:0;flex-shrink:0}
+.gate-ticket.passed:before{content:'';position:absolute;left:14px;top:calc(50% - 26px);width:52px;height:52px;background:#ffe5e5;border-radius:50%}
+.gate-ticket.passed>.select-image{background:transparent;border-radius:50%;filter:url(#video-orange);position:relative}
+.gate-ticket .gate-ticket-info{position:relative;z-index:2}
+.gate-pass-image{z-index:1;left:58%;right:auto;top:50%;width:36%;height:auto;aspect-ratio:244/148;transform:translate(-50%,-50%)}
+.smart-top>.ticket-symbol{width:140px;height:140px;left:calc(50% - 70px);top:calc(50% - 70px);opacity:1}
+.gate-logo,.gate-header>.oval{opacity:1;filter:url(#video-orange)}
+.gate-ticket{background:#f16158}
+.gate-ticket.passed{background:#b5b5b5}
+.gate-ticket.passed .gate-seat-type,.gate-ticket.passed .gate-seat-number{color:#f16158}
+.smart-top .concert-text{right:121px}
+.smart-top .concert-text .tour{font-size:14px;line-height:1.2}
+.smart-datetime .year{line-height:18px;margin-bottom:3px}
+.smart-datetime .date-line{height:34px;margin:0 0 8px;align-items:flex-end}
+.smart-datetime .date-number{line-height:34px}
+.smart-datetime .venue{line-height:21px;margin:0}
+.smart-foot{position:relative}
+.smart-foot .meta{max-width:48%}
+.smart-foot button{position:absolute;left:49%;top:8px;height:24px;padding:0 8px;display:flex;align-items:center;justify-content:center}
+.gate-ticket.deselected{background:#fff;color:#f16158}
+.gate-ticket .gate-seat-type{font-weight:400}
+.gate-ticket.passed .gate-seat-type{color:#f16158}
+.gate-result{font-size:24px;font-weight:400;background:#d53f4d}
+.gate-header.finished .gate-result{animation:finish-fade 500ms cubic-bezier(.333333,.666667,.666667,1) 1000ms both}
+.gate-time small{font-size:12px}
+.gate-used-label{position:absolute;left:14px;top:calc(50% + 26px);width:52px;text-align:center;color:#aaa;font-size:8px;line-height:14px;font-weight:400}
+/* Video ticket list, backed by view_ticket_list_cell/include_ticket_sub_cell. */
+#loading{top:44px}.motion-copy,.transition-shield{top:0}
+.sdk-ticket-list{padding:60px 17px 28px;color:#222;background:#111;min-height:calc(100% - 47px)}
+.sdk-today{color:white;font-size:14px;line-height:18px;font-weight:700;margin:0 0 12px}
+.sdk-event{background:white;border-radius:14px 14px 7px 7px;overflow:hidden}
+.sdk-thumbnail{width:100%;aspect-ratio:538/228;object-fit:cover;display:block}
+.sdk-event-heading{padding:7px 15px 4px}
+.sdk-artist{font-size:14px;line-height:17px;font-weight:400}
+.sdk-event-heading h3{font-size:16px;line-height:20px;margin:0;font-weight:700;overflow-wrap:anywhere}
+.sdk-ticket-info{border-top:1px dashed #aaa;margin:0 8px;padding:9px 8px 15px}
+.sdk-date{display:flex;height:44px;align-items:center;gap:10px}
+.sdk-calendar{display:flex;flex-direction:column;justify-content:center}
+.sdk-year{font-size:12px;line-height:15px;color:#aaa}
+.sdk-day{font-family:Arial,sans-serif;font-size:27px;line-height:29px;letter-spacing:-.6px;white-space:nowrap}
+.sdk-day small{font-family:Arial,VanillasJP,sans-serif;font-size:14px;color:#888;font-weight:400;letter-spacing:0}
+.sdk-start{padding-left:7px;border-left:1px solid #ccc;display:flex;flex-direction:column;align-self:stretch;justify-content:center;gap:2px}
+.sdk-start small{font-family:Arial,sans-serif;font-size:10px;color:#aaa;line-height:13px}
+.sdk-start>span{font-size:16px;line-height:19px;font-family:Arial,sans-serif;color:#111}
+.sdk-venue{font-size:14px;line-height:20px;font-weight:700;margin-top:0}
+.sdk-seat{font-size:12px;color:#aaa;line-height:18px;margin-top:7px}
+.sdk-ticket-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:3px;min-height:24px}
+.sdk-ticket-count{display:flex;gap:4px;align-items:center;font-family:Arial,sans-serif;color:#999;font-size:14px;line-height:18px}
+.sdk-ticket-count>img{width:18px;height:18px;object-fit:contain}
+.sdk-open-ticket{display:flex;align-items:center;gap:4px;color:#ee8368;font-size:12px;font-weight:700;line-height:18px;min-height:28px}
+.sdk-open-ticket>img{height:11px;width:7px;object-fit:contain;filter:invert(62%) sepia(35%) saturate(910%) hue-rotate(322deg) brightness(99%) contrast(87%)}
+@media(max-height:700px){.sdk-ticket-list{padding-top:28px}#loading{top:44px}.motion-copy,.transition-shield{top:0}}

@@ -1,0 +1,15 @@
+/analysis/
+/.local/
+/build/
+/.DS_Store
+Thumbs.db
+*.apk
+*.idsig
+*.zip
+*.jks
+*.keystore
+*.p12
+*.pem
+.env
+.env.*
+__pycache__/
